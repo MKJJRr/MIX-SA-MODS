@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes do Mod - MISTURE-SA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body { background-color: #0f0f0f; color: white; font-family: sans-serif; text-align: center; padding: 10px; margin: 0; }
         
@@ -33,45 +34,59 @@
             letter-spacing: 1px;
         }
 
-        /* Estilo especial para a Seta Neon */
         .seta-neon {
             margin-right: 12px;
-            font-size: 22px; /* Bem maior que o texto */
+            font-size: 22px;
             line-height: 0;
             color: #00ff00;
-            text-shadow: 0 0 8px #00ff00, 0 0 12px #00ff00; /* Brilho forte */
+            text-shadow: 0 0 8px #00ff00;
             font-weight: bold;
         }
 
         .btn-voltar-topo:hover {
             background: #252525;
             border-color: #00ff00;
-            transform: translateX(-3px); /* Move levemente para a esquerda ao tocar */
+            transform: translateX(-3px);
         }
 
         .container { max-width: 600px; margin: auto; background: #1e1e1e; padding: 20px; border-radius: 15px; border: 1px solid #333; }
         
+        /* Thumbnail ajustada */
         .mod-print { 
             width: 100%; 
+            height: auto;
+            max-height: 300px;
+            object-fit: contain;
             border-radius: 10px; 
             margin-bottom: 20px; 
             border: 1px solid #444; 
+            background: #000;
         }
 
         .info-box { text-align: left; background: #252525; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #00ff00; }
         
         .btn-link { 
-            display: block; 
-            background: #00ff00; 
-            color: black; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
             padding: 15px; 
             text-decoration: none; 
             font-weight: bold; 
             border-radius: 8px; 
             margin-top: 10px; 
             transition: 0.3s; 
+            text-transform: uppercase;
+            gap: 10px; /* Espaço entre o ícone e o texto */
         }
-        .btn-link:hover { background: #00cc00; transform: scale(1.02); }
+
+        .btn-download { background: #00ff00; color: black; }
+        .btn-download:hover { background: #00cc00; transform: scale(1.02); }
+
+        /* Botão YouTube com ícone */
+        .btn-youtube { background: #ff0000; color: white; margin-bottom: 10px; }
+        .btn-youtube:hover { background: #cc0000; transform: scale(1.02); }
+        .btn-youtube i { font-size: 20px; }
+
     </style>
 </head>
 <body>
@@ -96,7 +111,13 @@
 
         <p>Esse mod adiciona um sistema de combustível realista aos veículos do jogo, obrigando o jogador a abastecer em postos espalhados pelo mapa.</p>
 
-        <a href="https://modsfire.com/UbA68J1Y4Jn9i1A" class="btn-link" target="_blank">CLIQUE PARA BAIXAR</a>
+        <a href="https://www.youtube.com/watch?v=SEU_VIDEO_AQUI" class="btn-link btn-youtube" target="_blank">
+            <i class="fa-brands fa-youtube"></i> VER VÍDEO NO YOUTUBE
+        </a>
+
+        <a href="https://modsfire.com/UbA68J1Y4Jn9i1A" class="btn-link btn-download" target="_blank">
+            <i class="fa-solid fa-download"></i> BAIXAR MOD
+        </a>
     </div>
 
 </body>
