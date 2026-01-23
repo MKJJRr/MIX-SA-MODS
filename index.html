@@ -76,7 +76,7 @@
             margin-bottom: 30px;
             border: 1px solid #333;
             transition: 0.3s;
-            display: block; /* Garante que apareça por padrão */
+            display: block; 
         }
         .mod-card:hover { border-color: #00ff00; }
         .mod-img { width: 100%; height: 200px; object-fit: cover; background-color: #333; }
@@ -124,6 +124,7 @@
         <button class="btn btn-category" onclick="setCategory('textura', this)">TEXTURAS</button>
         <button class="btn btn-category" onclick="setCategory('script', this)">SCRIPTS/CLEO</button>
         <button class="btn btn-category" onclick="setCategory('veiculo', this)">VEÍCULOS</button>
+        <button class="btn btn-category" onclick="setCategory('correcao', this)">CORREÇÃO</button>
     </div>
 </div>
 
@@ -156,6 +157,15 @@
         </div>
     </div>
 
+    <div class="mod-card" data-category="correcao">
+        <img src="https://via.placeholder.com/600x300/222/00ff00?text=Fix+Mod" alt="Thumbnail Mod" class="mod-img">
+        <div class="mod-info">
+            <h2>Fastman92 Limit Adjuster</h2>
+            <p>Correção essencial para evitar crashs ao adicionar muitos mods.</p>
+            <a href="#" class="btn btn-download">BAIXAR MOD</a>
+        </div>
+    </div>
+
 </div>
 
 <footer>
@@ -166,7 +176,6 @@
     let currentCategory = 'todos';
 
     function setCategory(category, el) {
-        // Muda a cor do botão ativo
         let buttons = document.getElementsByClassName('btn-category');
         for (let btn of buttons) { btn.classList.remove('active'); }
         el.classList.add('active');
@@ -183,7 +192,6 @@
             let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase();
             let category = cards[i].getAttribute('data-category');
             
-            // Verifica se combina com a busca E com a categoria selecionada
             let matchSearch = title.includes(input);
             let matchCategory = (currentCategory === 'todos' || category === currentCategory);
 
