@@ -3,206 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIX-SA-MODS | GTA SA Android</title>
+    <title>MIX-SA-MODS | Perfil</title>
     <style>
-        /* Estilos Gerais */
-        body {
-            background-color: #0f0f0f;
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
-
-        /* Barra de Navegação */
-        nav {
-            background-color: #1a1a1a;
-            padding: 15px;
-            position: sticky;
-            top: 0;
-            border-bottom: 2px solid #00ff00;
-            z-index: 1000;
-        }
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 14px;
-        }
-
-        header {
-            padding: 40px 20px;
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://via.placeholder.com/1200x400');
-            background-size: cover;
-        }
-
-        /* Área de Busca e Filtros */
-        .controls-container {
-            padding: 20px;
-            max-width: 800px;
-            margin: auto;
-        }
-        #searchInput {
-            width: 90%;
-            padding: 15px;
-            border-radius: 50px;
-            border: 2px solid #333;
-            background-color: #1a1a1a;
-            color: white;
-            font-size: 16px;
-            outline: none;
-            transition: 0.3s;
-            margin-bottom: 20px;
-        }
-        #searchInput:focus { border-color: #00ff00; box-shadow: 0 0 10px #00ff00; }
-
-        .category-buttons {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        /* Cards de Mods */
-        .container { max-width: 800px; margin: auto; padding: 20px; }
-        .mod-card {
-            background-color: #1e1e1e;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 30px;
-            border: 1px solid #333;
-            transition: 0.3s;
-            display: block; 
-        }
-        .mod-card:hover { border-color: #00ff00; }
-        .mod-img { width: 100%; height: 200px; object-fit: cover; background-color: #333; }
-        .mod-info { padding: 20px; }
-        .mod-card h2 { color: #00ff00; margin: 0 0 10px 0; }
-
-        /* Botões */
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 6px;
-            transition: 0.2s;
-            cursor: pointer;
-            border: none;
-        }
-        .btn-category { background-color: #333; color: white; font-size: 12px; }
-        .btn-category:hover, .btn-category.active { background-color: #00ff00; color: black; }
+        /* (Seu CSS anterior continua aqui...) */
+        body { background-color: #0f0f0f; color: #ffffff; font-family: sans-serif; margin: 0; text-align: center; }
         
-        .btn-download { background-color: #00ff00; color: #000; margin-top: 10px; }
-        .btn-youtube { background-color: #ff0000; color: #fff; }
+        /* Estilo da Barra de Saudação */
+        .user-bar {
+            background: #111;
+            padding: 10px;
+            font-size: 14px;
+            border-bottom: 1px solid #333;
+            color: #00ff00;
+            display: none; /* Escondido até ter um nome */
+        }
 
-        footer { padding: 20px; color: #666; font-size: 14px; }
+        /* Estilo do Modal (Janela que pede o nome) */
+        .modal-perfil {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 10000;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: #1e1e1e; padding: 30px; border-radius: 15px;
+            border: 2px solid #00ff00; width: 80%; max-width: 400px;
+        }
+        .modal-content input {
+            width: 90%; padding: 12px; margin-top: 15px;
+            border-radius: 8px; border: 1px solid #333; background: #000; color: white;
+        }
+        .btn-salvar {
+            background: #00ff00; color: black; padding: 10px 20px;
+            border: none; border-radius: 8px; margin-top: 15px; font-weight: bold; cursor: pointer;
+        }
     </style>
 </head>
-<body>
+<body onload="verificarPerfil()">
 
-<nav>
-    <a href="#">Início</a>
-    <a href="https://youtube.com/@maykjjr" target="_blank">YouTube</a>
-</nav>
+    <div id="userBar" class="user-bar"></div>
 
-<header>
-    <h1>MIX-SA-MODS</h1>
-    <p>O ponto de encontro dos modders de GTA San Andreas Mobile</p>
-    <a href="https://youtube.com/@maykjjr" target="_blank" class="btn btn-youtube">INSCREVA-SE NO CANAL</a>
-</header>
-
-<div class="controls-container">
-    <input type="text" id="searchInput" onkeyup="filterMods()" placeholder="Pesquisar mod...">
-
-    <div class="category-buttons">
-        <button class="btn btn-category active" onclick="setCategory('todos', this)">TUDO</button>
-        <button class="btn btn-category" onclick="setCategory('textura', this)">TEXTURAS</button>
-        <button class="btn btn-category" onclick="setCategory('script', this)">SCRIPTS/CLEO</button>
-        <button class="btn btn-category" onclick="setCategory('veiculo', this)">VEÍCULOS</button>
-        <button class="btn btn-category" onclick="setCategory('correcao', this)">CORREÇÃO</button>
-    </div>
-</div>
-
-<div class="container" id="modList">
-    
-    <div class="mod-card" data-category="textura">
-        <img src="https://via.placeholder.com/600x300/222/00ff00?text=Pack+Texturas" alt="Thumbnail Mod" class="mod-img">
-        <div class="mod-info">
-            <h2>Pack de Texturas Realistas</h2>
-            <p>Melhore o visual do seu GTA com texturas em alta definição.</p>
-            <a href="#" class="btn btn-download">BAIXAR MOD</a>
+    <div id="modalPerfil" class="modal-perfil" style="display: none;">
+        <div class="modal-content">
+            <h2 style="color: #00ff00; margin: 0;">Bem-vindo Modder!</h2>
+            <p>Como quer ser chamado no site?</p>
+            <input type="text" id="nomeUsuario" placeholder="Digite seu nome ou apelido...">
+            <button class="btn-salvar" onclick="salvarPerfil()">ENTRAR NO SITE</button>
         </div>
     </div>
 
-    <div class="mod-card" data-category="script">
-        <img src="https://via.placeholder.com/600x300/222/00ff00?text=Menu+CLEO" alt="Thumbnail Mod" class="mod-img">
-        <div class="mod-info">
-            <h2>Menu CLEO v4 (No Root)</h2>
-            <p>Menu de códigos completo sem necessidade de root.</p>
-            <a href="#" class="btn btn-download">BAIXAR MOD</a>
-        </div>
-    </div>
+    <nav>
+        <a href="#">Início</a>
+        <a href="https://youtube.com/@maykjjr" target="_blank">YouTube</a>
+    </nav>
 
-    <div class="mod-card" data-category="script">
-        <img src="imagens/mod-gasolina.png" alt="Thumbnail Mod" class="mod-img">
-        <div class="mod-info">
-            <h2>Mod Gasolina Realista</h2>
-            <p>Adiciona sistema de combustível aos veículos do jogo.</p>
-            <a href="mod-gasolina.html" class="btn btn-download">VER DETALHES E BAIXAR</a>
-        </div>
-    </div>
+    <header>
+        <h1>MIX-SA-MODS</h1>
+        <p>O seu portal de modificações Android</p>
+    </header>
 
-    <div class="mod-card" data-category="correcao">
-        <img src="https://via.placeholder.com/600x300/222/00ff00?text=Fix+Mod" alt="Thumbnail Mod" class="mod-img">
-        <div class="mod-info">
-            <h2>Fastman92 Limit Adjuster</h2>
-            <p>Correção essencial para evitar crashs ao adicionar muitos mods.</p>
-            <a href="#" class="btn btn-download">BAIXAR MOD</a>
-        </div>
-    </div>
+    <script>
+        // Função que verifica se o usuário já "logou" antes
+        function verificarPerfil() {
+            let nome = localStorage.getItem('usuario_mix_sa');
+            let userBar = document.getElementById('userBar');
+            let modal = document.getElementById('modalPerfil');
 
-</div>
-
-<footer>
-    <p>&copy; 2026 MIX-SA-MODS - Desenvolvido por MaykJJr</p>
-</footer>
-
-<script>
-    let currentCategory = 'todos';
-
-    function setCategory(category, el) {
-        let buttons = document.getElementsByClassName('btn-category');
-        for (let btn of buttons) { btn.classList.remove('active'); }
-        el.classList.add('active');
-
-        currentCategory = category;
-        filterMods();
-    }
-
-    function filterMods() {
-        let input = document.getElementById('searchInput').value.toLowerCase();
-        let cards = document.getElementsByClassName('mod-card');
-
-        for (let i = 0; i < cards.length; i++) {
-            let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase();
-            let category = cards[i].getAttribute('data-category');
-            
-            let matchSearch = title.includes(input);
-            let matchCategory = (currentCategory === 'todos' || category === currentCategory);
-
-            if (matchSearch && matchCategory) {
-                cards[i].style.display = "";
+            if (nome) {
+                // Se já tem nome, mostra a barra de saudação
+                userBar.style.display = "block";
+                userBar.innerHTML = "🎮 E aí, <b>" + nome + "</b>! Pronto para turbinar seu GTA?";
             } else {
-                cards[i].style.display = "none";
+                // Se não tem, mostra o modal para ele digitar o nome
+                modal.style.display = "flex";
             }
         }
-    }
-</script>
 
+        // Função que salva o nome e atualiza a tela
+        function salvarPerfil() {
+            let nomeInput = document.getElementById('nomeUsuario').value;
+            if (nomeInput.trim() !== "") {
+                localStorage.setItem('usuario_mix_sa', nomeInput); // Salva no navegador
+                document.getElementById('modalPerfil').style.display = "none";
+                verificarPerfil();
+            } else {
+                alert("Por favor, digite um nome!");
+            }
+        }
+    </script>
 </body>
 </html>
