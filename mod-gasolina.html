@@ -14,26 +14,39 @@
             justify-content: flex-start;
             padding: 15px;
             max-width: 600px;
-            margin: 0 auto 10px auto;
+            margin: 0 auto 5px auto;
         }
 
         .btn-voltar-topo {
             text-decoration: none;
             color: #00ff00;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 14px;
             display: flex;
             align-items: center;
             background: #1e1e1e;
-            padding: 8px 15px;
+            padding: 10px 18px;
             border-radius: 50px;
             border: 1px solid #333;
             transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Estilo especial para a Seta Neon */
+        .seta-neon {
+            margin-right: 12px;
+            font-size: 22px; /* Bem maior que o texto */
+            line-height: 0;
+            color: #00ff00;
+            text-shadow: 0 0 8px #00ff00, 0 0 12px #00ff00; /* Brilho forte */
+            font-weight: bold;
         }
 
         .btn-voltar-topo:hover {
-            background: #333;
+            background: #252525;
             border-color: #00ff00;
+            transform: translateX(-3px); /* Move levemente para a esquerda ao tocar */
         }
 
         .container { max-width: 600px; margin: auto; background: #1e1e1e; padding: 20px; border-radius: 15px; border: 1px solid #333; }
@@ -65,7 +78,7 @@
 
     <div class="top-bar">
         <a href="index.html" class="btn-voltar-topo">
-            <span style="margin-right: 8px;">←</span> INÍCIO
+            <span class="seta-neon">←</span> INÍCIO
         </a>
     </div>
 
