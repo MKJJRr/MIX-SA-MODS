@@ -15,16 +15,6 @@
             text-align: center;
         }
 
-        /* Barra de Saudação (Login Fake) */
-        .user-bar {
-            background: #111;
-            padding: 10px;
-            font-size: 14px;
-            border-bottom: 1px solid #333;
-            color: #00ff00;
-            display: none;
-        }
-
         /* Barra de Navegação */
         nav {
             background-color: #1a1a1a;
@@ -89,17 +79,7 @@
             display: block; 
         }
         .mod-card:hover { border-color: #00ff00; }
-
-        /* AQUI ESTÁ A CORREÇÃO DA THUMBNAIL */
-        .mod-img { 
-            width: 100%; 
-            height: auto; 
-            aspect-ratio: 16 / 9; 
-            object-fit: contain; 
-            background-color: #000; 
-            display: block;
-        }
-
+        .mod-img { width: 100%; height: 200px; object-fit: cover; background-color: #333; }
         .mod-info { padding: 20px; }
         .mod-card h2 { color: #00ff00; margin: 0 0 10px 0; }
 
@@ -120,37 +100,10 @@
         .btn-download { background-color: #00ff00; color: #000; margin-top: 10px; }
         .btn-youtube { background-color: #ff0000; color: #fff; }
 
-        /* Modal Perfil */
-        .modal-perfil {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 10000;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .modal-content {
-            background: #1e1e1e; padding: 30px; border-radius: 15px;
-            border: 2px solid #00ff00; width: 80%; max-width: 400px;
-        }
-        .modal-content input {
-            width: 90%; padding: 12px; margin-top: 15px;
-            border-radius: 8px; border: 1px solid #333; background: #000; color: white;
-        }
-
         footer { padding: 20px; color: #666; font-size: 14px; }
     </style>
 </head>
-<body onload="verificarPerfil()">
-
-    <div id="userBar" class="user-bar"></div>
-
-    <div id="modalPerfil" class="modal-perfil" style="display: none;">
-        <div class="modal-content">
-            <h2 style="color: #00ff00;">Bem-vindo!</h2>
-            <p>Como quer ser chamado no site?</p>
-            <input type="text" id="nomeUsuario" placeholder="Seu nome...">
-            <br>
-            <button class="btn btn-download" onclick="salvarPerfil()">ENTRAR</button>
-        </div>
-    </div>
+<body>
 
 <nav>
     <a href="#">Início</a>
@@ -178,7 +131,7 @@
 <div class="container" id="modList">
     
     <div class="mod-card" data-category="textura">
-        <img src="https://via.placeholder.com/1280x720/222/00ff00?text=Pack+Texturas" alt="Thumbnail Mod" class="mod-img">
+        <img src="https://via.placeholder.com/600x300/222/00ff00?text=Pack+Texturas" alt="Thumbnail Mod" class="mod-img">
         <div class="mod-info">
             <h2>Pack de Texturas Realistas</h2>
             <p>Melhore o visual do seu GTA com texturas em alta definição.</p>
@@ -187,7 +140,7 @@
     </div>
 
     <div class="mod-card" data-category="script">
-        <img src="https://via.placeholder.com/1280x720/222/00ff00?text=Menu+CLEO" alt="Thumbnail Mod" class="mod-img">
+        <img src="https://via.placeholder.com/600x300/222/00ff00?text=Menu+CLEO" alt="Thumbnail Mod" class="mod-img">
         <div class="mod-info">
             <h2>Menu CLEO v4 (No Root)</h2>
             <p>Menu de códigos completo sem necessidade de root.</p>
@@ -205,7 +158,7 @@
     </div>
 
     <div class="mod-card" data-category="correcao">
-        <img src="https://via.placeholder.com/1280x720/222/00ff00?text=Fix+Mod" alt="Thumbnail Mod" class="mod-img">
+        <img src="https://via.placeholder.com/600x300/222/00ff00?text=Fix+Mod" alt="Thumbnail Mod" class="mod-img">
         <div class="mod-info">
             <h2>Fastman92 Limit Adjuster</h2>
             <p>Correção essencial para evitar crashs ao adicionar muitos mods.</p>
@@ -222,29 +175,11 @@
 <script>
     let currentCategory = 'todos';
 
-    function verificarPerfil() {
-        let nome = localStorage.getItem('usuario_mix_sa');
-        if (nome) {
-            document.getElementById('userBar').style.display = "block";
-            document.getElementById('userBar').innerHTML = "🎮 E aí, <b>" + nome + "</b>! Pronto para os mods?";
-        } else {
-            document.getElementById('modalPerfil').style.display = "flex";
-        }
-    }
-
-    function salvarPerfil() {
-        let nome = document.getElementById('nomeUsuario').value;
-        if (nome.trim() !== "") {
-            localStorage.setItem('usuario_mix_sa', nome);
-            document.getElementById('modalPerfil').style.display = "none";
-            verificarPerfil();
-        }
-    }
-
     function setCategory(category, el) {
         let buttons = document.getElementsByClassName('btn-category');
         for (let btn of buttons) { btn.classList.remove('active'); }
         el.classList.add('active');
+
         currentCategory = category;
         filterMods();
     }
@@ -252,11 +187,14 @@
     function filterMods() {
         let input = document.getElementById('searchInput').value.toLowerCase();
         let cards = document.getElementsByClassName('mod-card');
+
         for (let i = 0; i < cards.length; i++) {
             let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase();
             let category = cards[i].getAttribute('data-category');
+            
             let matchSearch = title.includes(input);
             let matchCategory = (currentCategory === 'todos' || category === currentCategory);
+
             if (matchSearch && matchCategory) {
                 cards[i].style.display = "";
             } else {
