@@ -6,18 +6,33 @@
     <title>Detalhes do Mod - MISTURE-SA</title>
     <style>
         body { background-color: #0f0f0f; color: white; font-family: sans-serif; text-align: center; padding: 20px; }
-        .container { max-width: 600px; margin: auto; background: #1e1e1e; padding: 20px; border-radius: 15px; }
-        img { width: 100%; border-radius: 10px; margin-bottom: 20px; }
+        .container { max-width: 600px; margin: auto; background: #1e1e1e; padding: 20px; border-radius: 15px; border: 1px solid #333; }
+        img { width: 100%; border-radius: 10px; margin-bottom: 20px; border: 1px solid #444; }
+        
+        /* Estilo para o vídeo do YouTube */
+        .video-container { 
+            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; 
+            border-radius: 10px; margin-bottom: 20px; border: 1px solid #444;
+        }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
         .info-box { text-align: left; background: #252525; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #00ff00; }
-        .btn-link { display: block; background: #00ff00; color: black; padding: 15px; text-decoration: none; font-weight: bold; border-radius: 8px; margin-top: 10px; }
+        .btn-link { display: block; background: #00ff00; color: black; padding: 15px; text-decoration: none; font-weight: bold; border-radius: 8px; margin-top: 10px; transition: 0.3s; }
+        .btn-link:hover { background: #00cc00; transform: scale(1.02); }
         .btn-voltar { color: #888; text-decoration: none; display: inline-block; margin-top: 20px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Mod gasolina realista</h1>
-        <img src="mod-gasolina.png" alt="Print do Mod">
+        <h1>Mod Gasolina Realista</h1>
         
+        <img src="imagens/mod-gasolina.png" alt="Print do Mod">
+        
+        <h3>Veja o Mod em Ação:</h3>
+        <div class="video-container">
+            <iframe src="https://youtu.be/AV6Kaa7RnHY?si=EUsrfIyLSvTd1Ofs" frameborder="0" allowfullscreen></iframe>
+        </div>
+
         <div class="info-box">
             <strong>Informações:</strong>
             <p>• Tamanho: 1KB</p>
@@ -25,9 +40,9 @@
             <p>• Créditos: MaykJJr</p>
         </div>
 
-        <p><p>Esse mod adiciona sistema de combustível aos veículos do jogo.</p>
+        <p>Esse mod adiciona sistema de combustível aos veículos do jogo.</p>
 
-        <a href="https://modsfire.com/UbA68J1Y4Jn9i1A" class="btn-link">CLIQUE PARA BAIXAR</a>
+        <a href="https://modsfire.com/UbA68J1Y4Jn9i1A" class="btn-link" target="_blank">CLIQUE PARA BAIXAR</a>
         <a href="index.html" class="btn-voltar">← Voltar para a lista</a>
     </div>
 </body>
