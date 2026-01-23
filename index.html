@@ -33,9 +33,31 @@
             font-size: 14px;
         }
 
+        /* Estilo da Barra de Pesquisa */
+        .search-container {
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        #searchInput {
+            width: 90%;
+            padding: 15px;
+            border-radius: 50px;
+            border: 2px solid #333;
+            background-color: #1a1a1a;
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+        #searchInput:focus {
+            border-color: #00ff00;
+            box-shadow: 0 0 10px #00ff00;
+        }
+
         header {
             padding: 40px 20px;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://via.placeholder.com/1200x400'); /* Opcional: imagem de fundo */
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://via.placeholder.com/1200x400');
             background-size: cover;
         }
 
@@ -49,7 +71,7 @@
         .mod-card {
             background-color: #1e1e1e;
             border-radius: 12px;
-            overflow: hidden; /* Para a imagem não sair da borda arredondada */
+            overflow: hidden;
             margin-bottom: 30px;
             border: 1px solid #333;
             transition: 0.3s;
@@ -115,7 +137,11 @@
     <a href="https://youtube.com/@maykjjr" target="_blank" class="btn btn-youtube">INSCREVA-SE NO CANAL</a>
 </header>
 
-<div class="container">
+<div class="search-container">
+    <input type="text" id="searchInput" onkeyup="searchMod()" placeholder="Pesquisar mod...">
+</div>
+
+<div class="container" id="modList">
     
     <div class="mod-card">
         <img src="https://via.placeholder.com/600x300/222/00ff00?text=Sua+Print+Aqui" alt="Thumbnail Mod" class="mod-img">
@@ -135,7 +161,7 @@
         </div>
     </div>
 
-        <div class="mod-card">
+    <div class="mod-card">
         <img src="https://via.placeholder.com/600x300/222/00ff00?text=Mod+Gasolina" alt="Thumbnail Mod" class="mod-img">
         <div class="mod-info">
             <h2>Mod Gasolina Realista</h2>
@@ -150,14 +176,24 @@
     <p>&copy; 2026 MISTURE-SA-MODS - Desenvolvido por MaykJJr</p>
 </footer>
 
+<script>
+    function searchMod() {
+        let input = document.getElementById('searchInput').value.toLowerCase();
+        let cards = document.getElementsByClassName('mod-card');
+
+        for (let i = 0; i < cards.length; i++) {
+            let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase();
+            let description = cards[i].getElementsByTagName('p')[0].innerText.toLowerCase();
+            
+            // Se o título ou a descrição tiverem a palavra digitada, mostra o card. Senão, esconde.
+            if (title.includes(input) || description.includes(input)) {
+                cards[i].style.display = "";
+            } else {
+                cards[i].style.display = "none";
+            }
+        }
+    }
+</script>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
