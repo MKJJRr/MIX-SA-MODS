@@ -65,27 +65,33 @@
 
         .info-box { text-align: left; background: #252525; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #00ff00; }
         
+        /* Estilo base dos botões */
         .btn-link { 
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 15px; 
+            padding: 16px; 
             text-decoration: none; 
             font-weight: bold; 
-            border-radius: 8px; 
-            margin-top: 10px; 
+            border-radius: 10px; 
             transition: 0.3s; 
             text-transform: uppercase;
-            gap: 10px; /* Espaço entre o ícone e o texto */
+            gap: 12px;
+            box-sizing: border-box;
         }
 
-        .btn-download { background: #00ff00; color: black; }
-        .btn-download:hover { background: #00cc00; transform: scale(1.02); }
-
-        /* Botão YouTube com ícone */
-        .btn-youtube { background: #ff0000; color: white; margin-bottom: 10px; }
+        /* Botão YouTube com margem maior para afastar */
+        .btn-youtube { 
+            background: #ff0000; 
+            color: white; 
+            margin-bottom: 20px; /* ISSO AFASTA DO BOTÃO DE BAIXO */
+        }
         .btn-youtube:hover { background: #cc0000; transform: scale(1.02); }
         .btn-youtube i { font-size: 20px; }
+
+        /* Botão Download Verde */
+        .btn-download { background: #00ff00; color: black; }
+        .btn-download:hover { background: #00cc00; transform: scale(1.02); }
 
     </style>
 </head>
@@ -122,5 +128,3 @@
 
 </body>
 </html>
-
-<script id="dsq-count-scr" src="//https-maikotds-github-io-mix-sa-mods-index-html.disqus.com/count.js" async></script>
