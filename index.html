@@ -33,8 +33,14 @@
             font-size: 14px;
         }
 
-        /* Estilo da Barra de Pesquisa */
-        .search-container {
+        header {
+            padding: 40px 20px;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://via.placeholder.com/1200x400');
+            background-size: cover;
+        }
+
+        /* Área de Busca e Filtros */
+        .controls-container {
             padding: 20px;
             max-width: 800px;
             margin: auto;
@@ -49,25 +55,20 @@
             font-size: 16px;
             outline: none;
             transition: 0.3s;
+            margin-bottom: 20px;
         }
-        #searchInput:focus {
-            border-color: #00ff00;
-            box-shadow: 0 0 10px #00ff00;
-        }
+        #searchInput:focus { border-color: #00ff00; box-shadow: 0 0 10px #00ff00; }
 
-        header {
-            padding: 40px 20px;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://via.placeholder.com/1200x400');
-            background-size: cover;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: auto;
-            padding: 20px;
+        .category-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
         /* Cards de Mods */
+        .container { max-width: 800px; margin: auto; padding: 20px; }
         .mod-card {
             background-color: #1e1e1e;
             border-radius: 12px;
@@ -75,52 +76,31 @@
             margin-bottom: 30px;
             border: 1px solid #333;
             transition: 0.3s;
+            display: block; /* Garante que apareça por padrão */
         }
-        .mod-card:hover {
-            border-color: #00ff00;
-        }
-        .mod-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            background-color: #333;
-        }
-        .mod-info {
-            padding: 20px;
-        }
-        .mod-card h2 {
-            color: #00ff00;
-            margin: 0 0 10px 0;
-        }
+        .mod-card:hover { border-color: #00ff00; }
+        .mod-img { width: 100%; height: 200px; object-fit: cover; background-color: #333; }
+        .mod-info { padding: 20px; }
+        .mod-card h2 { color: #00ff00; margin: 0 0 10px 0; }
 
         /* Botões */
         .btn {
             display: inline-block;
-            padding: 12px 25px;
+            padding: 10px 20px;
             text-decoration: none;
             font-weight: bold;
             border-radius: 6px;
-            margin: 5px;
             transition: 0.2s;
+            cursor: pointer;
+            border: none;
         }
-        .btn-download {
-            background-color: #00ff00;
-            color: #000;
-        }
-        .btn-youtube {
-            background-color: #ff0000;
-            color: #fff;
-        }
-        .btn:hover {
-            transform: scale(1.05);
-            opacity: 0.9;
-        }
+        .btn-category { background-color: #333; color: white; font-size: 12px; }
+        .btn-category:hover, .btn-category.active { background-color: #00ff00; color: black; }
+        
+        .btn-download { background-color: #00ff00; color: #000; margin-top: 10px; }
+        .btn-youtube { background-color: #ff0000; color: #fff; }
 
-        footer {
-            padding: 20px;
-            color: #666;
-            font-size: 14px;
-        }
+        footer { padding: 20px; color: #666; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -128,7 +108,6 @@
 <nav>
     <a href="#">Início</a>
     <a href="https://youtube.com/@maykjjr" target="_blank">YouTube</a>
-    <a href="#">Categorias</a>
 </nav>
 
 <header>
@@ -137,32 +116,39 @@
     <a href="https://youtube.com/@maykjjr" target="_blank" class="btn btn-youtube">INSCREVA-SE NO CANAL</a>
 </header>
 
-<div class="search-container">
-    <input type="text" id="searchInput" onkeyup="searchMod()" placeholder="Pesquisar mod...">
+<div class="controls-container">
+    <input type="text" id="searchInput" onkeyup="filterMods()" placeholder="Pesquisar mod...">
+
+    <div class="category-buttons">
+        <button class="btn btn-category active" onclick="setCategory('todos', this)">TUDO</button>
+        <button class="btn btn-category" onclick="setCategory('textura', this)">TEXTURAS</button>
+        <button class="btn btn-category" onclick="setCategory('script', this)">SCRIPTS/CLEO</button>
+        <button class="btn btn-category" onclick="setCategory('veiculo', this)">VEÍCULOS</button>
+    </div>
 </div>
 
 <div class="container" id="modList">
     
-    <div class="mod-card">
-        <img src="https://via.placeholder.com/600x300/222/00ff00?text=Sua+Print+Aqui" alt="Thumbnail Mod" class="mod-img">
+    <div class="mod-card" data-category="textura">
+        <img src="https://via.placeholder.com/600x300/222/00ff00?text=Pack+Texturas" alt="Thumbnail Mod" class="mod-img">
         <div class="mod-info">
             <h2>Pack de Texturas Realistas</h2>
-            <p>Melhore o visual do seu GTA com texturas em alta definição. Testado em Android 11+.</p>
+            <p>Melhore o visual do seu GTA com texturas em alta definição.</p>
             <a href="#" class="btn btn-download">BAIXAR MOD</a>
         </div>
     </div>
 
-    <div class="mod-card">
-        <img src="https://via.placeholder.com/600x300/222/00ff00?text=Sua+Print+Aqui" alt="Thumbnail Mod" class="mod-img">
+    <div class="mod-card" data-category="script">
+        <img src="https://via.placeholder.com/600x300/222/00ff00?text=Menu+CLEO" alt="Thumbnail Mod" class="mod-img">
         <div class="mod-info">
             <h2>Menu CLEO v4 (No Root)</h2>
-            <p>Menu de códigos completo sem necessidade de root no aparelho.</p>
+            <p>Menu de códigos completo sem necessidade de root.</p>
             <a href="#" class="btn btn-download">BAIXAR MOD</a>
         </div>
     </div>
 
-    <div class="mod-card">
-        <img src="https://via.placeholder.com/600x300/222/00ff00?text=Mod+Gasolina" alt="Thumbnail Mod" class="mod-img">
+    <div class="mod-card" data-category="script">
+        <img src="imagens/mod-gasolina.png" alt="Thumbnail Mod" class="mod-img">
         <div class="mod-info">
             <h2>Mod Gasolina Realista</h2>
             <p>Adiciona sistema de combustível aos veículos do jogo.</p>
@@ -173,20 +159,35 @@
 </div>
 
 <footer>
-    <p>&copy; 2026 MISTURE-SA-MODS - Desenvolvido por MaykJJr</p>
+    <p>&copy; 2026 MIX-SA-MODS - Desenvolvido por MaykJJr</p>
 </footer>
 
 <script>
-    function searchMod() {
+    let currentCategory = 'todos';
+
+    function setCategory(category, el) {
+        // Muda a cor do botão ativo
+        let buttons = document.getElementsByClassName('btn-category');
+        for (let btn of buttons) { btn.classList.remove('active'); }
+        el.classList.add('active');
+
+        currentCategory = category;
+        filterMods();
+    }
+
+    function filterMods() {
         let input = document.getElementById('searchInput').value.toLowerCase();
         let cards = document.getElementsByClassName('mod-card');
 
         for (let i = 0; i < cards.length; i++) {
             let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase();
-            let description = cards[i].getElementsByTagName('p')[0].innerText.toLowerCase();
+            let category = cards[i].getAttribute('data-category');
             
-            // Se o título ou a descrição tiverem a palavra digitada, mostra o card. Senão, esconde.
-            if (title.includes(input) || description.includes(input)) {
+            // Verifica se combina com a busca E com a categoria selecionada
+            let matchSearch = title.includes(input);
+            let matchCategory = (currentCategory === 'todos' || category === currentCategory);
+
+            if (matchSearch && matchCategory) {
                 cards[i].style.display = "";
             } else {
                 cards[i].style.display = "none";
