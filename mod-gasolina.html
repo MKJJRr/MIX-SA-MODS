@@ -84,7 +84,7 @@
         .btn-youtube { 
             background: #ff0000; 
             color: white; 
-            margin-bottom: 20px; /* ISSO AFASTA DO BOTÃO DE BAIXO */
+            margin-bottom: 20px; 
         }
         .btn-youtube:hover { background: #cc0000; transform: scale(1.02); }
         .btn-youtube i { font-size: 20px; }
@@ -92,6 +92,14 @@
         /* Botão Download Verde */
         .btn-download { background: #00ff00; color: black; }
         .btn-download:hover { background: #00cc00; transform: scale(1.02); }
+
+        /* Estilo da área de comentários */
+        .comentarios-section {
+            margin-top: 40px;
+            text-align: left;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+        }
 
     </style>
 </head>
@@ -124,7 +132,30 @@
         <a href="https://modsfire.com/UbA68J1Y4Jn9i1A" class="btn-link btn-download" target="_blank">
             <i class="fa-solid fa-download"></i> BAIXAR MOD
         </a>
+
+        <div class="comentarios-section">
+            <h3 style="color: #00ff00; margin-bottom: 20px;">
+                <i class="fa-solid fa-comments"></i> COMUNIDADE E DÚVIDAS
+            </h3>
+            
+            <div id="disqus_thread"></div>
+        </div>
     </div>
+
+    <script>
+        var disqus_config = function () {
+            this.page.url = window.location.href;  
+            this.page.identifier = window.location.pathname; 
+        };
+
+        (function() { 
+            var d = document, s = d.createElement('script');
+            s.src = 'https://https-maikotds-github-io-mix-sa-mods-index-html.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>Por favor, habilite o JavaScript para visualizar os comentários.</noscript>
 
 </body>
 </html>
