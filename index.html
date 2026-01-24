@@ -4,152 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MIX-SA-MODS | GTA SA Android</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Estilos Gerais */
-        body {
-            background-color: #0f0f0f;
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
+        body { background-color: #0f0f0f; color: #ffffff; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; }
 
-        /* BARRA DE USUÁRIO COM LÓGICA DE EXIBIÇÃO */
-        .user-bar {
-            background-color: #000;
-            padding: 10px;
-            font-size: 13px;
-            border-bottom: 1px solid #222;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            min-height: 30px;
-        }
+        /* BARRA DE USUÁRIO */
+        .user-bar { background-color: #000; padding: 10px; font-size: 13px; border-bottom: 1px solid #222; display: flex; justify-content: center; align-items: center; gap: 10px; }
         #userNameDisplay { color: #00ff00; font-weight: bold; }
-        
-        .input-nome {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            color: white;
-            padding: 5px 12px;
-            border-radius: 4px;
-            outline: none;
-            font-size: 12px;
-        }
-        .btn-salvar {
-            background: #00ff00;
-            color: black;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        .btn-trocar {
-            background: none;
-            border: 1px solid #444;
-            color: #888;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 10px;
-            cursor: pointer;
-            margin-left: 10px;
-            transition: 0.3s;
-        }
-        .btn-trocar:hover { border-color: #ff0000; color: #ff0000; }
+        .input-nome { background: #1a1a1a; border: 1px solid #333; color: white; padding: 5px; border-radius: 4px; }
+        .btn-salvar { background: #00ff00; color: black; border: none; padding: 5px 10px; border-radius: 4px; font-weight: bold; cursor: pointer; }
 
-        /* Barra de Navegação */
-        nav {
-            background-color: #1a1a1a;
-            padding: 15px;
-            position: sticky;
-            top: 0;
-            border-bottom: 2px solid #00ff00;
-            z-index: 1000;
-        }
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 14px;
-        }
+        /* SEÇÃO DE FAVORITOS */
+        #favoritesSection { background: #151515; padding: 20px; display: none; border-bottom: 2px solid #00ff00; }
+        .fav-grid { display: flex; overflow-x: auto; gap: 15px; padding: 10px; justify-content: center; }
+        .fav-card { width: 150px; flex-shrink: 0; background: #222; padding: 10px; border-radius: 8px; font-size: 12px; }
+        .fav-card img { width: 100%; border-radius: 5px; }
 
-        header {
-            padding: 40px 20px;
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://via.placeholder.com/1200x400');
-            background-size: cover;
-        }
+        nav { background-color: #1a1a1a; padding: 15px; position: sticky; top: 0; border-bottom: 2px solid #00ff00; z-index: 1000; }
+        nav a { color: white; text-decoration: none; margin: 0 15px; font-weight: bold; }
 
-        .controls-container { padding: 20px; max-width: 800px; margin: auto; }
-        #searchInput {
-            width: 90%;
-            padding: 15px;
-            border-radius: 50px;
-            border: 2px solid #333;
-            background-color: #1a1a1a;
-            color: white;
-            font-size: 16px;
-            outline: none;
-            transition: 0.3s;
-            margin-bottom: 20px;
-        }
-        #searchInput:focus { border-color: #00ff00; box-shadow: 0 0 10px #00ff00; }
+        header { padding: 40px 20px; background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://via.placeholder.com/1200x400'); background-size: cover; }
 
-        .category-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
-
-        /* Cards de Mods */
         .container { max-width: 800px; margin: auto; padding: 20px; }
-        .mod-card {
-            background-color: #1e1e1e;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 30px;
-            border: 1px solid #333;
-            transition: 0.3s;
-            display: block; 
-        }
-        .mod-card:hover { border-color: #00ff00; }
-        .mod-img { width: 100%; height: 200px; object-fit: cover; background-color: #333; }
+        
+        /* CARD COM BOTÃO FAVORITO */
+        .mod-card { background-color: #1e1e1e; border-radius: 12px; overflow: hidden; margin-bottom: 30px; border: 1px solid #333; position: relative; }
+        .btn-fav { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); border: none; color: white; padding: 8px; border-radius: 50%; cursor: pointer; transition: 0.3s; }
+        .btn-fav.active { color: #00ff00; }
+        
+        .mod-img { width: 100%; height: 200px; object-fit: cover; }
         .mod-info { padding: 20px; }
-        .mod-card h2 { color: #00ff00; margin: 0 0 10px 0; }
+        .mod-card h2 { color: #00ff00; margin: 0; }
 
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 6px;
-            transition: 0.2s;
-            cursor: pointer;
-            border: none;
-        }
-        .btn-category { background-color: #333; color: white; font-size: 12px; }
-        .btn-category:hover, .btn-category.active { background-color: #00ff00; color: black; }
-        .btn-download { background-color: #00ff00; color: #000; margin-top: 10px; }
-        .btn-youtube { background-color: #ff0000; color: #fff; }
-
-        footer { padding: 20px; color: #666; font-size: 14px; }
+        .btn-download { display: inline-block; background-color: #00ff00; color: #000; padding: 10px 20px; text-decoration: none; font-weight: bold; border-radius: 6px; margin-top: 10px; }
+        
+        .btn-category { background: #333; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .btn-category.active { background: #00ff00; color: black; }
     </style>
 </head>
 <body>
 
 <div class="user-bar">
-    <div id="greetingWrapper">
-        <span>E aí, <span id="userNameDisplay">Visitante</span>! Pronto para os mods?</span>
-    </div>
-    
+    <span>E aí, <span id="userNameDisplay">Visitante</span>!</span>
     <div id="registerForm">
         <input type="text" id="nameInput" class="input-nome" placeholder="Seu nome...">
         <button class="btn-salvar" onclick="saveName()">Salvar</button>
     </div>
+    <button id="btnTrocar" onclick="clearName()" style="display:none; background:none; border:none; color:#666; cursor:pointer; text-decoration:underline;">(Sair)</button>
+</div>
 
-    <button id="btnTrocar" class="btn-trocar" style="display: none;" onclick="clearName()">Trocar Nome</button>
+<div id="favoritesSection">
+    <h3 style="color: #00ff00; margin-top: 0;"><i class="fa-solid fa-star"></i> MEUS FAVORITOS</h3>
+    <div id="favList" class="fav-grid"></div>
 </div>
 
 <nav>
@@ -159,99 +65,98 @@
 
 <header>
     <h1>MIX-SA-MODS</h1>
-    <p>O ponto de encontro dos modders de GTA San Andreas Mobile</p>
-    <a href="https://youtube.com/@maykjjr" target="_blank" class="btn btn-youtube">INSCREVA-SE NO CANAL</a>
+    <p>O ponto de encontro dos modders</p>
 </header>
 
-<div class="controls-container">
-    <input type="text" id="searchInput" onkeyup="filterMods()" placeholder="Pesquisar mod...">
+<div class="container">
+    <div id="modList">
+        <div class="mod-card" data-id="1" data-category="script">
+            <button class="btn-fav" onclick="toggleFav(1, 'Mod Gasolina', 'imagens/mod-gasolina.png', 'mod-gasolina.html')">
+                <i class="fa-solid fa-star"></i>
+            </button>
+            <img src="imagens/mod-gasolina.png" class="mod-img">
+            <div class="mod-info">
+                <h2>Mod Gasolina Realista</h2>
+                <a href="mod-gasolina.html" class="btn-download">VER DETALHES</a>
+            </div>
+        </div>
 
-    <div class="category-buttons">
-        <button class="btn btn-category active" onclick="setCategory('todos', this)">TUDO</button>
-        <button class="btn btn-category" onclick="setCategory('textura', this)">TEXTURAS</button>
-        <button class="btn btn-category" onclick="setCategory('script', this)">SCRIPTS/CLEO</button>
-        <button class="btn btn-category" onclick="setCategory('veiculo', this)">VEÍCULOS</button>
-        <button class="btn btn-category" onclick="setCategory('correcao', this)">CORREÇÃO</button>
+        <div class="mod-card" data-id="2" data-category="textura">
+            <button class="btn-fav" onclick="toggleFav(2, 'Pack Texturas', 'https://via.placeholder.com/150', '#')">
+                <i class="fa-solid fa-star"></i>
+            </button>
+            <img src="https://via.placeholder.com/600x300" class="mod-img">
+            <div class="mod-info">
+                <h2>Pack de Texturas</h2>
+                <a href="#" class="btn-download">BAIXAR</a>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="container" id="modList">
-    <div class="mod-card" data-category="script">
-        <img src="imagens/mod-gasolina.png" alt="Thumbnail Mod" class="mod-img">
-        <div class="mod-info">
-            <h2>Mod Gasolina Realista</h2>
-            <p>Adiciona sistema de combustível aos veículos do jogo.</p>
-            <a href="mod-gasolina.html" class="btn btn-download">VER DETALHES E BAIXAR</a>
-        </div>
-    </div>
-    </div>
-
-<footer>
-    <p>&copy; 2026 MIX-SA-MODS - Desenvolvido por MaykJJr</p>
-</footer>
-
 <script>
-    // --- LÓGICA DE USUÁRIO ---
+    // --- NOME DE USUÁRIO ---
     function saveName() {
-        const input = document.getElementById('nameInput');
-        const name = input.value.trim();
-        if (name !== "") {
-            localStorage.setItem('modderName', name);
-            showUserMode(name);
-        }
+        const name = document.getElementById('nameInput').value.trim();
+        if (name) { localStorage.setItem('modderName', name); location.reload(); }
     }
+    function clearName() { localStorage.removeItem('modderName'); location.reload(); }
 
-    function clearName() {
-        localStorage.removeItem('modderName');
-        showGuestMode();
-    }
+    // --- SISTEMA DE FAVORITOS ---
+    let favoritos = JSON.parse(localStorage.getItem('meusFavs')) || [];
 
-    function showUserMode(name) {
-        document.getElementById('userNameDisplay').innerText = name;
-        document.getElementById('registerForm').style.display = "none";
-        document.getElementById('btnTrocar').style.display = "inline-block";
-    }
-
-    function showGuestMode() {
-        document.getElementById('userNameDisplay').innerText = "Visitante";
-        document.getElementById('registerForm').style.display = "inline-block";
-        document.getElementById('btnTrocar').style.display = "none";
-    }
-
-    function checkUser() {
-        const savedName = localStorage.getItem('modderName');
-        if (savedName) {
-            showUserMode(savedName);
+    function toggleFav(id, nome, img, link) {
+        const index = favoritos.findIndex(f => f.id === id);
+        if (index > -1) {
+            favoritos.splice(index, 1);
         } else {
-            showGuestMode();
+            favoritos.push({ id, nome, img, link });
         }
+        localStorage.setItem('meusFavs', JSON.stringify(favoritos));
+        renderFavs();
+        updateButtons();
     }
 
-    // Inicializa a checagem
-    checkUser();
-
-    // --- LÓGICA DE FILTROS ---
-    let currentCategory = 'todos';
-
-    function setCategory(category, el) {
-        let buttons = document.getElementsByClassName('btn-category');
-        for (let btn of buttons) { btn.classList.remove('active'); }
-        el.classList.add('active');
-        currentCategory = category;
-        filterMods();
-    }
-
-    function filterMods() {
-        let input = document.getElementById('searchInput').value.toLowerCase();
-        let cards = document.getElementsByClassName('mod-card');
-        for (let i = 0; i < cards.length; i++) {
-            let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase();
-            let category = cards[i].getAttribute('data-category');
-            let matchSearch = title.includes(input);
-            let matchCategory = (currentCategory === 'todos' || category === currentCategory);
-            cards[i].style.display = (matchSearch && matchCategory) ? "" : "none";
+    function renderFavs() {
+        const section = document.getElementById('favoritesSection');
+        const list = document.getElementById('favList');
+        if (favoritos.length === 0) {
+            section.style.display = "none";
+            return;
         }
+        section.style.display = "block";
+        list.innerHTML = favoritos.map(f => `
+            <div class="fav-card">
+                <img src="${f.img}">
+                <p><b>${f.nome}</b></p>
+                <a href="${f.link}" style="color:#00ff00; text-decoration:none;">Ver Mod</a>
+            </div>
+        `).join('');
     }
+
+    function updateButtons() {
+        document.querySelectorAll('.mod-card').forEach(card => {
+            const id = parseInt(card.getAttribute('data-id'));
+            const btn = card.querySelector('.btn-fav');
+            if (favoritos.some(f => f.id === id)) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+
+    // Inicialização
+    window.onload = () => {
+        const name = localStorage.getItem('modderName');
+        if (name) {
+            document.getElementById('userNameDisplay').innerText = name;
+            document.getElementById('registerForm').style.display = "none";
+            document.getElementById('btnTrocar').style.display = "inline";
+        }
+        renderFavs();
+        updateButtons();
+    };
 </script>
 
 </body>
