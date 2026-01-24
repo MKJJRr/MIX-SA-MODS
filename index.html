@@ -15,23 +15,25 @@
             text-align: center;
         }
 
-        /* BARRA DE REGISTRO OPCIONAL NO TOPO */
+        /* BARRA DE USUÁRIO COM LÓGICA DE EXIBIÇÃO */
         .user-bar {
             background-color: #000;
-            padding: 8px;
+            padding: 10px;
             font-size: 13px;
             border-bottom: 1px solid #222;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 10px;
+            min-height: 30px;
         }
         #userNameDisplay { color: #00ff00; font-weight: bold; }
+        
         .input-nome {
             background: #1a1a1a;
             border: 1px solid #333;
             color: white;
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 4px;
             outline: none;
             font-size: 12px;
@@ -40,13 +42,25 @@
             background: #00ff00;
             color: black;
             border: none;
-            padding: 4px 8px;
+            padding: 5px 10px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 11px;
             font-weight: bold;
             text-transform: uppercase;
         }
+        .btn-trocar {
+            background: none;
+            border: 1px solid #444;
+            color: #888;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: 0.3s;
+        }
+        .btn-trocar:hover { border-color: #ff0000; color: #ff0000; }
 
         /* Barra de Navegação */
         nav {
@@ -72,12 +86,7 @@
             background-size: cover;
         }
 
-        /* Área de Busca e Filtros */
-        .controls-container {
-            padding: 20px;
-            max-width: 800px;
-            margin: auto;
-        }
+        .controls-container { padding: 20px; max-width: 800px; margin: auto; }
         #searchInput {
             width: 90%;
             padding: 15px;
@@ -92,13 +101,7 @@
         }
         #searchInput:focus { border-color: #00ff00; box-shadow: 0 0 10px #00ff00; }
 
-        .category-buttons {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+        .category-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
 
         /* Cards de Mods */
         .container { max-width: 800px; margin: auto; padding: 20px; }
@@ -116,7 +119,6 @@
         .mod-info { padding: 20px; }
         .mod-card h2 { color: #00ff00; margin: 0 0 10px 0; }
 
-        /* Botões */
         .btn {
             display: inline-block;
             padding: 10px 20px;
@@ -129,19 +131,25 @@
         }
         .btn-category { background-color: #333; color: white; font-size: 12px; }
         .btn-category:hover, .btn-category.active { background-color: #00ff00; color: black; }
-        
         .btn-download { background-color: #00ff00; color: #000; margin-top: 10px; }
         .btn-youtube { background-color: #ff0000; color: #fff; }
 
         footer { padding: 20px; color: #666; font-size: 14px; }
     </style>
 </head>
-<body onload="checkUser()">
+<body>
 
 <div class="user-bar">
-    <span>E aí, <span id="userNameDisplay">Visitante</span>! Pronto para os mods?</span>
-    <input type="text" id="nameInput" class="input-nome" placeholder="Seu nome (opcional)">
-    <button class="btn-salvar" onclick="saveName()">Salvar</button>
+    <div id="greetingWrapper">
+        <span>E aí, <span id="userNameDisplay">Visitante</span>! Pronto para os mods?</span>
+    </div>
+    
+    <div id="registerForm">
+        <input type="text" id="nameInput" class="input-nome" placeholder="Seu nome...">
+        <button class="btn-salvar" onclick="saveName()">Salvar</button>
+    </div>
+
+    <button id="btnTrocar" class="btn-trocar" style="display: none;" onclick="clearName()">Trocar Nome</button>
 </div>
 
 <nav>
@@ -168,25 +176,6 @@
 </div>
 
 <div class="container" id="modList">
-    
-    <div class="mod-card" data-category="textura">
-        <img src="https://via.placeholder.com/600x300/222/00ff00?text=Pack+Texturas" alt="Thumbnail Mod" class="mod-img">
-        <div class="mod-info">
-            <h2>Pack de Texturas Realistas</h2>
-            <p>Melhore o visual do seu GTA com texturas em alta definição.</p>
-            <a href="#" class="btn btn-download">BAIXAR MOD</a>
-        </div>
-    </div>
-
-    <div class="mod-card" data-category="script">
-        <img src="https://via.placeholder.com/600x300/222/00ff00?text=Menu+CLEO" alt="Thumbnail Mod" class="mod-img">
-        <div class="mod-info">
-            <h2>Menu CLEO v4 (No Root)</h2>
-            <p>Menu de códigos completo sem necessidade de root.</p>
-            <a href="#" class="btn btn-download">BAIXAR MOD</a>
-        </div>
-    </div>
-
     <div class="mod-card" data-category="script">
         <img src="imagens/mod-gasolina.png" alt="Thumbnail Mod" class="mod-img">
         <div class="mod-info">
@@ -195,60 +184,59 @@
             <a href="mod-gasolina.html" class="btn btn-download">VER DETALHES E BAIXAR</a>
         </div>
     </div>
-
-    <div class="mod-card" data-category="correcao">
-        <img src="https://via.placeholder.com/600x300/222/00ff00?text=Fix+Mod" alt="Thumbnail Mod" class="mod-img">
-        <div class="mod-info">
-            <h2>Fastman92 Limit Adjuster</h2>
-            <p>Correção essencial para evitar crashs ao adicionar muitos mods.</p>
-            <a href="#" class="btn btn-download">BAIXAR MOD</a>
-        </div>
     </div>
-
-</div>
 
 <footer>
     <p>&copy; 2026 MIX-SA-MODS - Desenvolvido por MaykJJr</p>
 </footer>
 
 <script>
-    // FUNÇÕES DE USUÁRIO CORRIGIDAS
+    // --- LÓGICA DE USUÁRIO ---
     function saveName() {
-        let nameInput = document.getElementById('nameInput');
-        let name = nameInput.value.trim();
-        
+        const input = document.getElementById('nameInput');
+        const name = input.value.trim();
         if (name !== "") {
             localStorage.setItem('modderName', name);
-            applyName(name);
-            nameInput.value = ""; 
+            showUserMode(name);
         }
     }
 
-    function applyName(name) {
-        let display = document.getElementById('userNameDisplay');
-        if (display) {
-            display.innerText = name;
-        }
+    function clearName() {
+        localStorage.removeItem('modderName');
+        showGuestMode();
+    }
+
+    function showUserMode(name) {
+        document.getElementById('userNameDisplay').innerText = name;
+        document.getElementById('registerForm').style.display = "none";
+        document.getElementById('btnTrocar').style.display = "inline-block";
+    }
+
+    function showGuestMode() {
+        document.getElementById('userNameDisplay').innerText = "Visitante";
+        document.getElementById('registerForm').style.display = "inline-block";
+        document.getElementById('btnTrocar').style.display = "none";
     }
 
     function checkUser() {
-        let savedName = localStorage.getItem('modderName');
+        const savedName = localStorage.getItem('modderName');
         if (savedName) {
-            applyName(savedName);
+            showUserMode(savedName);
+        } else {
+            showGuestMode();
         }
     }
 
-    // Tenta aplicar o nome imediatamente se o script carregar rápido
+    // Inicializa a checagem
     checkUser();
 
-    // FUNÇÕES DE FILTRO
+    // --- LÓGICA DE FILTROS ---
     let currentCategory = 'todos';
 
     function setCategory(category, el) {
         let buttons = document.getElementsByClassName('btn-category');
         for (let btn of buttons) { btn.classList.remove('active'); }
         el.classList.add('active');
-
         currentCategory = category;
         filterMods();
     }
@@ -256,19 +244,12 @@
     function filterMods() {
         let input = document.getElementById('searchInput').value.toLowerCase();
         let cards = document.getElementsByClassName('mod-card');
-
         for (let i = 0; i < cards.length; i++) {
             let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase();
             let category = cards[i].getAttribute('data-category');
-            
             let matchSearch = title.includes(input);
             let matchCategory = (currentCategory === 'todos' || category === currentCategory);
-
-            if (matchSearch && matchCategory) {
-                cards[i].style.display = "";
-            } else {
-                cards[i].style.display = "none";
-            }
+            cards[i].style.display = (matchSearch && matchCategory) ? "" : "none";
         }
     }
 </script>
