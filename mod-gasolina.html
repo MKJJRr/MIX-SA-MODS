@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body { background-color: #0f0f0f; color: white; font-family: sans-serif; text-align: center; padding: 10px; margin: 0; }
-        
+
         /* Barra de Topo com Botão Voltar */
         .top-bar {
             display: flex;
@@ -50,7 +50,7 @@
         }
 
         .container { max-width: 600px; margin: auto; background: #1e1e1e; padding: 20px; border-radius: 15px; border: 1px solid #333; }
-        
+
         /* Thumbnail ajustada */
         .mod-print { 
             width: 100%; 
@@ -64,7 +64,7 @@
         }
 
         .info-box { text-align: left; background: #252525; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #00ff00; }
-        
+
         /* Estilo base dos botões */
         .btn-link { 
             display: flex;
@@ -80,43 +80,27 @@
             box-sizing: border-box;
         }
 
-        /* Botão YouTube com margem maior para afastar */
         .btn-youtube { 
             background: #ff0000; 
             color: white; 
             margin-bottom: 20px; 
         }
         .btn-youtube:hover { background: #cc0000; transform: scale(1.02); }
-        .btn-youtube i { font-size: 20px; }
 
-        /* Botão Download Verde */
         .btn-download { background: #00ff00; color: black; }
         .btn-download:hover { background: #00cc00; transform: scale(1.02); }
 
-        /* Estilo da área de comentários */
         .comentarios-section {
             margin-top: 40px;
             text-align: left;
             border-top: 1px solid #333;
             padding-top: 20px;
         }
-
-        <script>
-    var disqus_config = function () {
-        this.page.url = window.location.href;  
-        this.page.identifier = window.location.pathname; 
-        this.theme = 'dark'; // ISSO AQUI FORÇA O MODO ESCURO
-    };
-
-    (function() { 
-        var d = document, s = d.createElement('script');
-        // Use o link direto do seu shortname para evitar erros
-        s.src = 'https://https-maikotds-github-io-mix-sa-mods-index-html.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-
+        
+        /* Força o Disqus a não bugar o fundo */
+        #disqus_thread {
+            color-scheme: dark !important;
+        }
     </style>
 </head>
 <body>
@@ -153,7 +137,7 @@
             <h3 style="color: #00ff00; margin-bottom: 20px;">
                 <i class="fa-solid fa-comments"></i> COMENTÁRIOS 
             </h3>
-            
+
             <div id="disqus_thread"></div>
         </div>
     </div>
@@ -162,6 +146,7 @@
         var disqus_config = function () {
             this.page.url = window.location.href;  
             this.page.identifier = window.location.pathname; 
+            this.theme = 'dark'; // Força o tema escuro no Disqus
         };
 
         (function() { 
