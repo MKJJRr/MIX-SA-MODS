@@ -101,24 +101,21 @@
             padding-top: 20px;
         }
 
-        /* CORREÇÃO DO CONTORNO AZUL NOS COMENTÁRIOS (DISQUS) */
-        #disqus_thread iframe {
-        color-scheme: dark !important; /* Força o Disqus a entender que o site é escuro */
-        }
+        <script>
+    var disqus_config = function () {
+        this.page.url = window.location.href;  
+        this.page.identifier = window.location.pathname; 
+        this.theme = 'dark'; // ISSO AQUI FORÇA O MODO ESCURO
+    };
 
-        /* Remove o contorno azul de qualquer elemento focado dentro da área de comentários */
-        #disqus_thread *:focus {
-        outline: 2px solid #00ff00 !important; /* Troca o azul pelo verde do seu site */
-        box-shadow: 0 0 5px #00ff00 !important;
-        }
-
-        /* Se quiser apenas remover o contorno sem colocar o verde, use este: */
-        /* #disqus_thread *:focus { outline: none !important; } */
-
-        /* Ajuste para que o Disqus carregue em modo escuro automaticamente */
-        #disqus_thread {
-        color: white !important;
-        }
+    (function() { 
+        var d = document, s = d.createElement('script');
+        // Use o link direto do seu shortname para evitar erros
+        s.src = 'https://https-maikotds-github-io-mix-sa-mods-index-html.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
 
     </style>
 </head>
