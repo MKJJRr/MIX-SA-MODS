@@ -212,24 +212,36 @@
 </footer>
 
 <script>
-    // FUNÇÕES DE USUÁRIO
+    // FUNÇÕES DE USUÁRIO CORRIGIDAS
     function saveName() {
-        let name = document.getElementById('nameInput').value;
-        if (name.trim() !== "") {
+        let nameInput = document.getElementById('nameInput');
+        let name = nameInput.value.trim();
+        
+        if (name !== "") {
             localStorage.setItem('modderName', name);
-            document.getElementById('userNameDisplay').innerText = name;
-            document.getElementById('nameInput').value = ""; // Limpa o campo após salvar
+            applyName(name);
+            nameInput.value = ""; 
+        }
+    }
+
+    function applyName(name) {
+        let display = document.getElementById('userNameDisplay');
+        if (display) {
+            display.innerText = name;
         }
     }
 
     function checkUser() {
         let savedName = localStorage.getItem('modderName');
         if (savedName) {
-            document.getElementById('userNameDisplay').innerText = savedName;
+            applyName(savedName);
         }
     }
 
-    // FUNÇÕES DE FILTRO EXISTENTES
+    // Tenta aplicar o nome imediatamente se o script carregar rápido
+    checkUser();
+
+    // FUNÇÕES DE FILTRO
     let currentCategory = 'todos';
 
     function setCategory(category, el) {
