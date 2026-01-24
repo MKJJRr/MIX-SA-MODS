@@ -4,23 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página não encontrada - MIX-SA-MODS</title>
-    <link rel="stylesheet" href="style.css"> <style>
+    <link rel="stylesheet" href="style.css"> 
+    <style>
+        /* Ajuste para cobrir a tela inteira com fundo escuro */
+        body {
+            background-color: #0f0f0f; 
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
         .error-container {
             text-align: center;
-            padding: 100px 20px;
+            padding: 20px;
         }
+
         .error-code {
-            font-size: 80px;
-            color: #00ff00; /* Seu verde neon */
+            font-size: 100px;
+            color: #00ff00; /* Verde neon do site */
             font-weight: bold;
-            margin-bottom: 20px;
+            margin: 0;
+            line-height: 1;
         }
+
         .error-message {
-            font-size: 20px;
+            font-size: 24px;
             color: white;
-            margin-bottom: 30px;
+            margin: 10px 0 20px 0;
+            text-transform: uppercase;
         }
+
+        .error-subtext {
+            color: #aaa;
+            margin-bottom: 40px;
+            font-size: 16px;
+        }
+
         .btn-voltar {
+            display: inline-block;
             background-color: #00ff00;
             color: black;
             padding: 15px 30px;
@@ -28,7 +53,9 @@
             font-weight: bold;
             border-radius: 5px;
             text-transform: uppercase;
+            transition: background 0.3s;
         }
+
         .btn-voltar:hover {
             background-color: #00cc00;
         }
@@ -38,7 +65,7 @@
     <div class="error-container">
         <div class="error-code">404</div>
         <h1 class="error-message">MISSÃO FRACASSADA!</h1>
-        <p style="color: #aaa; margin-bottom: 40px;">O mod que você procura foi "preso" ou "faleceu".</p>
+        <p class="error-subtext">O mod que você procura foi "preso" ou "faleceu".</p>
         <a href="index.html" class="btn-voltar">Voltar ao Início</a>
     </div>
 </body>
