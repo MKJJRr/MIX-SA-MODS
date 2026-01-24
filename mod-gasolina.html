@@ -101,6 +101,23 @@
         #disqus_thread {
             color-scheme: dark !important;
         }
+
+        /* FORÇAR TEMA ESCURO NO DISQUS E REMOVER FUNDOS BRANCOS */
+        #disqus_thread {
+        color-scheme: dark !important;
+        }
+
+        /* Tenta alcançar elementos internos do menu que ficam brancos */
+        #disqus_thread iframe {
+        background: transparent !important;
+        }
+
+        /* Ajuste preventivo para que o contorno de seleção não seja azul escuro */
+        #disqus_thread *:focus {
+        outline: 2px solid #00ff00 !important;
+        box-shadow: none !important;
+        }
+
     </style>
 </head>
 <body>
