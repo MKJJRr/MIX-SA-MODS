@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MIX-SA-MODS | GTA SA Android</title>
+    
+    <link rel="icon" href="imagens/logo-icon.png" type="image/png">
+    
     <style>
         /* Estilos Gerais */
         body {
@@ -18,12 +21,21 @@
         /* Barra de Navegação */
         nav {
             background-color: #1a1a1a;
-            padding: 15px;
+            padding: 10px 20px;
             position: sticky;
             top: 0;
             border-bottom: 2px solid #00ff00;
             z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
         nav a {
             color: white;
             text-decoration: none;
@@ -31,6 +43,14 @@
             font-weight: bold;
             text-transform: uppercase;
             font-size: 14px;
+        }
+
+        /* LOGO NO TOPO */
+        .site-logo {
+            height: 40px;
+            width: auto;
+            filter: drop-shadow(0 0 5px #00ff00);
+            border-radius: 5px;
         }
 
         header {
@@ -98,7 +118,6 @@
         .btn-category:hover, .btn-category.active { background-color: #00ff00; color: black; }
         
         .btn-download { background-color: #00ff00; color: #000; margin-top: 10px; }
-        .btn-youtube { background-color: #ff0000; color: #fff; }
 
         footer { padding: 20px; color: #666; font-size: 14px; }
     </style>
@@ -106,8 +125,11 @@
 <body>
 
 <nav>
-    <a href="#">Início</a>
-    <a href="https://youtube.com/@maykjjr" target="_blank">YouTube</a>
+    <div class="nav-links">
+        <a href="index.html">Início</a>
+        <a href="https://youtube.com/@maykjjr" target="_blank">YouTube</a>
+    </div>
+    <img src="imagens/logo-icon.png" alt="MIX-SA-MODS" class="site-logo">
 </nav>
 
 <header>
