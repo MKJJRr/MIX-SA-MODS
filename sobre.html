@@ -15,15 +15,53 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        /* AJUSTE DO MENU PARA NÃO SUMIR */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #1a1a1a;
+            border-bottom: 2px solid #00ff00;
+        }
+
+        .nav-links a {
+            color: #00ff00;
+            text-decoration: none;
+            margin-right: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .site-logo {
+            width: 40px; /* Logo pequena no menu */
+            height: auto;
+        }
+
+        /* ESTILO DA LOGO GIGANTE CENTRALIZADA */
+        .logo-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .logo-perfil {
+            width: 180px; /* Tamanho da imagem redonda */
+            height: 180px;
+            border-radius: 50%;
+            border: 3px solid #00ff00;
+            object-fit: cover;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+        }
+
         .container-sobre {
             max-width: 800px;
-            margin: 50px auto;
+            margin: 30px auto;
             padding: 20px;
             background-color: #1a1a1a;
             border-radius: 10px;
             border: 1px solid #333;
             color: white;
-            text-align: center; /* Centraliza o texto igual ao index */
+            text-align: center;
         }
         
         .sobre-header {
@@ -36,13 +74,14 @@
             color: #00ff00;
             margin: 0;
             text-transform: uppercase;
+            font-size: 24px;
         }
 
         .sobre-texto {
             line-height: 1.6;
             font-size: 18px;
             color: #ccc;
-            text-align: left; /* Melhora a leitura do texto longo */
+            text-align: left;
         }
 
         .redes-sociais {
@@ -55,7 +94,7 @@
         .social-btn {
             background-color: #00ff00;
             color: black;
-            padding: 10px 20px;
+            padding: 12px 25px;
             text-decoration: none;
             font-weight: bold;
             border-radius: 5px;
@@ -73,6 +112,10 @@
         </div>
         <img src="imagens/logo-icon.png" alt="MIX-SA-MODS" class="site-logo">
     </nav>
+
+    <div class="logo-container">
+        <img src="imagens/logo-icon.png" alt="MaykJJr" class="logo-perfil">
+    </div>
 
     <div class="container-sobre">
         <div class="sobre-header">
