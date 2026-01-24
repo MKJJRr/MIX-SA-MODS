@@ -4,111 +4,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MIX-SA-MODS | GTA SA Android</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         /* Estilos Gerais */
-        body { background-color: #0f0f0f; color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; text-align: center; }
+        body {
+            background-color: #0f0f0f;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
 
-        /* BARRA DE USUÁRIO */
-        .user-bar { background-color: #000; padding: 10px; font-size: 13px; border-bottom: 1px solid #222; display: flex; justify-content: center; align-items: center; gap: 10px; }
-        #userNameDisplay { color: #00ff00; font-weight: bold; }
-        .input-nome { background: #1a1a1a; border: 1px solid #333; color: white; padding: 5px 12px; border-radius: 4px; outline: none; }
-        .btn-salvar { background: #00ff00; color: black; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; }
-        .btn-trocar { background: none; border: 1px solid #444; color: #888; padding: 2px 8px; border-radius: 4px; font-size: 10px; cursor: pointer; }
-
-        /* BARRA LATERAL (SIDEBAR) DE FAVORITOS */
-        .sidebar {
-            position: fixed;
+        /* Barra de Navegação */
+        nav {
+            background-color: #1a1a1a;
+            padding: 15px;
+            position: sticky;
             top: 0;
-            right: -300px; /* Escondida inicialmente */
-            width: 280px;
-            height: 100%;
-            background-color: #151515;
-            box-shadow: -5px 0 15px rgba(0,0,0,0.5);
-            transition: 0.4s ease;
-            z-index: 2000;
+            border-bottom: 2px solid #00ff00;
+            z-index: 1000;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        header {
+            padding: 40px 20px;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://via.placeholder.com/1200x400');
+            background-size: cover;
+        }
+
+        /* Área de Busca e Filtros */
+        .controls-container {
             padding: 20px;
-            text-align: left;
-            overflow-y: auto;
-            border-left: 2px solid #00ff00;
+            max-width: 800px;
+            margin: auto;
         }
-        .sidebar.active { right: 0; }
-        .sidebar-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
-        .sidebar-header h3 { color: #00ff00; margin: 0; font-size: 18px; }
-        .close-sidebar { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
-
-        /* Estilo dos itens dentro da Sidebar */
-        .fav-item {
-            background: #222;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            position: relative;
-            border-left: 3px solid #00ff00;
+        #searchInput {
+            width: 90%;
+            padding: 15px;
+            border-radius: 50px;
+            border: 2px solid #333;
+            background-color: #1a1a1a;
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+            margin-bottom: 20px;
         }
-        .fav-item h4 { margin: 0 0 5px 0; font-size: 14px; color: #fff; }
-        .fav-item a { color: #00ff00; font-size: 12px; text-decoration: none; font-weight: bold; }
-        .remove-fav { position: absolute; top: 5px; right: 5px; color: #ff0000; background: none; border: none; cursor: pointer; }
+        #searchInput:focus { border-color: #00ff00; box-shadow: 0 0 10px #00ff00; }
 
-        /* Botão Flutuante para abrir Favoritos */
-        .float-fav {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #00ff00;
-            color: black;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+        .category-buttons {
             display: flex;
             justify-content: center;
-            align-items: center;
-            font-size: 20px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            z-index: 1500;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
-        /* Restante do seu CSS original */
-        nav { background-color: #1a1a1a; padding: 15px; position: sticky; top: 0; border-bottom: 2px solid #00ff00; z-index: 1000; }
-        nav a { color: white; text-decoration: none; margin: 0 15px; font-weight: bold; text-transform: uppercase; }
-        header { padding: 40px 20px; background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://via.placeholder.com/1200x400'); background-size: cover; }
-        .controls-container { padding: 20px; max-width: 800px; margin: auto; }
-        #searchInput { width: 90%; padding: 15px; border-radius: 50px; border: 2px solid #333; background-color: #1a1a1a; color: white; outline: none; margin-bottom: 20px; }
-        .category-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+        /* Cards de Mods */
         .container { max-width: 800px; margin: auto; padding: 20px; }
-        .mod-card { background-color: #1e1e1e; border-radius: 12px; overflow: hidden; margin-bottom: 30px; border: 1px solid #333; position: relative; }
-        .mod-img { width: 100%; height: 180px; object-fit: cover; }
-        .mod-info { padding: 15px; }
-        .mod-card h2 { color: #00ff00; margin: 0; font-size: 20px; }
-        .btn-fav { position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; border: none; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; }
-        .btn-fav.active { color: #ffff00; }
-        .btn-download { display: inline-block; background-color: #00ff00; color: #000; padding: 8px 15px; text-decoration: none; border-radius: 4px; font-weight: bold; margin-top: 10px; }
+        .mod-card {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            border: 1px solid #333;
+            transition: 0.3s;
+            display: block; 
+        }
+        .mod-card:hover { border-color: #00ff00; }
+        .mod-img { width: 100%; height: 200px; object-fit: cover; background-color: #333; }
+        .mod-info { padding: 20px; }
+        .mod-card h2 { color: #00ff00; margin: 0 0 10px 0; }
+
+        /* Botões */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 6px;
+            transition: 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-category { background-color: #333; color: white; font-size: 12px; }
+        .btn-category:hover, .btn-category.active { background-color: #00ff00; color: black; }
+        
+        .btn-download { background-color: #00ff00; color: #000; margin-top: 10px; }
+        .btn-youtube { background-color: #ff0000; color: #fff; }
+
         footer { padding: 20px; color: #666; font-size: 14px; }
     </style>
 </head>
 <body>
-
-<div class="float-fav" onclick="toggleSidebar()"><i class="fa-solid fa-star"></i></div>
-
-<div class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-        <h3><i class="fa-solid fa-star"></i> Favoritos</h3>
-        <button class="close-sidebar" onclick="toggleSidebar()"><i class="fa-solid fa-xmark"></i></button>
-    </div>
-    <div id="sidebarContent">
-        <p style="color: #666; font-size: 12px;">Nenhum mod favoritado ainda.</p>
-    </div>
-</div>
-
-<div class="user-bar">
-    <span>E aí, <span id="userNameDisplay">Visitante</span>!</span>
-    <div id="registerForm">
-        <input type="text" id="nameInput" class="input-nome" placeholder="Seu nome...">
-        <button class="btn-salvar" onclick="saveName()">Salvar</button>
-    </div>
-    <button id="btnTrocar" class="btn-trocar" style="display: none;" onclick="clearName()">Trocar</button>
-</div>
 
 <nav>
     <a href="#">Início</a>
@@ -117,123 +112,96 @@
 
 <header>
     <h1>MIX-SA-MODS</h1>
-    <p>Mods para GTA San Andreas Mobile</p>
+    <p>O ponto de encontro dos modders de GTA San Andreas Mobile</p>
+    <a href="https://youtube.com/@maykjjr" target="_blank" class="btn btn-youtube">INSCREVA-SE NO CANAL</a>
 </header>
 
 <div class="controls-container">
     <input type="text" id="searchInput" onkeyup="filterMods()" placeholder="Pesquisar mod...">
+
     <div class="category-buttons">
-        <button class="btn-category active" onclick="setCategory('todos', this)">TUDO</button>
-        <button class="btn-category" onclick="setCategory('textura', this)">TEXTURAS</button>
-        <button class="btn-category" onclick="setCategory('script', this)">SCRIPTS</button>
+        <button class="btn btn-category active" onclick="setCategory('todos', this)">TUDO</button>
+        <button class="btn btn-category" onclick="setCategory('textura', this)">TEXTURAS</button>
+        <button class="btn btn-category" onclick="setCategory('script', this)">SCRIPTS/CLEO</button>
+        <button class="btn btn-category" onclick="setCategory('veiculo', this)">VEÍCULOS</button>
+        <button class="btn btn-category" onclick="setCategory('correcao', this)">CORREÇÃO</button>
     </div>
 </div>
 
 <div class="container" id="modList">
-    <div class="mod-card" data-category="script" id="mod-gasolina">
-        <button class="btn-fav" onclick="toggleFavorite('mod-gasolina')"><i class="fa-solid fa-star"></i></button>
-        <img src="imagens/mod-gasolina.png" class="mod-img">
+    
+    <div class="mod-card" data-category=" CATEGORIA DO MOD "> 
+        <img src=" LINK OU NOME DO ARQUIVO DA IMAGEM DO MOD " alt="Thumbnail Mod" class="mod-img">
         <div class="mod-info">
-            <h2>Mod Gasolina Realista</h2>
-            <a href="mod-gasolina.html" class="btn-download">VER DETALHES</a>
+            <h2> NOME DO MOD </h2>
+            <p> DESCRIÇÃO DO MOD </p>
+            <a href=" LINK OU NOME DO HTML DO MOD " class="btn btn-download">VER DETALHES</a>
         </div>
     </div>
 
-    <div class="mod-card" data-category="textura" id="mod-textura">
-        <button class="btn-fav" onclick="toggleFavorite('mod-textura')"><i class="fa-solid fa-star"></i></button>
-        <img src="https://via.placeholder.com/600x300/222/00ff00?text=Pack+HD" class="mod-img">
+    <div class="mod-card" data-category=" CATEGORIA DO MOD "> 
+        <img src=" LINK OU NOME DO ARQUIVO DA IMAGEM DO MOD " alt="Thumbnail Mod" class="mod-img">
         <div class="mod-info">
-            <h2>Pack de Texturas HD</h2>
-            <a href="#" class="btn-download">BAIXAR MOD</a>
+            <h2> NOME DO MOD </h2>
+            <p> DESCRIÇÃO DO MOD </p>
+            <a href=" LINK OU NOME DO HTML DO MOD " class="btn btn-download">VER DETALHES</a>
         </div>
     </div>
+
+    <div class="mod-card" data-category="script">
+        <img src="imagens/mod-gasolina.png" alt="Thumbnail Mod" class="mod-img">
+        <div class="mod-info">
+            <h2>Mod Gasolina Realista</h2>
+            <p>Adiciona sistema de combustível aos veículos do jogo.</p>
+            <a href="mod-gasolina.html" class="btn btn-download">VER DETALHES</a>
+        </div>
+    </div>
+
+    <div class="mod-card" data-category=" CATEGORIA DO MOD "> 
+        <img src=" LINK OU NOME DO ARQUIVO DA IMAGEM DO MOD " alt="Thumbnail Mod" class="mod-img">
+        <div class="mod-info">
+            <h2> NOME DO MOD </h2>
+            <p> DESCRIÇÃO DO MOD </p>
+            <a href=" LINK OU NOME DO HTML DO MOD " class="btn btn-download">VER DETALHES</a>
+        </div>
+    </div>
+
 </div>
 
 <footer>
-    <p>&copy; 2026 MIX-SA-MODS</p>
+    <p>&copy; 2026 MIX-SA-MODS - Desenvolvido por MaykJJr</p>
 </footer>
 
 <script>
-    // --- LÓGICA DA SIDEBAR ---
-    function toggleSidebar() {
-        document.getElementById('sidebar').classList.toggle('active');
-    }
+    let currentCategory = 'todos';
 
-    // --- LÓGICA DE USUÁRIO ---
-    function saveName() {
-        const name = document.getElementById('nameInput').value.trim();
-        if (name !== "") { localStorage.setItem('modderName', name); checkUser(); }
-    }
-    function clearName() { localStorage.removeItem('modderName'); checkUser(); }
-    function checkUser() {
-        const saved = localStorage.getItem('modderName');
-        document.getElementById('userNameDisplay').innerText = saved || "Visitante";
-        document.getElementById('registerForm').style.display = saved ? "none" : "block";
-        document.getElementById('btnTrocar').style.display = saved ? "inline-block" : "none";
-    }
-
-    // --- LÓGICA DE FAVORITOS ---
-    let favorites = JSON.parse(localStorage.getItem('myFavorites')) || [];
-
-    function toggleFavorite(modId) {
-        const index = favorites.indexOf(modId);
-        if (index > -1) { favorites.splice(index, 1); } 
-        else { favorites.push(modId); }
-        localStorage.setItem('myFavorites', JSON.stringify(favorites));
-        updateUI();
-    }
-
-    function updateUI() {
-        // Atualiza as estrelas nos cards
-        document.querySelectorAll('.btn-fav').forEach(btn => {
-            const id = btn.parentElement.id;
-            btn.classList.toggle('active', favorites.includes(id));
-        });
-
-        // Atualiza conteúdo da sidebar
-        const content = document.getElementById('sidebarContent');
-        content.innerHTML = "";
-        
-        if (favorites.length === 0) {
-            content.innerHTML = '<p style="color: #666; font-size: 12px;">Nenhum mod favoritado ainda.</p>';
-            return;
-        }
-
-        favorites.forEach(modId => {
-            const card = document.getElementById(modId);
-            if (card) {
-                const title = card.querySelector('h2').innerText;
-                const link = card.querySelector('a').getAttribute('href');
-                content.innerHTML += `
-                    <div class="fav-item">
-                        <button class="remove-fav" onclick="toggleFavorite('${modId}')"><i class="fa-solid fa-trash"></i></button>
-                        <h4>${title}</h4>
-                        <a href="${link}">ACESSAR MOD</a>
-                    </div>
-                `;
-            }
-        });
-    }
-
-    // --- FILTROS ---
-    function setCategory(cat, el) {
-        document.querySelectorAll('.btn-category').forEach(b => b.classList.remove('active'));
+    function setCategory(category, el) {
+        let buttons = document.getElementsByClassName('btn-category');
+        for (let btn of buttons) { btn.classList.remove('active'); }
         el.classList.add('active');
-        document.querySelectorAll('.mod-card').forEach(card => {
-            const match = cat === 'todos' || card.dataset.category === cat;
-            card.style.display = match ? "block" : "none";
-        });
+
+        currentCategory = category;
+        filterMods();
     }
 
     function filterMods() {
-        const search = document.getElementById('searchInput').value.toLowerCase();
-        document.querySelectorAll('.mod-card').forEach(card => {
-            const title = card.querySelector('h2').innerText.toLowerCase();
-            card.style.display = title.includes(search) ? "block" : "none";
-        });
-    }
+        let input = document.getElementById('searchInput').value.toLowerCase();
+        let cards = document.getElementsByClassName('mod-card');
 
-    window.onload = () => { checkUser(); updateUI(); };
+        for (let i = 0; i < cards.length; i++) {
+            let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase();
+            let category = cards[i].getAttribute('data-category');
+            
+            let matchSearch = title.includes(input);
+            let matchCategory = (currentCategory === 'todos' || category === currentCategory);
+
+            if (matchSearch && matchCategory) {
+                cards[i].style.display = "";
+            } else {
+                cards[i].style.display = "none";
+            }
+        }
+    }
 </script>
 
 </body>
