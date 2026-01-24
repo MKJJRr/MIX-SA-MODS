@@ -6,6 +6,15 @@
     <title>Sobre - MIX-SA-MODS</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        /* GARANTE O FUNDO PRETO */
+        body {
+            background-color: #0f0f0f !important;
+            margin: 0;
+            padding: 0;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         .container-sobre {
             max-width: 800px;
             margin: 50px auto;
@@ -14,29 +23,35 @@
             border-radius: 10px;
             border: 1px solid #333;
             color: white;
+            text-align: center; /* Centraliza o texto igual ao index */
         }
+        
         .sobre-header {
-            text-align: center;
             border-bottom: 2px solid #00ff00;
             padding-bottom: 20px;
             margin-bottom: 20px;
         }
+
         .sobre-header h1 {
             color: #00ff00;
             margin: 0;
             text-transform: uppercase;
         }
+
         .sobre-texto {
             line-height: 1.6;
             font-size: 18px;
             color: #ccc;
+            text-align: left; /* Melhora a leitura do texto longo */
         }
+
         .redes-sociais {
             display: flex;
             justify-content: center;
             gap: 20px;
             margin-top: 30px;
         }
+
         .social-btn {
             background-color: #00ff00;
             color: black;
@@ -46,12 +61,19 @@
             border-radius: 5px;
             text-transform: uppercase;
         }
-        .social-btn:hover {
-            background-color: #00cc00;
-        }
     </style>
 </head>
 <body>
+
+    <nav>
+        <div class="nav-links">
+            <a href="index.html">Início</a>
+            <a href="sobre.html">Sobre</a>
+            <a href="https://youtube.com/@maykjjr" target="_blank">YouTube</a>
+        </div>
+        <img src="imagens/logo-icon.png" alt="MIX-SA-MODS" class="site-logo">
+    </nav>
+
     <div class="container-sobre">
         <div class="sobre-header">
             <h1>Sobre o MIX-SA-MODS</h1>
@@ -64,9 +86,9 @@
         </div>
 
         <div class="redes-sociais">
-            <a href="https://youtube.com/@maykjjr" target="_blank" class="social-btn">YouTube</a>
-            <a href="index.html" class="social-btn" style="background-color: #444; color: white;">Voltar</a>
+            <a href="https://youtube.com/@maykjjr" target="_blank" class="social-btn">Visitar Canal</a>
         </div>
     </div>
+
 </body>
 </html>
