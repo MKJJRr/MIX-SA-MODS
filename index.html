@@ -15,6 +15,39 @@
             text-align: center;
         }
 
+        /* BARRA DE REGISTRO OPCIONAL NO TOPO */
+        .user-bar {
+            background-color: #000;
+            padding: 8px;
+            font-size: 13px;
+            border-bottom: 1px solid #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        #userNameDisplay { color: #00ff00; font-weight: bold; }
+        .input-nome {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            outline: none;
+            font-size: 12px;
+        }
+        .btn-salvar {
+            background: #00ff00;
+            color: black;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
         /* Barra de Navegação */
         nav {
             background-color: #1a1a1a;
@@ -103,7 +136,13 @@
         footer { padding: 20px; color: #666; font-size: 14px; }
     </style>
 </head>
-<body>
+<body onload="checkUser()">
+
+<div class="user-bar">
+    <span>E aí, <span id="userNameDisplay">Visitante</span>! Pronto para os mods?</span>
+    <input type="text" id="nameInput" class="input-nome" placeholder="Seu nome (opcional)">
+    <button class="btn-salvar" onclick="saveName()">Salvar</button>
+</div>
 
 <nav>
     <a href="#">Início</a>
@@ -173,6 +212,24 @@
 </footer>
 
 <script>
+    // FUNÇÕES DE USUÁRIO
+    function saveName() {
+        let name = document.getElementById('nameInput').value;
+        if (name.trim() !== "") {
+            localStorage.setItem('modderName', name);
+            document.getElementById('userNameDisplay').innerText = name;
+            document.getElementById('nameInput').value = ""; // Limpa o campo após salvar
+        }
+    }
+
+    function checkUser() {
+        let savedName = localStorage.getItem('modderName');
+        if (savedName) {
+            document.getElementById('userNameDisplay').innerText = savedName;
+        }
+    }
+
+    // FUNÇÕES DE FILTRO EXISTENTES
     let currentCategory = 'todos';
 
     function setCategory(category, el) {
