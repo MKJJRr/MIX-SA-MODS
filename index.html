@@ -1,209 +1,181 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
+<!DOCTYPE html> <html lang="pt-br"> <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MIX-SA-MODS | GTA SA Android</title>
-    <meta name="description" content="Baixe os melhores mods para GTA San Andreas Mobile: Scripts Cleo, Texturas 4K e Correções para Android e muito mais.">
-
-    <link rel="icon" href="assets/img/logo-icon.png" sizes="32x32">
-    <link rel="icon" href="assets/img/logo-icon.png" sizes="192x192">
-    <link rel="apple-touch-icon" href="assets/img/logo-icon.png">
-
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1a1a1a">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-    <style>
-        /* Estilos Gerais */
+    <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>MIX-SA-MODS | GTA SA Android</title> <meta name="description" content="Baixe os melhores mods para GTA San Andreas Mobile: Scripts Cleo, Texturas 4K e Correções para Android e muito mais."> <link rel="icon" href="assets/img/logo-icon.png" sizes="32x32"> <link rel="icon" href="assets/img/logo-icon.png" sizes="192x192"> <link rel="apple-touch-icon" href="assets/img/logo-icon.png"> <link rel="manifest" href="manifest.json"> <meta name="theme-color" content="#1a1a1a"> <meta name="apple-mobile-web-app-capable" content="yes"> <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <style>
+        /* --- ESTILOS GERAIS --- */
         body {
-            background-color: #0f0f0f;
-            color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            text-align: center;
+            background-color: #0f0f0f; /* Define o fundo cinza quase preto */
+            color: #ffffff; /* Define a cor padrão de todos os textos como branco */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Define a fonte do site */
+            margin: 0; /* Remove margens padrões do navegador nas bordas da página */
+            padding: 0; /* Remove preenchimentos padrões do navegador */
+            text-align: center; /* Centraliza textos que não tenham alinhamento específico */
         }
 
-        /* Barra de Navegação */
+        /* --- BARRA DE NAVEGAÇÃO (MENU) --- */
         nav {
-            background-color: #1a1a1a;
-            padding: 10px 20px;
-            position: sticky;
-            top: 0;
-            border-bottom: 2px solid #00ff00;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            background-color: #1a1a1a; /* Cor de fundo do menu */
+            padding: 10px 20px; /* Espaçamento interno: 10px em cima/baixo, 20px dos lados */
+            position: sticky; /* Faz o menu ficar "grudado" no topo ao rolar a página */
+            top: 0; /* Define que ele gruda exatamente na posição zero do topo */
+            border-bottom: 2px solid #00ff00; /* Linha verde neon na parte de baixo do menu */
+            z-index: 1000; /* Garante que o menu fique sempre por cima de qualquer outro elemento */
+            display: flex; /* Ativa o modo flexbox para alinhar itens lado a lado */
+            align-items: center; /* Alinha o texto e a logo verticalmente no centro */
+            justify-content: space-between; /* Coloca os links de um lado e a logo do outro */
         }
 
-        .nav-links { display: flex; gap: 15px; }
+        .nav-links { display: flex; gap: 15px; } /* Organiza os links em linha com 15px de espaço entre eles */
 
         nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 10px;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 13px;
-            transition: 0.3s;
+            color: white; /* Cor dos links do menu */
+            text-decoration: none; /* Remove o sublinhado padrão dos links */
+            margin: 0 10px; /* Margem lateral entre os links */
+            font-weight: bold; /* Deixa o texto do menu em negrito */
+            text-transform: uppercase; /* Deixa os links em letras maiúsculas */
+            font-size: 13px; /* Tamanho da letra dos links */
+            transition: 0.3s; /* Velocidade da animação de trocar de cor ao passar o mouse */
         }
-        nav a:hover { color: #00ff00; }
+        nav a:hover { color: #00ff00; } /* Quando passa o mouse, o link fica verde */
 
-        .site-logo { height: 40px; width: auto; }
+        .site-logo { height: 40px; width: auto; } /* Define a altura da logo no menu e ajusta a largura sozinho */
 
+        /* --- CABEÇALHO (BANNER) --- */
         header {
-            padding: 50px 20px;
+            padding: 50px 20px; /* Espaçamento interno do banner */
+            /* Fundo com degradê escuro sobreposto à imagem do banner para o texto ficar legível */
             background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('assets/img/banner.jpg');
-            background-size: cover;
-            border-bottom: 1px solid #222;
+            background-size: cover; /* Faz a imagem de fundo cobrir todo o espaço sem distorcer */
+            border-bottom: 1px solid #222; /* Linha cinza bem discreta abaixo do banner */
         }
 
+        /* --- CONTROLES (PESQUISA E CATEGORIAS) --- */
         .controls-container {
-            padding: 20px;
-            max-width: 800px;
-            margin: auto;
+            padding: 20px; /* Espaço ao redor da barra de pesquisa */
+            max-width: 800px; /* Largura máxima da área de pesquisa */
+            margin: auto; /* Centraliza a área de pesquisa na tela */
         }
         #searchInput {
-            width: 90%;
-            padding: 15px;
-            border-radius: 50px;
-            border: 2px solid #333;
-            background-color: #1a1a1a;
-            color: white;
-            font-size: 16px;
-            outline: none;
-            transition: 0.3s;
-            margin-bottom: 20px;
+            width: 90%; /* Barra ocupa 90% da largura da área container */
+            padding: 15px; /* Deixa a barra mais gordinha e fácil de clicar */
+            border-radius: 50px; /* Arredonda totalmente as pontas (estilo pílula) */
+            border: 2px solid #333; /* Borda cinza inicial */
+            background-color: #1a1a1a; /* Cor interna da barra de pesquisa */
+            color: white; /* Cor da letra que o usuário digita */
+            font-size: 16px; /* Tamanho da letra da digitação */
+            outline: none; /* Remove a borda azul padrão que alguns navegadores colocam */
+            transition: 0.3s; /* Suaviza a troca de cor da borda ao clicar */
+            margin-bottom: 20px; /* Espaço entre a barra e os botões de categoria */
         }
-        #searchInput:focus { border-color: #00ff00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
+        #searchInput:focus { border-color: #00ff00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); } /* Efeito neon ao clicar para digitar */
 
         .category-buttons {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
+            display: flex; /* Alinha os botões em linha */
+            justify-content: center; /* Centraliza os botões */
+            flex-wrap: wrap; /* Se não couber na tela do celular, os botões pulam para a linha de baixo */
+            gap: 10px; /* Espaço entre cada botão */
+            margin-bottom: 20px; /* Espaço entre os botões e os cards de mods */
         }
 
-        /* --- CARDS E IMAGENS AJUSTADAS (OTIMIZADO MOBILE) --- */
-        .container { max-width: 800px; margin: auto; padding: 10px; }
+        /* --- CARDS E IMAGENS (SISTEMA DE MODS) --- */
+        .container { max-width: 800px; margin: auto; padding: 10px; } /* Container principal dos mods */
 
         .mod-card {
-            background-color: #1e1e1e;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 20px;
-            border: 1px solid #333;
-            transition: transform 0.3s, border-color 0.3s;
-            display: block; 
-            animation: slideIn 0.5s ease forwards;
+            background-color: #1e1e1e; /* Cor de fundo do card do mod */
+            border-radius: 12px; /* Arredondamento dos cantos do card */
+            overflow: hidden; /* Corta o que sobrar para respeitar o arredondamento */
+            margin-bottom: 20px; /* Espaço entre um mod e outro */
+            border: 1px solid #333; /* Borda discreta ao redor do card */
+            transition: transform 0.3s, border-color 0.3s; /* Suaviza efeitos de toque/mouse */
+            display: block;  /* Define o card como um bloco */
+            animation: slideIn 0.5s ease forwards; /* Animação de entrada ao abrir o site */
         }
 
         @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(20px); } /* Inicia invisível e 20px abaixo */
+            to { opacity: 1; transform: translateY(0); } /* Termina visível na posição correta */
         }
 
-        .mod-card:hover { border-color: #00ff00; }
-        
-        /* Feedback de toque para celular */
-        .mod-card:active { transform: scale(0.98); }
+        .mod-card:hover { border-color: #00ff00; } /* Borda fica verde ao passar o mouse no PC */
+        .mod-card:active { transform: scale(0.98); } /* Card "encolhe" um pouco ao tocar no celular */
 
         .mod-img { 
-            width: 100%; 
-            height: 180px; 
-            object-fit: cover; 
-            background-color: #000;
-            display: block;
-            border-bottom: 1px solid #333;
+            width: 100%; /* Imagem usa toda a largura do card */
+            height: 180px; /* Altura fixa para todos os cards ficarem iguais */
+            object-fit: cover; /* Encaixa a imagem sem achatar (corta bordas se necessário) */
+            background-color: #000; /* Fundo preto enquanto carrega */
+            display: block; /* Remove espaços vazios na base da imagem */
+            border-bottom: 1px solid #333; /* Linha que separa a imagem do texto */
         }
 
-        .mod-info { padding: 15px; text-align: left; }
+        .mod-info { padding: 15px; text-align: left; } /* Espaçamento interno do texto e alinhamento à esquerda */
         
         .mod-card h2 { 
-            color: #00ff00; 
-            margin: 0 0 8px 0; 
-            font-size: 18px; 
-            text-transform: uppercase;
+            color: #00ff00; /* Título do mod em verde neon */
+            margin: 0 0 8px 0; /* Margem apenas na parte de baixo do título */
+            font-size: 18px; /* Tamanho da fonte do título */
+            text-transform: uppercase; /* Título sempre em maiúsculas */
         }
         
         .mod-card p { 
-            color: #bbb; 
-            font-size: 13px; 
-            line-height: 1.4; 
-            margin-bottom: 15px;
-            /* Limita a 3 linhas para não esticar o card no mobile */
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            color: #bbb; /* Descrição em cinza claro */
+            font-size: 13px; /* Tamanho da descrição */
+            line-height: 1.4; /* Espaçamento entre as linhas do texto */
+            margin-bottom: 15px; /* Espaço antes do botão de ver detalhes */
+            display: -webkit-box; /* Prepara o texto para ser limitado */
+            -webkit-line-clamp: 3; /* Limita a descrição em no máximo 3 linhas */
+            -webkit-box-orient: vertical; /* Define a orientação do limite de linhas */
+            overflow: hidden; /* Esconde o que passar das 3 linhas */
         }
 
-        /* Botões */
+        /* --- BOTÕES --- */
         .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 8px;
-            transition: 0.3s;
-            cursor: pointer;
-            border: none;
-            text-transform: uppercase;
-            font-size: 13px;
+            display: inline-block; /* Permite definir largura e altura mas fica na linha do texto */
+            padding: 12px 24px; /* Tamanho interno do botão */
+            text-decoration: none; /* Remove sublinhado de link */
+            font-weight: bold; /* Texto em negrito */
+            border-radius: 8px; /* Cantos arredondados do botão */
+            transition: 0.3s; /* Suaviza as trocas de cores */
+            cursor: pointer; /* Muda o ícone do mouse para a mãozinha */
+            border: none; /* Remove bordas padrões de botões do sistema */
+            text-transform: uppercase; /* Texto do botão sempre em maiúsculo */
+            font-size: 13px; /* Tamanho da letra no botão */
         }
 
-        .btn-category { background-color: #252525; color: #888; border: 1px solid #333; }
+        .btn-category { background-color: #252525; color: #888; border: 1px solid #333; } /* Estilo do botão de categoria inativo */
 
         .btn-category.active { 
-            background-color: #00ff00; 
-            color: black; 
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
-            border-color: #00ff00;
+            background-color: #00ff00; /* Fundo verde quando a categoria está selecionada */
+            color: black; /* Texto preto quando selecionado */
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4); /* Brilho neon ao redor */
+            border-color: #00ff00; /* Borda verde */
         }
 
         .btn-download { 
-            background-color: #00ff00; 
-            color: #000; 
-            width: 100%; 
-            box-sizing: border-box;
-            text-align: center;
+            background-color: #00ff00; /* Botão de ver detalhes sempre verde */
+            color: #000; /* Texto do botão preto */
+            width: 100%; /* Botão ocupa a largura toda do card */
+            box-sizing: border-box; /* Garante que o padding não faça o botão passar da largura */
+            text-align: center; /* Centraliza o texto "VER DETALHES" */
         }
-        .btn-download:hover { background-color: #00cc00; box-shadow: 0 5px 15px rgba(0, 255, 0, 0.2); }
+        .btn-download:hover { background-color: #00cc00; box-shadow: 0 5px 15px rgba(0, 255, 0, 0.2); } /* Escurece o verde ao passar o mouse */
 
-        footer { padding: 40px 20px; color: #555; font-size: 13px; border-top: 1px solid #1a1a1a; }
+        /* --- RODAPÉ --- */
+        footer { padding: 40px 20px; color: #555; font-size: 13px; border-top: 1px solid #1a1a1a; } /* Estilo do rodapé (Copyright) */
     </style>
 </head>
 <body>
 
 <nav>
     <div class="nav-links">
-        <a href="index.html">Início</a>
-        <a href="paginas/sobre.html">Sobre</a>
-        <a href="https://youtube.com/@maykjjr" target="_blank">YouTube</a>
-    </div>
-    <img src="assets/img/logo-icon.png" alt="MIX-SA-MODS" class="site-logo">
-</nav>
+        <a href="index.html">Início</a> <a href="paginas/sobre.html">Sobre</a> <a href="https://youtube.com/@maykjjr" target="_blank">YouTube</a> </div>
+    <img src="assets/img/logo-icon.png" alt="MIX-SA-MODS" class="site-logo"> </nav>
 
 <header>
-    <h1 style="font-size: 35px; margin-bottom: 5px;">MIX-SA-MODS</h1>
-    <p style="color: #00ff00; font-weight: bold;">O ponto de encontro dos modders de GTA SA Mobile</p>
-</header>
+    <h1 style="font-size: 35px; margin-bottom: 5px;">MIX-SA-MODS</h1> <p style="color: #00ff00; font-weight: bold;">O ponto de encontro dos modders de GTA SA Mobile</p> </header>
 
 <div class="controls-container">
-    <input type="text" id="searchInput" onkeyup="filterMods()" placeholder="Pesquisar mod...">
-
-    <div class="category-buttons">
-        <button class="btn btn-category active" onclick="setCategory('todos', this)">TUDO</button>
-        <button class="btn btn-category" onclick="setCategory('textura', this)">TEXTURAS</button>
-        <button class="btn btn-category" onclick="setCategory('script', this)">SCRIPTS/CLEO</button>
-        <button class="btn btn-category" onclick="setCategory('veiculo', this)">VEÍCULOS</button>
-        <button class="btn btn-category" onclick="setCategory('correcao', this)">CORREÇÃO</button>
-    </div>
+    <input type="text" id="searchInput" onkeyup="filterMods()" placeholder="Pesquisar mod..."> <div class="category-buttons">
+        <button class="btn btn-category active" onclick="setCategory('todos', this)">TUDO</button> <button class="btn btn-category" onclick="setCategory('textura', this)">TEXTURAS</button> <button class="btn btn-category" onclick="setCategory('script', this)">SCRIPTS/CLEO</button> <button class="btn btn-category" onclick="setCategory('veiculo', this)">VEÍCULOS</button> <button class="btn btn-category" onclick="setCategory('correcao', this)">CORREÇÃO</button> </div>
 </div>
 
 <div class="container" id="modList">
@@ -229,39 +201,41 @@
 </div>
 
 <footer>
-    <p>&copy; 2026 MIX-SA-MODS - Desenvolvido por MaykJJr</p>
-</footer>
+    <p>&copy; 2026 MIX-SA-MODS - Desenvolvido por MaykJJr</p> </footer>
 
 <script>
-    let currentCategory = 'todos';
+    let currentCategory = 'todos'; // Variável que guarda qual categoria está selecionada no momento
 
+    // Função que define a categoria quando você clica no botão
     function setCategory(category, el) {
-        let buttons = document.getElementsByClassName('btn-category');
-        for (let btn of buttons) { btn.classList.remove('active'); }
-        el.classList.add('active');
+        let buttons = document.getElementsByClassName('btn-category'); // Pega todos os botões de categoria
+        for (let btn of buttons) { btn.classList.remove('active'); } // Remove a cor verde de todos eles
+        el.classList.add('active'); // Adiciona a cor verde apenas no botão que você clicou
 
-        currentCategory = category;
-        filterMods();
+        currentCategory = category; // Atualiza a categoria atual
+        filterMods(); // Chama a função de filtrar para atualizar a lista na tela
     }
 
+    // Função que filtra os mods por nome e por categoria ao mesmo tempo
     function filterMods() {
-        let input = document.getElementById('searchInput').value.toLowerCase();
-        let cards = document.getElementsByClassName('mod-card');
+        let input = document.getElementById('searchInput').value.toLowerCase(); // Pega o que foi digitado e converte para letras minúsculas
+        let cards = document.getElementsByClassName('mod-card'); // Pega todos os cards de mods da página
 
         for (let i = 0; i < cards.length; i++) {
-            let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase();
-            let category = cards[i].getAttribute('data-category');
+            let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase(); // Pega o título do mod atual do loop
+            let category = cards[i].getAttribute('data-category'); // Pega a categoria do mod atual do loop
 
-            let matchSearch = title.includes(input);
-            let matchCategory = (currentCategory === 'todos' || category === currentCategory);
+            let matchSearch = title.includes(input); // Verifica se o nome digitado existe no título do mod
+            let matchCategory = (currentCategory === 'todos' || category === currentCategory); // Verifica se a categoria do mod bate com o filtro
 
+            // Se o nome e a categoria combinarem:
             if (matchSearch && matchCategory) {
-                cards[i].style.display = "";
-                cards[i].style.animation = 'none';
-                cards[i].offsetHeight; 
-                cards[i].style.animation = null;
+                cards[i].style.display = ""; // Mostra o card
+                cards[i].style.animation = 'none'; // Reseta a animação de entrada
+                cards[i].offsetHeight; // Comando "truque" para o navegador entender o reset da animação
+                cards[i].style.animation = null; // Reativa a animação de entrada
             } else {
-                cards[i].style.display = "none";
+                cards[i].style.display = "none"; // Se não bater, esconde o card
             }
         }
     }
