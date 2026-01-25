@@ -5,9 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MIX-SA-MODS | GTA SA Android</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+
     <link rel="icon" href="assets/img/logo-icon.png" sizes="32x32">
     <link rel="icon" href="assets/img/logo-icon.png" sizes="192x192">
     <link rel="apple-touch-icon" href="assets/img/logo-icon.png">
@@ -46,107 +44,100 @@
         nav a {
             color: white;
             text-decoration: none;
-            margin: 0 5px;
+            margin: 0 10px;
             font-weight: bold;
             text-transform: uppercase;
-            font-size: 12px;
+            font-size: 13px;
             transition: 0.3s;
         }
         nav a:hover { color: #00ff00; }
 
-        .site-logo { height: 35px; width: auto; }
+        .site-logo { height: 40px; width: auto; }
 
         header {
-            padding: 30px 20px;
+            padding: 50px 20px;
             background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('assets/img/banner.jpg');
             background-size: cover;
             border-bottom: 1px solid #222;
         }
 
         .controls-container {
-            padding: 15px;
+            padding: 20px;
             max-width: 800px;
             margin: auto;
         }
         #searchInput {
             width: 90%;
-            padding: 12px;
+            padding: 15px;
             border-radius: 50px;
             border: 2px solid #333;
             background-color: #1a1a1a;
             color: white;
-            font-size: 14px;
+            font-size: 16px;
             outline: none;
             transition: 0.3s;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
-        #searchInput:focus { border-color: #00ff00; box-shadow: 0 0 10px rgba(0, 255, 0, 0.2); }
+        #searchInput:focus { border-color: #00ff00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
 
         .category-buttons {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 10px;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
-        /* --- CARDS COMPACTOS --- */
-        .container { max-width: 500px; margin: auto; padding: 10px; }
+        /* --- CARDS E IMAGENS AJUSTADAS --- */
+        .container { max-width: 800px; margin: auto; padding: 20px; }
 
         .mod-card {
             background-color: #1e1e1e;
-            border-radius: 12px;
+            border-radius: 15px;
             overflow: hidden;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             border: 1px solid #333;
-            transition: 0.3s;
+            transition: transform 0.3s, border-color 0.3s;
             display: block; 
             animation: slideIn 0.5s ease forwards;
         }
 
         @keyframes slideIn {
-            from { opacity: 0; transform: translateY(15px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        .mod-card:hover { 
+            border-color: #00ff00; 
+            transform: scale(1.02);
+        }
+
+        /* CORREÇÃO DA IMAGEM AQUI */
         .mod-img { 
             width: 100%; 
-            height: 160px;
-            object-fit: cover;
-            background-color: #000; 
+            height: auto; 
+            max-height: 350px; /* Limite para não ocupar a tela toda */
+            object-fit: contain; /* Mostra a imagem inteira sem cortes */
+            background-color: #000; /* Fundo preto para preencher se a imagem for menor */
             display: block;
         }
 
-        .mod-info { 
-            padding: 15px; 
-            text-align: center; 
-        }
-        
-        .mod-card h2 { 
-            color: #00ff00; 
-            margin: 0 0 5px 0; 
-            font-size: 18px;
-            text-transform: uppercase;
-        }
-        
-        .mod-card p { 
-            color: #eeeeee; 
-            font-size: 13px; 
-            line-height: 1.4; 
-            margin-bottom: 15px;
-        }
+        .mod-info { padding: 20px; text-align: left; }
+        .mod-card h2 { color: #00ff00; margin: 0 0 10px 0; font-size: 22px; }
+        .mod-card p { color: #bbb; font-size: 14px; line-height: 1.5; margin-bottom: 15px; }
 
+        /* Botões */
         .btn {
             display: inline-block;
-            padding: 8px 16px;
+            padding: 12px 24px;
             text-decoration: none;
             font-weight: bold;
-            border-radius: 6px;
+            border-radius: 8px;
             transition: 0.3s;
             cursor: pointer;
             border: none;
             text-transform: uppercase;
-            font-size: 11px;
+            font-size: 13px;
         }
 
         .btn-category { background-color: #252525; color: #888; border: 1px solid #333; }
@@ -154,67 +145,23 @@
         .btn-category.active { 
             background-color: #00ff00; 
             color: black; 
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+            border-color: #00ff00;
         }
 
         .btn-download { 
-            background: linear-gradient(45deg, #00ff00, #00cc00, #00ff88);
-            background-size: 200% 200%;
+            background-color: #00ff00; 
             color: #000; 
             width: 100%; 
-            padding: 10px;
             box-sizing: border-box;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 13px;
-            letter-spacing: 0.5px;
-            box-shadow: 0 3px 10px rgba(0, 255, 0, 0.2);
-            animation: gradientMove 3s ease infinite;
+            text-align: center;
         }
+        .btn-download:hover { background-color: #00cc00; box-shadow: 0 5px 15px rgba(0, 255, 0, 0.2); }
 
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .btn-download:hover { transform: scale(1.02); }
-
-        /* CONTROLE DE MÚSICA */
-        .music-control {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0, 255, 0, 0.2);
-            border: 2px solid #00ff00;
-            color: #00ff00;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 2000;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
-            transition: 0.3s;
-        }
-        .music-control:active { transform: scale(0.9); }
-
-        footer { padding: 30px 20px; color: #555; font-size: 12px; border-top: 1px solid #1a1a1a; }
+        footer { padding: 40px 20px; color: #555; font-size: 13px; border-top: 1px solid #1a1a1a; }
     </style>
 </head>
 <body>
-
-<audio id="bgMusic" loop>
-    <source src="assets/audio/tema.mp3" type="audio/mpeg">
-</audio>
-
-<div class="music-control" onclick="toggleMusic()">
-    <i id="musicIcon" class="fa-solid fa-volume-xmark"></i>
-</div>
 
 <nav>
     <div class="nav-links">
@@ -226,8 +173,8 @@
 </nav>
 
 <header>
-    <h1 style="font-size: 28px; margin-bottom: 5px;">MIX-SA-MODS</h1>
-    <p style="color: #00ff00; font-weight: bold; font-size: 14px;">Mods para GTA SA Mobile</p>
+    <h1 style="font-size: 35px; margin-bottom: 5px;">MIX-SA-MODS</h1>
+    <p style="color: #00ff00; font-weight: bold;">O ponto de encontro dos modders de GTA SA Mobile</p>
 </header>
 
 <div class="controls-container">
@@ -236,7 +183,7 @@
     <div class="category-buttons">
         <button class="btn btn-category active" onclick="setCategory('todos', this)">TUDO</button>
         <button class="btn btn-category" onclick="setCategory('textura', this)">TEXTURAS</button>
-        <button class="btn btn-category" onclick="setCategory('script', this)">SCRIPTS</button>
+        <button class="btn btn-category" onclick="setCategory('script', this)">SCRIPTS/CLEO</button>
         <button class="btn btn-category" onclick="setCategory('veiculo', this)">VEÍCULOS</button>
         <button class="btn btn-category" onclick="setCategory('correcao', this)">CORREÇÃO</button>
     </div>
@@ -248,10 +195,17 @@
         <img src="mods/img/mod-gasolina.png" alt="Mod Gasolina" class="mod-img">
         <div class="mod-info">
             <h2>Mod Gasolina Realista</h2>
-            <p>Adiciona sistema de combustível aos veículos do jogo.</p>
-            <a href="mods/mod-gasolina.html" class="btn btn-download">
-                VER DETALHES <i class="fa-solid fa-arrow-right"></i>
-            </a>
+            <p>Adiciona um sistema de combustível realista, obrigando o jogador a abastecer em postos espalhados pelo mapa.</p>
+            <a href="mods/mod-gasolina.html" class="btn btn-download">VER DETALHES</a>
+        </div>
+    </div>
+
+    <div class="mod-card" data-category="textura"> 
+        <img src="mods/img/placeholder.png" alt="Novo Mod" class="mod-img">
+        <div class="mod-info">
+            <h2>Céu Realista 4K</h2>
+            <p>Melhora drasticamente as texturas das nuvens e o ciclo de dia/noite do jogo.</p>
+            <a href="#" class="btn btn-download">EM BREVE</a>
         </div>
     </div>
 
@@ -262,37 +216,13 @@
 </footer>
 
 <script>
-    // --- LÓGICA DA MÚSICA ---
-    const audio = document.getElementById('bgMusic');
-    const icon = document.getElementById('musicIcon');
-
-    // Tocar ao primeiro clique na tela
-    window.addEventListener('click', () => {
-        if (audio.paused && icon.classList.contains('fa-volume-xmark')) {
-            audio.play();
-            audio.volume = 0.3; // Volume em 30%
-            icon.classList.replace('fa-volume-xmark', 'fa-volume-high');
-        }
-    }, { once: true });
-
-    // Função do botão mudo/tocar
-    function toggleMusic() {
-        if (audio.paused) {
-            audio.play();
-            icon.classList.replace('fa-volume-xmark', 'fa-volume-high');
-        } else {
-            audio.pause();
-            icon.classList.replace('fa-volume-high', 'fa-volume-xmark');
-        }
-    }
-
-    // --- LÓGICA DE FILTRO ---
     let currentCategory = 'todos';
 
     function setCategory(category, el) {
         let buttons = document.getElementsByClassName('btn-category');
         for (let btn of buttons) { btn.classList.remove('active'); }
         el.classList.add('active');
+
         currentCategory = category;
         filterMods();
     }
@@ -300,12 +230,22 @@
     function filterMods() {
         let input = document.getElementById('searchInput').value.toLowerCase();
         let cards = document.getElementsByClassName('mod-card');
+
         for (let i = 0; i < cards.length; i++) {
             let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase();
             let category = cards[i].getAttribute('data-category');
+
             let matchSearch = title.includes(input);
             let matchCategory = (currentCategory === 'todos' || category === currentCategory);
-            cards[i].style.display = (matchSearch && matchCategory) ? "" : "none";
+
+            if (matchSearch && matchCategory) {
+                cards[i].style.display = "";
+                cards[i].style.animation = 'none';
+                cards[i].offsetHeight; 
+                cards[i].style.animation = null;
+            } else {
+                cards[i].style.display = "none";
+            }
         }
     }
 </script>
