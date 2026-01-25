@@ -13,7 +13,20 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <style>
-        body { background-color: #0f0f0f; color: white; font-family: sans-serif; text-align: center; padding: 10px; margin: 0; }
+        body { 
+            background-color: #0f0f0f; 
+            color: white; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            text-align: center; 
+            padding: 10px; 
+            margin: 0; 
+            animation: fadeInPage 0.8s ease; /* Animação ao carregar a página */
+        }
+
+        @keyframes fadeInPage {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
         /* Barra de Topo com Botão Voltar */
         .top-bar {
@@ -53,12 +66,21 @@
         .btn-voltar-topo:hover {
             background: #252525;
             border-color: #00ff00;
-            transform: translateX(-3px);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+            transform: translateX(-5px);
         }
 
-        .container { max-width: 600px; margin: auto; background: #1e1e1e; padding: 20px; border-radius: 15px; border: 1px solid #333; }
+        .container { 
+            max-width: 600px; 
+            margin: auto; 
+            background: #1e1e1e; 
+            padding: 20px; 
+            border-radius: 15px; 
+            border: 1px solid #333;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
 
-        /* Thumbnail ajustada */
+        /* Thumbnail ajustada com efeito hover */
         .mod-print { 
             width: 100%; 
             height: auto;
@@ -68,11 +90,23 @@
             margin-bottom: 20px; 
             border: 1px solid #444; 
             background: #000;
+            transition: 0.3s;
+        }
+        .mod-print:hover {
+            border-color: #00ff00;
+            transform: scale(1.01);
         }
 
-        .info-box { text-align: left; background: #252525; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #00ff00; }
+        .info-box { 
+            text-align: left; 
+            background: #252525; 
+            padding: 15px; 
+            border-radius: 8px; 
+            margin-bottom: 20px; 
+            border-left: 4px solid #00ff00; 
+        }
 
-        /* Estilo base dos botões */
+        /* Botões com efeitos de animação */
         .btn-link { 
             display: flex;
             align-items: center;
@@ -92,10 +126,21 @@
             color: white; 
             margin-bottom: 20px; 
         }
-        .btn-youtube:hover { background: #cc0000; transform: scale(1.02); }
+        .btn-youtube:hover { 
+            background: #cc0000; 
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+        }
 
-        .btn-download { background: #00ff00; color: black; }
-        .btn-download:hover { background: #00cc00; transform: scale(1.02); }
+        .btn-download { 
+            background: #00ff00; 
+            color: black; 
+        }
+        .btn-download:hover { 
+            background: #00cc00; 
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
+        }
 
         .comentarios-section {
             margin-top: 40px;
@@ -104,22 +149,9 @@
             padding-top: 20px;
         }
 
-        /* --- CORREÇÃO DEFINITIVA DO DISQUS --- */
         #disqus_thread {
-            color-scheme: dark !important; /* Força o navegador a renderizar o conteúdo como escuro */
-            background: transparent !important;
-        }
-
-        /* Remove fundos brancos de menus e iframes */
-        #disqus_thread iframe {
-            background-color: transparent !important;
             color-scheme: dark !important;
-        }
-
-        /* Garante que o contorno de seleção seja o verde do site e não o azul */
-        #disqus_thread *:focus {
-            outline: 2px solid #00ff00 !important;
-            box-shadow: none !important;
+            background: transparent !important;
         }
     </style>
 </head>
@@ -137,13 +169,13 @@
         <img src="img/mod-gasolina.png" alt="Print do Mod" class="mod-print">
 
         <div class="info-box">
-            <strong>Informações:</strong>
+            <strong style="color: #00ff00;">Informações:</strong>
             <p>• Tamanho: 1KB</p>
             <p>• Requisitos: GTA SA Android (Qualquer versão)</p>
             <p>• Créditos: MaykJJr</p>
         </div>
 
-        <p>Esse mod adiciona um sistema de combustível realista aos veículos do jogo, obrigando o jogador a abastecer em postos espalhados pelo mapa.</p>
+        <p style="color: #ccc; line-height: 1.6;">Esse mod adiciona um sistema de combustível realista aos veículos do jogo, obrigando o jogador a abastecer em postos espalhados pelo mapa.</p>
 
         <a href="https://youtu.be/AV6Kaa7RnHY?si=4nqKk0Y7zm1CYmRb" class="btn-link btn-youtube" target="_blank">
             <i class="fa-brands fa-youtube"></i> VER VÍDEO NO YOUTUBE
@@ -166,7 +198,7 @@
         var disqus_config = function () {
             this.page.url = window.location.href;  
             this.page.identifier = window.location.pathname; 
-            this.theme = 'dark'; // Informa ao script do Disqus para carregar o tema escuro
+            this.theme = 'dark';
         };
 
         (function() { 
@@ -176,7 +208,6 @@
             (d.head || d.body).appendChild(s);
         })();
     </script>
-    <noscript>Por favor, habilite o JavaScript para visualizar os comentários.</noscript>
 
 </body>
 </html>
