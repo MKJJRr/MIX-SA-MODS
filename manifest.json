@@ -1,21 +1,21 @@
 {
-  "name": "MIX-SA-MODS",
-  "short_name": "MIX-SA",
-  "description": "O ponto de encontro dos modders de GTA San Andreas Mobile",
-  "start_url": "index.html",
-  "display": "standalone",
-  "background_color": "#0f0f0f",
-  "theme_color": "#00ff00",
-  "icons": [
+  "name": "MIX-SA-MODS", /* Nome completo do "aplicativo" que aparece na App Store/Play Store */
+  "short_name": "MIX-SA", /* Nome curto que aparece embaixo do ícone na tela inicial do celular */
+  "description": "O ponto de encontro dos modders de GTA San Andreas Mobile", /* Pequeno resumo do que é o seu site */
+  "start_url": "index.html", /* Qual página deve abrir primeiro quando o ícone for clicado */
+  "display": "standalone", /* Faz o site abrir sem a barra de endereços do navegador, parecendo um app real */
+  "background_color": "#0f0f0f", /* Cor de fundo da tela de carregamento (Splash Screen) ao abrir o app */
+  "theme_color": "#00ff00", /* Cor da barra de status do celular e da moldura do app (seu verde neon) */
+  "icons": [ /* Lista de ícones que o celular vai usar para diferentes tamanhos de tela */
     {
-      "src": "assets/img/logo-icon.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "src": "assets/img/logo-icon.png", /* Caminho onde a imagem do ícone está guardada */
+      "sizes": "192x192", /* Tamanho médio, usado para a maioria dos celulares Android */
+      "type": "image/png" /* Formato do arquivo da imagem */
     },
     {
-      "src": "assets/img/logo-icon.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "src": "assets/img/logo-icon.png", /* Mesmo caminho da imagem */
+      "sizes": "512x512", /* Tamanho grande, usado para telas de alta resolução e tablets */
+      "type": "image/png" /* Formato do arquivo da imagem */
     }
   ]
 }
