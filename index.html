@@ -111,8 +111,8 @@
 
         .mod-img { 
             width: 100%; 
-            height: 160px; /* Altura reduzida para não ocupar a tela toda */
-            object-fit: cover; /* Preenche o espaço de forma uniforme */
+            height: 160px;
+            object-fit: cover;
             background-color: #000; 
             display: block;
         }
@@ -125,7 +125,7 @@
         .mod-card h2 { 
             color: #00ff00; 
             margin: 0 0 5px 0; 
-            font-size: 18px; /* Título mais discreto */
+            font-size: 18px;
             text-transform: uppercase;
         }
         
@@ -136,7 +136,6 @@
             margin-bottom: 15px;
         }
 
-        /* Botões de Categoria Slim */
         .btn {
             display: inline-block;
             padding: 8px 16px;
@@ -158,7 +157,6 @@
             box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
         }
 
-        /* BOTÃO VER DETALHES COMPACTO */
         .btn-download { 
             background: linear-gradient(45deg, #00ff00, #00cc00, #00ff88);
             background-size: 200% 200%;
@@ -184,10 +182,39 @@
 
         .btn-download:hover { transform: scale(1.02); }
 
+        /* CONTROLE DE MÚSICA */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 255, 0, 0.2);
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2000;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+            transition: 0.3s;
+        }
+        .music-control:active { transform: scale(0.9); }
+
         footer { padding: 30px 20px; color: #555; font-size: 12px; border-top: 1px solid #1a1a1a; }
     </style>
 </head>
 <body>
+
+<audio id="bgMusic" loop>
+    <source src="assets/audio/tema.mp3" type="audio/mpeg">
+</audio>
+
+<div class="music-control" onclick="toggleMusic()">
+    <i id="musicIcon" class="fa-solid fa-volume-xmark"></i>
+</div>
 
 <nav>
     <div class="nav-links">
@@ -235,13 +262,37 @@
 </footer>
 
 <script>
+    // --- LÓGICA DA MÚSICA ---
+    const audio = document.getElementById('bgMusic');
+    const icon = document.getElementById('musicIcon');
+
+    // Tocar ao primeiro clique na tela
+    window.addEventListener('click', () => {
+        if (audio.paused && icon.classList.contains('fa-volume-xmark')) {
+            audio.play();
+            audio.volume = 0.3; // Volume em 30%
+            icon.classList.replace('fa-volume-xmark', 'fa-volume-high');
+        }
+    }, { once: true });
+
+    // Função do botão mudo/tocar
+    function toggleMusic() {
+        if (audio.paused) {
+            audio.play();
+            icon.classList.replace('fa-volume-xmark', 'fa-volume-high');
+        } else {
+            audio.pause();
+            icon.classList.replace('fa-volume-high', 'fa-volume-xmark');
+        }
+    }
+
+    // --- LÓGICA DE FILTRO ---
     let currentCategory = 'todos';
 
     function setCategory(category, el) {
         let buttons = document.getElementsByClassName('btn-category');
         for (let btn of buttons) { btn.classList.remove('active'); }
         el.classList.add('active');
-
         currentCategory = category;
         filterMods();
     }
@@ -249,19 +300,12 @@
     function filterMods() {
         let input = document.getElementById('searchInput').value.toLowerCase();
         let cards = document.getElementsByClassName('mod-card');
-
         for (let i = 0; i < cards.length; i++) {
             let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase();
             let category = cards[i].getAttribute('data-category');
-
             let matchSearch = title.includes(input);
             let matchCategory = (currentCategory === 'todos' || category === currentCategory);
-
-            if (matchSearch && matchCategory) {
-                cards[i].style.display = "";
-            } else {
-                cards[i].style.display = "none";
-            }
+            cards[i].style.display = (matchSearch && matchCategory) ? "" : "none";
         }
     }
 </script>
