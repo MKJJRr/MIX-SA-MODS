@@ -1,104 +1,100 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sobre - MIX-SA-MODS</title>
-    <link rel="stylesheet" href="style.css">
-    <style>
-        /* GARANTE O FUNDO PRETO */
+<!DOCTYPE html> <html lang="pt-br"> <head>
+    <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Sobre - MIX-SA-MODS</title> <link rel="stylesheet" href="style.css"> <style>
+        /* --- ESTILOS GERAIS DA PÁGINA SOBRE --- */
         body {
-            background-color: #0f0f0f !important;
-            margin: 0;
-            padding: 0;
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f0f0f !important; /* Força o fundo a ser quase preto (o !important ignora outras regras) */
+            margin: 0; /* Remove as margens das bordas */
+            padding: 0; /* Remove os preenchimentos internos */
+            color: white; /* Cor padrão do texto é branca */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fonte moderna e legível */
         }
 
-        /* AJUSTE DO MENU PARA NÃO SUMIR */
+        /* --- CONFIGURAÇÃO DO MENU SUPERIOR --- */
         nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            background-color: #1a1a1a;
-            border-bottom: 2px solid #00ff00;
+            display: flex; /* Coloca os itens (links e logo) lado a lado */
+            justify-content: space-between; /* Empurra os links para um lado e a logo para o outro */
+            align-items: center; /* Alinha os itens verticalmente no centro da barra */
+            padding: 10px 20px; /* Espaço interno da barra de navegação */
+            background-color: #1a1a1a; /* Cor de fundo cinza escuro do menu */
+            border-bottom: 2px solid #00ff00; /* Linha verde neon na base do menu */
         }
 
         .nav-links a {
-            color: #00ff00;
-            text-decoration: none;
-            margin-right: 15px;
-            font-weight: bold;
-            text-transform: uppercase;
+            color: #00ff00; /* Cor verde nos links do menu */
+            text-decoration: none; /* Remove o sublinhado dos links */
+            margin-right: 15px; /* Espaço entre um link e outro */
+            font-weight: bold; /* Texto em negrito */
+            text-transform: uppercase; /* Deixa os links em letras maiúsculas */
         }
 
         .site-logo {
-            width: 40px; /* Logo pequena no menu */
-            height: auto;
+            width: 40px; /* Define a largura da logo pequena no canto do menu */
+            height: auto; /* Mantém a proporção da imagem */
         }
 
-        /* ESTILO DA LOGO GIGANTE CENTRALIZADA */
+        /* --- CONTAINER DA LOGO DE PERFIL --- */
         .logo-container {
-            text-align: center;
-            margin-top: 30px;
+            text-align: center; /* Centraliza a imagem do perfil na página */
+            margin-top: 30px; /* Espaço entre o menu e a foto de perfil */
         }
 
         .logo-perfil {
-            width: 180px; /* Tamanho da imagem redonda */
-            height: 180px;
-            border-radius: 50%;
-            border: 3px solid #00ff00;
-            object-fit: cover;
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+            width: 180px; /* Largura da foto circular */
+            height: 180px; /* Altura da foto circular */
+            border-radius: 50%; /* Transforma o quadrado em um círculo perfeito */
+            border: 3px solid #00ff00; /* Borda verde neon ao redor da foto */
+            object-fit: cover; /* Faz a foto preencher o círculo sem ficar achatada */
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); /* Brilho verde suave ao redor da foto */
         }
 
+        /* --- CAIXA DE TEXTO "SOBRE" --- */
         .container-sobre {
-            max-width: 800px;
-            margin: 30px auto;
-            padding: 20px;
-            background-color: #1a1a1a;
-            border-radius: 10px;
-            border: 1px solid #333;
-            color: white;
-            text-align: center;
+            max-width: 800px; /* Limita a largura do texto para não ficar muito espalhado no PC */
+            margin: 30px auto; /* Centraliza a caixa na tela e dá espaço em cima/baixo */
+            padding: 20px; /* Espaçamento interno para o texto não tocar na borda da caixa */
+            background-color: #1a1a1a; /* Cor de fundo da caixa de texto */
+            border-radius: 10px; /* Arredonda os cantos da caixa */
+            border: 1px solid #333; /* Borda cinza discreta ao redor da caixa */
+            color: white; /* Cor do texto interno */
+            text-align: center; /* Centraliza os títulos internos */
         }
         
         .sobre-header {
-            border-bottom: 2px solid #00ff00;
-            padding-bottom: 20px;
-            margin-bottom: 20px;
+            border-bottom: 2px solid #00ff00; /* Linha verde separando o título do texto */
+            padding-bottom: 20px; /* Espaço entre o título e a linha */
+            margin-bottom: 20px; /* Espaço entre a linha e o parágrafo */
         }
 
         .sobre-header h1 {
-            color: #00ff00;
-            margin: 0;
-            text-transform: uppercase;
-            font-size: 24px;
+            color: #00ff00; /* Cor verde para o título principal */
+            margin: 0; /* Remove margens automáticas */
+            text-transform: uppercase; /* Título em letras maiúsculas */
+            font-size: 24px; /* Tamanho da fonte do título */
         }
 
         .sobre-texto {
-            line-height: 1.6;
-            font-size: 18px;
-            color: #ccc;
-            text-align: left;
+            line-height: 1.6; /* Aumenta o espaço entre as linhas para facilitar a leitura */
+            font-size: 18px; /* Tamanho da fonte do texto explicativo */
+            color: #ccc; /* Cor cinza claro para o texto não cansar a vista */
+            text-align: left; /* Alinha o texto explicativo à esquerda (melhor para leitura longa) */
         }
 
+        /* --- ÁREA DO BOTÃO SOCIAL --- */
         .redes-sociais {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 30px;
+            display: flex; /* Ativa flexbox para alinhar botões se houver mais de um */
+            justify-content: center; /* Centraliza o botão na tela */
+            gap: 20px; /* Espaço caso você adicione mais botões no futuro */
+            margin-top: 30px; /* Distância entre o texto e o botão */
         }
 
         .social-btn {
-            background-color: #00ff00;
-            color: black;
-            padding: 12px 25px;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 5px;
-            text-transform: uppercase;
+            background-color: #00ff00; /* Cor de fundo verde do botão */
+            color: black; /* Texto preto para contraste */
+            padding: 12px 25px; /* Tamanho interno do botão */
+            text-decoration: none; /* Remove sublinhado de link */
+            font-weight: bold; /* Texto em negrito */
+            border-radius: 5px; /* Cantos levemente arredondados */
+            text-transform: uppercase; /* Letras maiúsculas */
         }
     </style>
 </head>
@@ -106,21 +102,17 @@
 
     <nav>
         <div class="nav-links">
-            <a href="../index.html">Início</a>
-            <a href="sobre.html">Sobre</a>
-            <a href="https://youtube.com/@maykjjr" target="_blank">YouTube</a>
-        </div>
-        <img src="../assets/img/logo-icon.png"alt="MIX-SA-MODS" class="site-logo">
+            <a href="../index.html">Início</a> <a href="sobre.html">Sobre</a> <a href="https://youtube.com/@maykjjr" target="_blank">YouTube</a> </div>
+        <img src="../assets/img/logo-icon.png" alt="MIX-SA-MODS" class="site-logo">
     </nav>
 
     <div class="logo-container">
-        <img src="../assets/img/logo-icon.png"alt="MaykJJr" class="logo-perfil">
+        <img src="../assets/img/logo-icon.png" alt="MaykJJr" class="logo-perfil">
     </div>
 
     <div class="container-sobre">
         <div class="sobre-header">
-            <h1>Sobre o MIX-SA-MODS</h1>
-        </div>
+            <h1>Sobre o MIX-SA-MODS</h1> </div>
         
         <div class="sobre-texto">
             <p>Seja bem-vindo ao <strong>MIX-SA-MODS</strong>, o seu diretório definitivo de modificações para GTA San Andreas Mobile.</p>
