@@ -89,14 +89,14 @@
             margin-bottom: 20px;
         }
 
-        /* --- CARDS E IMAGENS AJUSTADAS --- */
-        .container { max-width: 800px; margin: auto; padding: 20px; }
+        /* --- CARDS E IMAGENS AJUSTADAS (OTIMIZADO MOBILE) --- */
+        .container { max-width: 800px; margin: auto; padding: 10px; }
 
         .mod-card {
             background-color: #1e1e1e;
-            border-radius: 15px;
+            border-radius: 12px;
             overflow: hidden;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             border: 1px solid #333;
             transition: transform 0.3s, border-color 0.3s;
             display: block; 
@@ -108,24 +108,40 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .mod-card:hover { 
-            border-color: #00ff00; 
-            transform: scale(1.02);
-        }
+        .mod-card:hover { border-color: #00ff00; }
+        
+        /* Feedback de toque para celular */
+        .mod-card:active { transform: scale(0.98); }
 
-        /* CORREÇÃO DA IMAGEM AQUI */
         .mod-img { 
             width: 100%; 
-            height: auto; 
-            max-height: 200px; /* Limite para não ocupar a tela toda */
-            object-fit: contain; /* Mostra a imagem inteira sem cortes */
-            background-color: #000; /* Fundo preto para preencher se a imagem for menor */
+            height: 180px; 
+            object-fit: cover; 
+            background-color: #000;
             display: block;
+            border-bottom: 1px solid #333;
         }
 
-        .mod-info { padding: 20px; text-align: left; }
-        .mod-card h2 { color: #00ff00; margin: 0 0 10px 0; font-size: 22px; }
-        .mod-card p { color: #bbb; font-size: 14px; line-height: 1.5; margin-bottom: 15px; }
+        .mod-info { padding: 15px; text-align: left; }
+        
+        .mod-card h2 { 
+            color: #00ff00; 
+            margin: 0 0 8px 0; 
+            font-size: 18px; 
+            text-transform: uppercase;
+        }
+        
+        .mod-card p { 
+            color: #bbb; 
+            font-size: 13px; 
+            line-height: 1.4; 
+            margin-bottom: 15px;
+            /* Limita a 3 linhas para não esticar o card no mobile */
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
 
         /* Botões */
         .btn {
