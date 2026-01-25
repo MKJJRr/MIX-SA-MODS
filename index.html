@@ -160,6 +160,26 @@
 
         /* --- RODAPÉ --- */
         footer { padding: 40px 20px; color: #555; font-size: 13px; border-top: 1px solid #1a1a1a; } /* Estilo do rodapé */
+
+        /* --- NOVO: ESTILO DO BOTÃO SUBIR AO TOPO --- */
+        #backToTop {
+            position: fixed; /* Fixa o botão na tela */
+            bottom: 20px; /* Distância do fundo */
+            right: 20px; /* Distância da direita */
+            background-color: #00ff00; /* Cor verde neon */
+            color: black; /* Seta na cor preta */
+            width: 45px; /* Largura do botão */
+            height: 45px; /* Altura do botão */
+            border-radius: 50%; /* Torna o botão redondo */
+            display: none; /* Inicia escondido */
+            align-items: center; /* Centraliza a seta */
+            justify-content: center; /* Centraliza a seta */
+            font-size: 24px; /* Tamanho da seta */
+            cursor: pointer; /* Cursor de mãozinha */
+            z-index: 2000; /* Fica acima de tudo */
+            border: none; /* Remove borda */
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4); /* Brilho neon */
+        }
     </style>
 </head>
 <body>
@@ -170,56 +190,100 @@
     <img src="assets/img/logo-icon.png" alt="MIX-SA-MODS" class="site-logo"> </nav>
 
 <header>
-    <h1 style="font-size: 35px; margin-bottom: 5px;">MIX-SA-MODS</h1> <p style="color: #00ff00; font-weight: bold;">O ponto de encontro dos modders de GTA SA Mobile</p> </header>
+    <h1 style="font-size: 35px; margin-bottom: 5px;">MIX-SA-MODS</h1> <p style="color: #00ff00; font-weight: bold;">O ponto de encontro dos modders de GTA SA Mobile</p> <p id="modCounter" style="color: #888; font-size: 14px; margin-top: 10px;">Carregando mods...</p> 
+</header>
 
 <div class="controls-container">
     <input type="text" id="searchInput" onkeyup="filterMods()" placeholder="Pesquisar mod..."> <div class="category-buttons">
         <button class="btn btn-category active" onclick="setCategory('todos', this)">TUDO</button> <button class="btn btn-category" onclick="setCategory('textura', this)">TEXTURAS</button> <button class="btn btn-category" onclick="setCategory('script', this)">SCRIPTS/CLEO</button> <button class="btn btn-category" onclick="setCategory('veiculo', this)">VEÍCULOS</button> <button class="btn btn-category" onclick="setCategory('correcao', this)">CORREÇÃO</button> </div>
 </div>
 
-<div class="container" id="modList"> <div class="mod-card" data-category="script"> <img src="mods/img/mod-gasolina.png" alt="Mod Gasolina" class="mod-img"> <div class="mod-info">
-            <h2>Mod Gasolina Realista</h2> <p>Adiciona um sistema de combustível realista, obrigando o jogador a abastecer em postos espalhados pelo mapa.</p> <a href="mods/mod-gasolina.html" class="btn btn-download">VER DETALHES</a> </div>
+<div class="container" id="modList"> <div class="mod-card" data-category="script"> <img src="mods/img/mod-gasolina.png" alt="Mod Gasolina" class="mod-img">
+        <div class="mod-info">
+            <h2>Mod Gasolina Realista</h2>
+            <p>Adiciona um sistema de combustível realista, obrigando o jogador a abastecer em postos espalhados pelo mapa.</p>
+            <a href="mods/mod-gasolina.html" class="btn btn-download">VER DETALHES</a>
+        </div>
     </div>
 
-    <div class="mod-card" data-category="textura"> <img src="mods/img/placeholder.png" alt="Novo Mod" class="mod-img"> <div class="mod-info">
-            <h2>Céu Realista 4K</h2> <p>Melhora drasticamente as texturas das nuvens e o ciclo de dia/noite do jogo.</p> <a href="#" class="btn btn-download">EM BREVE</a> </div>
+    <div class="mod-card" data-category="textura"> <img src="mods/img/placeholder.png" alt="Novo Mod" class="mod-img">
+        <div class="mod-info">
+            <h2>Céu Realista 4K</h2>
+            <p>Melhora drasticamente as texturas das nuvens e o ciclo de dia/noite do jogo.</p>
+            <a href="#" class="btn btn-download">EM BREVE</a>
+        </div>
     </div>
 
 </div>
+
+<button id="backToTop" onclick="scrollToTop()">↑</button>
 
 <footer>
     <p>&copy; 2026 MIX-SA-MODS - Desenvolvido por MaykJJr</p> </footer>
 
 <script>
-    let currentCategory = 'todos'; // Variável da categoria ativa no momento
+    let currentCategory = 'todos'; // Categoria ativa
 
-    function setCategory(category, el) { // Função para trocar de categoria
-        let buttons = document.getElementsByClassName('btn-category'); // Seleciona botões de categoria
-        for (let btn of buttons) { btn.classList.remove('active'); } // Remove estilo ativo de todos
-        el.classList.add('active'); // Aplica estilo ativo no selecionado
-        currentCategory = category; // Define a nova categoria
-        filterMods(); // Atualiza a filtragem
-    }
-
-    function filterMods() { // Função principal de pesquisa e filtro
-        let input = document.getElementById('searchInput').value.toLowerCase(); // Valor da pesquisa
-        let cards = document.getElementsByClassName('mod-card'); // Pega todos os cards
-
-        for (let i = 0; i < cards.length; i++) { // Loop em cada card
-            let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase(); // Pega o título
-            let category = cards[i].getAttribute('data-category'); // Pega a categoria
-            let matchSearch = title.includes(input); // Verifica se o nome bate
-            let matchCategory = (currentCategory === 'todos' || category === currentCategory); // Verifica se a categoria bate
-
-            if (matchSearch && matchCategory) { // Se ambos baterem
-                cards[i].style.display = ""; // Mostra o card
-                cards[i].style.animation = 'none'; // Reseta animação
-                cards[i].offsetHeight; // Força renderização do navegador
-                cards[i].style.animation = null; // Reinicia animação de entrada
-            } else {
-                cards[i].style.display = "none"; // Esconde o card se não bater
+    // NOVO: FUNÇÃO PARA ATUALIZAR O CONTADOR
+    function updateCounter() {
+        // Conta apenas os cards que não estão escondidos (display diferente de none)
+        let cards = document.getElementsByClassName('mod-card');
+        let totalVisible = 0;
+        for (let card of cards) {
+            if (card.style.display !== "none") {
+                totalVisible++;
             }
         }
+        document.getElementById('modCounter').innerText = "Exibindo " + totalVisible + " mods de GTA SA";
+    }
+
+    // Chama o contador pela primeira vez ao carregar a página
+    window.onload = updateCounter;
+
+    function setCategory(category, el) { // Troca de categoria
+        let buttons = document.getElementsByClassName('btn-category');
+        for (let btn of buttons) { btn.classList.remove('active'); }
+        el.classList.add('active');
+        currentCategory = category;
+        filterMods();
+    }
+
+    function filterMods() { // Filtra pesquisa e categoria
+        let input = document.getElementById('searchInput').value.toLowerCase();
+        let cards = document.getElementsByClassName('mod-card');
+
+        for (let i = 0; i < cards.length; i++) {
+            let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase();
+            let category = cards[i].getAttribute('data-category');
+            let matchSearch = title.includes(input);
+            let matchCategory = (currentCategory === 'todos' || category === currentCategory);
+
+            if (matchSearch && matchCategory) {
+                cards[i].style.display = "";
+                cards[i].style.animation = 'none';
+                cards[i].offsetHeight;
+                cards[i].style.animation = null;
+            } else {
+                cards[i].style.display = "none";
+            }
+        }
+        updateCounter(); // ATUALIZA O CONTADOR AO FILTRAR
+    }
+
+    // NOVO: LÓGICA DO BOTÃO SUBIR AO TOPO
+    window.onscroll = function() {
+        let btn = document.getElementById("backToTop");
+        // Se rolar mais de 300px para baixo, o botão aparece
+        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+            btn.style.display = "flex";
+        } else {
+            btn.style.display = "none";
+        }
+    };
+
+    function scrollToTop() {
+        // Faz a página subir suavemente
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 </script>
 
