@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MIX-SA-MODS | GTA SA Android</title>
-    
+
     <link rel="icon" href="assets/img/logo-icon.png" sizes="32x32">
     <link rel="icon" href="assets/img/logo-icon.png" sizes="192x192">
     <link rel="apple-touch-icon" href="assets/img/logo-icon.png">
@@ -39,10 +39,7 @@
             justify-content: space-between;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 15px;
-        }
+        .nav-links { display: flex; gap: 15px; }
 
         nav a {
             color: white;
@@ -64,7 +61,6 @@
             border-bottom: 1px solid #222;
         }
 
-        /* Área de Busca e Filtros */
         .controls-container {
             padding: 20px;
             max-width: 800px;
@@ -92,9 +88,9 @@
             margin-bottom: 20px;
         }
 
-        /* --- ANIMAÇÃO E CARDS --- */
+        /* --- CARDS E IMAGENS AJUSTADAS --- */
         .container { max-width: 800px; margin: auto; padding: 20px; }
-        
+
         .mod-card {
             background-color: #1e1e1e;
             border-radius: 15px;
@@ -103,9 +99,9 @@
             border: 1px solid #333;
             transition: transform 0.3s, border-color 0.3s;
             display: block; 
-            animation: slideIn 0.5s ease forwards; /* Animação ao carregar */
+            animation: slideIn 0.5s ease forwards;
         }
-        
+
         @keyframes slideIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -116,10 +112,19 @@
             transform: scale(1.02);
         }
 
-        .mod-img { width: 100%; height: 220px; object-fit: cover; background-color: #111; }
+        /* CORREÇÃO DA IMAGEM AQUI */
+        .mod-img { 
+            width: 100%; 
+            height: auto; 
+            max-height: 350px; /* Limite para não ocupar a tela toda */
+            object-fit: contain; /* Mostra a imagem inteira sem cortes */
+            background-color: #000; /* Fundo preto para preencher se a imagem for menor */
+            display: block;
+        }
+
         .mod-info { padding: 20px; text-align: left; }
         .mod-card h2 { color: #00ff00; margin: 0 0 10px 0; font-size: 22px; }
-        .mod-card p { color: #bbb; font-size: 14px; line-height: 1.5; }
+        .mod-card p { color: #bbb; font-size: 14px; line-height: 1.5; margin-bottom: 15px; }
 
         /* Botões */
         .btn {
@@ -134,10 +139,9 @@
             text-transform: uppercase;
             font-size: 13px;
         }
-        
+
         .btn-category { background-color: #252525; color: #888; border: 1px solid #333; }
-        
-        /* Efeito Neon no Botão Ativo */
+
         .btn-category.active { 
             background-color: #00ff00; 
             color: black; 
@@ -151,7 +155,6 @@
             width: 100%; 
             box-sizing: border-box;
             text-align: center;
-            margin-top: 15px;
         }
         .btn-download:hover { background-color: #00cc00; box-shadow: 0 5px 15px rgba(0, 255, 0, 0.2); }
 
@@ -187,7 +190,7 @@
 </div>
 
 <div class="container" id="modList">
-    
+
     <div class="mod-card" data-category="script">
         <img src="mods/img/mod-gasolina.png" alt="Mod Gasolina" class="mod-img">
         <div class="mod-info">
@@ -231,13 +234,12 @@
         for (let i = 0; i < cards.length; i++) {
             let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase();
             let category = cards[i].getAttribute('data-category');
-            
+
             let matchSearch = title.includes(input);
             let matchCategory = (currentCategory === 'todos' || category === currentCategory);
 
             if (matchSearch && matchCategory) {
                 cards[i].style.display = "";
-                // Reinicia a animação ao filtrar
                 cards[i].style.animation = 'none';
                 cards[i].offsetHeight; 
                 cards[i].style.animation = null;
