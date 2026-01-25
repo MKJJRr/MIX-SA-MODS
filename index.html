@@ -46,58 +46,58 @@
         nav a {
             color: white;
             text-decoration: none;
-            margin: 0 10px;
+            margin: 0 5px;
             font-weight: bold;
             text-transform: uppercase;
-            font-size: 13px;
+            font-size: 12px;
             transition: 0.3s;
         }
         nav a:hover { color: #00ff00; }
 
-        .site-logo { height: 40px; width: auto; }
+        .site-logo { height: 35px; width: auto; }
 
         header {
-            padding: 50px 20px;
+            padding: 30px 20px;
             background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('assets/img/banner.jpg');
             background-size: cover;
             border-bottom: 1px solid #222;
         }
 
         .controls-container {
-            padding: 20px;
+            padding: 15px;
             max-width: 800px;
             margin: auto;
         }
         #searchInput {
             width: 90%;
-            padding: 15px;
+            padding: 12px;
             border-radius: 50px;
             border: 2px solid #333;
             background-color: #1a1a1a;
             color: white;
-            font-size: 16px;
+            font-size: 14px;
             outline: none;
             transition: 0.3s;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
-        #searchInput:focus { border-color: #00ff00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
+        #searchInput:focus { border-color: #00ff00; box-shadow: 0 0 10px rgba(0, 255, 0, 0.2); }
 
         .category-buttons {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 10px;
         }
 
-        /* --- CARDS CENTRALIZADOS E PERCEPTÍVEIS --- */
-        .container { max-width: 800px; margin: auto; padding: 20px; }
+        /* --- CARDS COMPACTOS --- */
+        .container { max-width: 500px; margin: auto; padding: 10px; }
 
         .mod-card {
             background-color: #1e1e1e;
-            border-radius: 15px;
+            border-radius: 12px;
             overflow: hidden;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             border: 1px solid #333;
             transition: 0.3s;
             display: block; 
@@ -105,57 +105,49 @@
         }
 
         @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .mod-card:hover { border-color: #00ff00; transform: translateY(-5px); }
-
         .mod-img { 
             width: 100%; 
-            height: auto; 
-            max-height: 350px; 
-            object-fit: contain; 
+            height: 160px; /* Altura reduzida para não ocupar a tela toda */
+            object-fit: cover; /* Preenche o espaço de forma uniforme */
             background-color: #000; 
             display: block;
         }
 
-        /* AJUSTE DE CENTRALIZAÇÃO AQUI */
         .mod-info { 
-            padding: 25px; 
-            text-align: center; /* Centraliza tudo dentro da info */
+            padding: 15px; 
+            text-align: center; 
         }
         
         .mod-card h2 { 
             color: #00ff00; 
-            margin: 0 0 12px 0; 
-            font-size: 24px; /* Aumentei um pouco para destaque */
+            margin: 0 0 5px 0; 
+            font-size: 18px; /* Título mais discreto */
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
         
         .mod-card p { 
-            color: #eeeeee; /* Cor mais clara para ficar perceptível */
-            font-size: 15px; 
-            line-height: 1.6; 
-            margin-bottom: 20px;
-            max-width: 90%; /* Evita que o texto encoste nas bordas */
-            margin-left: auto;
-            margin-right: auto;
+            color: #eeeeee; 
+            font-size: 13px; 
+            line-height: 1.4; 
+            margin-bottom: 15px;
         }
 
-        /* Botões de Categoria */
+        /* Botões de Categoria Slim */
         .btn {
             display: inline-block;
-            padding: 12px 24px;
+            padding: 8px 16px;
             text-decoration: none;
             font-weight: bold;
-            border-radius: 8px;
+            border-radius: 6px;
             transition: 0.3s;
             cursor: pointer;
             border: none;
             text-transform: uppercase;
-            font-size: 13px;
+            font-size: 11px;
         }
 
         .btn-category { background-color: #252525; color: #888; border: 1px solid #333; }
@@ -163,25 +155,24 @@
         .btn-category.active { 
             background-color: #00ff00; 
             color: black; 
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
-            border-color: #00ff00;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
         }
 
-        /* O BOTÃO "VER DETALHES" REFORMULADO */
+        /* BOTÃO VER DETALHES COMPACTO */
         .btn-download { 
             background: linear-gradient(45deg, #00ff00, #00cc00, #00ff88);
             background-size: 200% 200%;
             color: #000; 
             width: 100%; 
+            padding: 10px;
             box-sizing: border-box;
-            text-align: center;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            font-size: 15px;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3);
+            gap: 8px;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 3px 10px rgba(0, 255, 0, 0.2);
             animation: gradientMove 3s ease infinite;
         }
 
@@ -191,15 +182,9 @@
             100% { background-position: 0% 50%; }
         }
 
-        .btn-download:hover { 
-            box-shadow: 0 0 25px rgba(0, 255, 0, 0.7);
-            transform: scale(1.02);
-        }
+        .btn-download:hover { transform: scale(1.02); }
 
-        .btn-download i { transition: 0.3s; }
-        .btn-download:hover i { transform: translateX(5px); }
-
-        footer { padding: 40px 20px; color: #555; font-size: 13px; border-top: 1px solid #1a1a1a; }
+        footer { padding: 30px 20px; color: #555; font-size: 12px; border-top: 1px solid #1a1a1a; }
     </style>
 </head>
 <body>
@@ -214,8 +199,8 @@
 </nav>
 
 <header>
-    <h1 style="font-size: 35px; margin-bottom: 5px;">MIX-SA-MODS</h1>
-    <p style="color: #00ff00; font-weight: bold;">O ponto de encontro dos modders de GTA SA Mobile</p>
+    <h1 style="font-size: 28px; margin-bottom: 5px;">MIX-SA-MODS</h1>
+    <p style="color: #00ff00; font-weight: bold; font-size: 14px;">Mods para GTA SA Mobile</p>
 </header>
 
 <div class="controls-container">
@@ -224,7 +209,7 @@
     <div class="category-buttons">
         <button class="btn btn-category active" onclick="setCategory('todos', this)">TUDO</button>
         <button class="btn btn-category" onclick="setCategory('textura', this)">TEXTURAS</button>
-        <button class="btn btn-category" onclick="setCategory('script', this)">SCRIPTS/CLEO</button>
+        <button class="btn btn-category" onclick="setCategory('script', this)">SCRIPTS</button>
         <button class="btn btn-category" onclick="setCategory('veiculo', this)">VEÍCULOS</button>
         <button class="btn btn-category" onclick="setCategory('correcao', this)">CORREÇÃO</button>
     </div>
@@ -236,7 +221,7 @@
         <img src="mods/img/mod-gasolina.png" alt="Mod Gasolina" class="mod-img">
         <div class="mod-info">
             <h2>Mod Gasolina Realista</h2>
-            <p>Adiciona um sistema de combustível realista, obrigando o jogador a abastecer em postos espalhados pelo mapa.</p>
+            <p>Adiciona sistema de combustível aos veículos do jogo.</p>
             <a href="mods/mod-gasolina.html" class="btn btn-download">
                 VER DETALHES <i class="fa-solid fa-arrow-right"></i>
             </a>
@@ -274,9 +259,6 @@
 
             if (matchSearch && matchCategory) {
                 cards[i].style.display = "";
-                cards[i].style.animation = 'none';
-                cards[i].offsetHeight; 
-                cards[i].style.animation = null;
             } else {
                 cards[i].style.display = "none";
             }
