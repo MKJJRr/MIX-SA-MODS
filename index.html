@@ -47,22 +47,21 @@
         nav a {
             color: white;
             text-decoration: none;
-            margin: 0 15px;
+            margin: 0 10px;
             font-weight: bold;
             text-transform: uppercase;
-            font-size: 14px;
+            font-size: 13px;
+            transition: 0.3s;
         }
+        nav a:hover { color: #00ff00; }
 
-        /* LOGO NO TOPO - LIMPA */
-        .site-logo {
-            height: 40px;
-            width: auto;
-        }
+        .site-logo { height: 40px; width: auto; }
 
         header {
-            padding: 40px 20px;
-            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://via.placeholder.com/1200x400');
+            padding: 50px 20px;
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('assets/img/banner.jpg');
             background-size: cover;
+            border-bottom: 1px solid #222;
         }
 
         /* Área de Busca e Filtros */
@@ -83,7 +82,7 @@
             transition: 0.3s;
             margin-bottom: 20px;
         }
-        #searchInput:focus { border-color: #00ff00; box-shadow: 0 0 10px #00ff00; }
+        #searchInput:focus { border-color: #00ff00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
 
         .category-buttons {
             display: flex;
@@ -93,39 +92,70 @@
             margin-bottom: 20px;
         }
 
-        /* Cards de Mods */
+        /* --- ANIMAÇÃO E CARDS --- */
         .container { max-width: 800px; margin: auto; padding: 20px; }
+        
         .mod-card {
             background-color: #1e1e1e;
-            border-radius: 12px;
+            border-radius: 15px;
             overflow: hidden;
             margin-bottom: 30px;
             border: 1px solid #333;
-            transition: 0.3s;
+            transition: transform 0.3s, border-color 0.3s;
             display: block; 
+            animation: slideIn 0.5s ease forwards; /* Animação ao carregar */
         }
-        .mod-card:hover { border-color: #00ff00; }
-        .mod-img { width: 100%; height: 200px; object-fit: cover; background-color: #333; }
-        .mod-info { padding: 20px; }
-        .mod-card h2 { color: #00ff00; margin: 0 0 10px 0; }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .mod-card:hover { 
+            border-color: #00ff00; 
+            transform: scale(1.02);
+        }
+
+        .mod-img { width: 100%; height: 220px; object-fit: cover; background-color: #111; }
+        .mod-info { padding: 20px; text-align: left; }
+        .mod-card h2 { color: #00ff00; margin: 0 0 10px 0; font-size: 22px; }
+        .mod-card p { color: #bbb; font-size: 14px; line-height: 1.5; }
 
         /* Botões */
         .btn {
             display: inline-block;
-            padding: 10px 20px;
+            padding: 12px 24px;
             text-decoration: none;
             font-weight: bold;
-            border-radius: 6px;
-            transition: 0.2s;
+            border-radius: 8px;
+            transition: 0.3s;
             cursor: pointer;
             border: none;
+            text-transform: uppercase;
+            font-size: 13px;
         }
-        .btn-category { background-color: #333; color: white; font-size: 12px; }
-        .btn-category:hover, .btn-category.active { background-color: #00ff00; color: black; }
         
-        .btn-download { background-color: #00ff00; color: #000; margin-top: 10px; }
+        .btn-category { background-color: #252525; color: #888; border: 1px solid #333; }
+        
+        /* Efeito Neon no Botão Ativo */
+        .btn-category.active { 
+            background-color: #00ff00; 
+            color: black; 
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+            border-color: #00ff00;
+        }
 
-        footer { padding: 20px; color: #666; font-size: 14px; }
+        .btn-download { 
+            background-color: #00ff00; 
+            color: #000; 
+            width: 100%; 
+            box-sizing: border-box;
+            text-align: center;
+            margin-top: 15px;
+        }
+        .btn-download:hover { background-color: #00cc00; box-shadow: 0 5px 15px rgba(0, 255, 0, 0.2); }
+
+        footer { padding: 40px 20px; color: #555; font-size: 13px; border-top: 1px solid #1a1a1a; }
     </style>
 </head>
 <body>
@@ -140,8 +170,8 @@
 </nav>
 
 <header>
-    <h1>MIX-SA-MODS</h1>
-    <p>O ponto de encontro dos modders de GTA San Andreas Mobile</p>
+    <h1 style="font-size: 35px; margin-bottom: 5px;">MIX-SA-MODS</h1>
+    <p style="color: #00ff00; font-weight: bold;">O ponto de encontro dos modders de GTA SA Mobile</p>
 </header>
 
 <div class="controls-container">
@@ -159,38 +189,20 @@
 <div class="container" id="modList">
     
     <div class="mod-card" data-category="script">
-        <img src="mods/img/mod-gasolina.png" alt="Thumbnail Mod" class="mod-img">
+        <img src="mods/img/mod-gasolina.png" alt="Mod Gasolina" class="mod-img">
         <div class="mod-info">
             <h2>Mod Gasolina Realista</h2>
-            <p>Adiciona sistema de combustível aos veículos do jogo.</p>
+            <p>Adiciona um sistema de combustível realista, obrigando o jogador a abastecer em postos espalhados pelo mapa.</p>
             <a href="mods/mod-gasolina.html" class="btn btn-download">VER DETALHES</a>
         </div>
     </div>
 
-    <div class="mod-card" data-category=" CATEGORIA DO MOD "> 
-        <img src=" LINK OU NOME DO ARQUIVO DA IMAGEM DO MOD " alt="Thumbnail Mod" class="mod-img">
+    <div class="mod-card" data-category="textura"> 
+        <img src="mods/img/placeholder.png" alt="Novo Mod" class="mod-img">
         <div class="mod-info">
-            <h2> NOME DO MOD </h2>
-            <p> DESCRIÇÃO DO MOD </p>
-            <a href=" LINK OU NOME DO HTML DO MOD " class="btn btn-download">VER DETALHES</a>
-        </div>
-    </div>
-
-    <div class="mod-card" data-category=" CATEGORIA DO MOD "> 
-        <img src=" LINK OU NOME DO ARQUIVO DA IMAGEM DO MOD " alt="Thumbnail Mod" class="mod-img">
-        <div class="mod-info">
-            <h2> NOME DO MOD </h2>
-            <p> DESCRIÇÃO DO MOD </p>
-            <a href=" LINK OU NOME DO HTML DO MOD " class="btn btn-download">VER DETALHES</a>
-        </div>
-    </div>
-
-    <div class="mod-card" data-category=" CATEGORIA DO MOD "> 
-        <img src=" LINK OU NOME DO ARQUIVO DA IMAGEM DO MOD " alt="Thumbnail Mod" class="mod-img">
-        <div class="mod-info">
-            <h2> NOME DO MOD </h2>
-            <p> DESCRIÇÃO DO MOD </p>
-            <a href=" LINK OU NOME DO HTML DO MOD " class="btn btn-download">VER DETALHES</a>
+            <h2>Céu Realista 4K</h2>
+            <p>Melhora drasticamente as texturas das nuvens e o ciclo de dia/noite do jogo.</p>
+            <a href="#" class="btn btn-download">EM BREVE</a>
         </div>
     </div>
 
@@ -225,6 +237,10 @@
 
             if (matchSearch && matchCategory) {
                 cards[i].style.display = "";
+                // Reinicia a animação ao filtrar
+                cards[i].style.animation = 'none';
+                cards[i].offsetHeight; 
+                cards[i].style.animation = null;
             } else {
                 cards[i].style.display = "none";
             }
