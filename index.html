@@ -1,173 +1,172 @@
-<!DOCTYPE html> <html lang="pt-br"> <head>
-
+<!DOCTYPE html> 
+<html lang="pt-br"> <head>
     <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>MIX-SA-MODS | GTA SA Android</title> <meta name="description" content="Baixe os melhores mods para GTA San Andreas Mobile: Scripts Cleo, Texturas 4K e Correções para Android e muito mais."> <link rel="icon" href="assets/img/logo-icon.png" sizes="32x32"> <link rel="icon" href="assets/img/logo-icon.png" sizes="192x192"> <link rel="apple-touch-icon" href="assets/img/logo-icon.png"> <link rel="manifest" href="manifest.json"> <meta name="theme-color" content="#1a1a1a"> <meta name="apple-mobile-web-app-capable" content="yes"> <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <style>
         /* --- ESTILOS GERAIS --- */
         body {
-            background-color: #0f0f0f; /* Define o fundo cinza quase preto */
-            color: #ffffff; /* Define a cor padrão de todos os textos como branco */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Define a fonte do site */
-            margin: 0; /* Remove margens padrões do navegador nas bordas da página */
-            padding: 0; /* Remove preenchimentos padrões do navegador */
-            text-align: center; /* Centraliza textos que não tenham alinhamento específico */
+            background-color: #0f0f0f; /* Fundo cinza quase preto */
+            color: #ffffff; /* Texto branco padrão */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fonte do site */
+            margin: 0; /* Remove margens externas */
+            padding: 0; /* Remove preenchimentos internos */
+            text-align: center; /* Centraliza textos gerais */
         }
 
         /* --- BARRA DE NAVEGAÇÃO (MENU) --- */
         nav {
             background-color: #1a1a1a; /* Cor de fundo do menu */
-            padding: 10px 20px; /* Espaçamento interno: 10px em cima/baixo, 20px dos lados */
-            position: sticky; /* Faz o menu ficar "grudado" no topo ao rolar a página */
-            top: 0; /* Define que ele gruda exatamente na posição zero do topo */
-            border-bottom: 2px solid #00ff00; /* Linha verde neon na parte de baixo do menu */
-            z-index: 1000; /* Garante que o menu fique sempre por cima de qualquer outro elemento */
-            display: flex; /* Ativa o modo flexbox para alinhar itens lado a lado */
-            align-items: center; /* Alinha o texto e a logo verticalmente no centro */
-            justify-content: space-between; /* Coloca os links de um lado e a logo do outro */
+            padding: 10px 20px; /* Espaço interno do menu */
+            position: sticky; /* Gruda o menu no topo */
+            top: 0; /* Posição da fixação */
+            border-bottom: 2px solid #00ff00; /* Linha verde neon inferior */
+            z-index: 1000; /* Fica acima de tudo */
+            display: flex; /* Alinha itens em linha */
+            align-items: center; /* Centraliza itens verticalmente */
+            justify-content: space-between; /* Logo de um lado, links do outro */
         }
 
-        .nav-links { display: flex; gap: 15px; } /* Organiza os links em linha com 15px de espaço entre eles */
+        .nav-links { display: flex; gap: 15px; } /* Espaço de 15px entre os links */
 
         nav a {
-            color: #00ff00; /* Cor dos links do menu */
-            text-decoration: none; /* Remove o sublinhado padrão dos links */
-            margin: 0 10px; /* Margem lateral entre os links */
-            font-weight: bold; /* Deixa o texto do menu em negrito */
-            text-transform: uppercase; /* Deixa os links em letras maiúsculas */
-            font-size: 13px; /* Tamanho da letra dos links */
-            transition: 0.3s; /* Velocidade da animação de trocar de cor ao passar o mouse */
+            color: #00ff00; /* Links agora são verdes neon por padrão */
+            text-decoration: none; /* Sem sublinhado */
+            margin: 0 5px; /* Margem lateral entre links */
+            font-weight: bold; /* Negrito */
+            text-transform: uppercase; /* Letras maiúsculas */
+            font-size: 13px; /* Tamanho da letra */
+            transition: 0.3s; /* Suaviza a animação */
         }
-        nav a:hover { color: #00ff00; } /* Quando passa o mouse, o link fica verde */
+        nav a:hover { color: #ffffff; } /* Fica branco ao passar o mouse/tocar */
 
-        .site-logo { height: 40px; width: auto; } /* Define a altura da logo no menu e ajusta a largura sozinho */
+        .site-logo { height: 40px; width: auto; } /* Tamanho da logo no menu */
 
         /* --- CABEÇALHO (BANNER) --- */
         header {
-            padding: 50px 20px; /* Espaçamento interno do banner */
-            /* Fundo com degradê escuro sobreposto à imagem do banner para o texto ficar legível */
-            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('assets/img/banner.jpg');
-            background-size: cover; /* Faz a imagem de fundo cobrir todo o espaço sem distorcer */
-            border-bottom: 1px solid #222; /* Linha cinza bem discreta abaixo do banner */
+            padding: 50px 20px; /* Espaçamento do banner */
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('assets/img/banner.jpg'); /* Fundo escurecido com imagem */
+            background-size: cover; /* Imagem cobre todo o header */
+            border-bottom: 1px solid #222; /* Linha discreta abaixo */
         }
 
         /* --- CONTROLES (PESQUISA E CATEGORIAS) --- */
         .controls-container {
-            padding: 20px; /* Espaço ao redor da barra de pesquisa */
-            max-width: 400px; /* Largura máxima da área de pesquisa */
-            margin: auto; /* Centraliza a área de pesquisa na tela */
+            padding: 20px; /* Espaçamento da área de filtros */
+            max-width: 400px; /* Acompanha a largura dos cards */
+            margin: auto; /* Centraliza na tela */
         }
         #searchInput {
-            width: 90%; /* Barra ocupa 90% da largura da área container */
-            padding: 15px; /* Deixa a barra mais gordinha e fácil de clicar */
-            border-radius: 50px; /* Arredonda totalmente as pontas (estilo pílula) */
-            border: 2px solid #333; /* Borda cinza inicial */
-            background-color: #1a1a1a; /* Cor interna da barra de pesquisa */
-            color: white; /* Cor da letra que o usuário digita */
-            font-size: 16px; /* Tamanho da letra da digitação */
-            outline: none; /* Remove a borda azul padrão que alguns navegadores colocam */
-            transition: 0.3s; /* Suaviza a troca de cor da borda ao clicar */
-            margin-bottom: 20px; /* Espaço entre a barra e os botões de categoria */
+            width: 90%; /* Largura da barra de pesquisa */
+            padding: 15px; /* Grossura da barra */
+            border-radius: 50px; /* Formato de pílula */
+            border: 2px solid #333; /* Borda cinza escura */
+            background-color: #1a1a1a; /* Fundo interno da barra */
+            color: white; /* Cor da letra digitada */
+            font-size: 16px; /* Tamanho da letra */
+            outline: none; /* Remove borda azul do navegador */
+            transition: 0.3s; /* Suaviza efeito neon */
+            margin-bottom: 20px; /* Espaço para os botões abaixo */
         }
-        #searchInput:focus { border-color: #00ff00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); } /* Efeito neon ao clicar para digitar */
+        #searchInput:focus { border-color: #00ff00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); } /* Brilho neon no foco */
 
         .category-buttons {
-            display: flex; /* Alinha os botões em linha */
-            justify-content: center; /* Centraliza os botões */
-            flex-wrap: wrap; /* Se não couber na tela do celular, os botões pulam para a linha de baixo */
-            gap: 10px; /* Espaço entre cada botão */
-            margin-bottom: 20px; /* Espaço entre os botões e os cards de mods */
+            display: flex; /* Botões em linha */
+            justify-content: center; /* Centraliza botões */
+            flex-wrap: wrap; /* Quebra linha se necessário */
+            gap: 10px; /* Espaço entre botões */
+            margin-bottom: 20px; /* Espaço antes dos mods */
         }
 
         /* --- CARDS E IMAGENS (SISTEMA DE MODS) --- */
-        .container { max-width: 400px; margin: auto; padding: 10px; } /* Container principal dos mods */
+        .container { max-width: 400px; margin: auto; padding: 10px; } /* Largura padrão dos cards */
 
         .mod-card {
-            background-color: #1e1e1e; /* Cor de fundo do card do mod */
-            border-radius: 12px; /* Arredondamento dos cantos do card */
-            overflow: hidden; /* Corta o que sobrar para respeitar o arredondamento */
-            margin-bottom: 20px; /* Espaço entre um mod e outro */
-            border: 1px solid #333; /* Borda discreta ao redor do card */
-            transition: transform 0.3s, border-color 0.3s; /* Suaviza efeitos de toque/mouse */
-            display: block;  /* Define o card como um bloco */
-            animation: slideIn 0.5s ease forwards; /* Animação de entrada ao abrir o site */
+            background-color: #1e1e1e; /* Fundo do card */
+            border-radius: 12px; /* Cantos arredondados */
+            overflow: hidden; /* Mantém conteúdo dentro dos cantos */
+            margin-bottom: 20px; /* Distância entre cards */
+            border: 1px solid #333; /* Borda inicial */
+            transition: transform 0.3s, border-color 0.3s; /* Suaviza interações */
+            display: block;  /* Card se comporta como bloco */
+            animation: slideIn 0.5s ease forwards; /* Animação de entrada */
         }
 
         @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); } /* Inicia invisível e 20px abaixo */
-            to { opacity: 1; transform: translateY(0); } /* Termina visível na posição correta */
+            from { opacity: 0; transform: translateY(20px); } /* Inicia embaixo e invisível */
+            to { opacity: 1; transform: translateY(0); } /* Sobe e aparece */
         }
 
-        .mod-card:hover { border-color: #00ff00; } /* Borda fica verde ao passar o mouse no PC */
-        .mod-card:active { transform: scale(0.98); } /* Card "encolhe" um pouco ao tocar no celular */
+        .mod-card:hover { border-color: #00ff00; } /* Borda verde no hover */
+        .mod-card:active { transform: scale(0.98); } /* Efeito de clique */
 
         .mod-img { 
-            width: 100%; /* Imagem usa toda a largura do card */
-            height: auto; /* Alterado para auto: respeita a proporção da sua imagem personalizada */
-            object-fit: contain; /* Exibe a imagem inteira sem cortes */
-            background-color: #000; /* Fundo preto enquanto carrega ou preenche espaços */
-            display: block; /* Remove espaços vazios na base da imagem */
-            border-bottom: 1px solid #333; /* Linha que separa a imagem do texto */
+            width: 100%; /* Largura total do card */
+            height: auto; /* Respeita a proporção da imagem */
+            object-fit: contain; /* Mostra a imagem inteira sem cortes */
+            background-color: #000; /* Fundo preto para vazios */
+            display: block; /* Remove espaços na base */
+            border-bottom: 1px solid #333; /* Divisória para o texto */
         }
 
-        .mod-info { padding: 15px; text-align: left; } /* Espaçamento interno do texto e alinhamento à esquerda */
+        .mod-info { padding: 15px; text-align: left; } /* Info do mod alinhada à esquerda */
         
         .mod-card h2 { 
-            color: #00ff00; /* Título do mod em verde neon */
-            margin: 0 0 8px 0; /* Margem apenas na parte de baixo do título */
-            font-size: 18px; /* Tamanho da fonte do título */
-            text-transform: uppercase; /* Título sempre em maiúsculas */
+            color: #00ff00; /* Título verde neon */
+            margin: 0 0 8px 0; /* Margens controladas */
+            font-size: 18px; /* Tamanho do título */
+            text-transform: uppercase; /* Maiúsculas */
         }
         
         .mod-card p { 
-            color: #bbb; /* Descrição em cinza claro */
-            font-size: 13px; /* Tamanho da descrição */
-            line-height: 1.4; /* Espaçamento entre as linhas do texto */
-            margin-bottom: 15px; /* Espaço antes do botão de ver detalhes */
-            display: -webkit-box; /* Prepara o texto para ser limitado */
-            -webkit-line-clamp: 3; /* Limita a descrição em no máximo 3 linhas */
-            -webkit-box-orient: vertical; /* Define a orientação do limite de linhas */
-            overflow: hidden; /* Esconde o que passar das 3 linhas */
+            color: #bbb; /* Descrição cinza claro */
+            font-size: 13px; /* Tamanho da letra */
+            line-height: 1.4; /* Espaço entre linhas */
+            margin-bottom: 15px; /* Distância para o botão */
+            display: -webkit-box; /* Ativa limite de linhas */
+            -webkit-line-clamp: 3; /* Máximo 3 linhas */
+            -webkit-box-orient: vertical; /* Orientação vertical */
+            overflow: hidden; /* Esconde excesso de texto */
         }
 
         /* --- BOTÕES --- */
         .btn {
-            display: inline-block; /* Permite definir largura e altura mas fica na linha do texto */
-            padding: 12px 24px; /* Tamanho interno do botão */
-            text-decoration: none; /* Remove sublinhado de link */
-            font-weight: bold; /* Texto em negrito */
-            border-radius: 8px; /* Cantos arredondados do botão */
-            transition: 0.3s; /* Suaviza as trocas de cores */
-            cursor: pointer; /* Muda o ícone do mouse para a mãozinha */
-            border: none; /* Remove bordas padrões de botões do sistema */
-            text-transform: uppercase; /* Texto do botão sempre em maiúsculo */
-            font-size: 13px; /* Tamanho da letra no botão */
+            display: inline-block; /* Alinhamento em bloco na linha */
+            padding: 12px 24px; /* Tamanho do clique */
+            text-decoration: none; /* Remove sublinhado */
+            font-weight: bold; /* Negrito */
+            border-radius: 8px; /* Cantos arredondados */
+            transition: 0.3s; /* Suaviza cores */
+            cursor: pointer; /* Mãozinha no mouse */
+            border: none; /* Remove bordas de sistema */
+            text-transform: uppercase; /* Maiúsculas */
+            font-size: 13px; /* Tamanho da fonte */
         }
 
-        .btn-category { background-color: #252525; color: #888; border: 1px solid #333; } /* Estilo do botão de categoria inativo */
+        .btn-category { background-color: #252525; color: #888; border: 1px solid #333; } /* Estilo inativo */
 
         .btn-category.active { 
-            background-color: #00ff00; /* Fundo verde quando a categoria está selecionada */
-            color: black; /* Texto preto quando selecionado */
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4); /* Brilho neon ao redor */
+            background-color: #00ff00; /* Verde quando ativo */
+            color: black; /* Texto preto para contraste */
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4); /* Brilho neon */
             border-color: #00ff00; /* Borda verde */
         }
 
         .btn-download { 
-            background-color: #00ff00; /* Botão de ver detalhes sempre verde */
-            color: #000; /* Texto do botão preto */
-            width: 100%; /* Botão ocupa a largura toda do card */
-            box-sizing: border-box; /* Garante que o padding não faça o botão passar da largura */
-            text-align: center; /* Centraliza o texto "VER DETALHES" */
+            background-color: #00ff00; /* Botão de ação principal verde */
+            color: #000; /* Texto preto */
+            width: 100%; /* Largura total do card */
+            box-sizing: border-box; /* Padding não aumenta a largura */
+            text-align: center; /* Centraliza texto */
         }
-        .btn-download:hover { background-color: #00cc00; box-shadow: 0 5px 15px rgba(0, 255, 0, 0.2); } /* Escurece o verde ao passar o mouse */
+        .btn-download:hover { background-color: #00cc00; box-shadow: 0 5px 15px rgba(0, 255, 0, 0.2); } /* Escurece no hover */
 
         /* --- RODAPÉ --- */
-        footer { padding: 40px 20px; color: #555; font-size: 13px; border-top: 1px solid #1a1a1a; } /* Estilo do rodapé (Copyright) */
+        footer { padding: 40px 20px; color: #555; font-size: 13px; border-top: 1px solid #1a1a1a; } /* Estilo do rodapé */
     </style>
 </head>
 <body>
 
 <nav>
     <div class="nav-links">
-        <a href="index.html">Início</a> <a href="paginas/sobre.html">Sobre</a> <a href="https://youtube.com/@maykjjr" target="_blank">YouTube</a> <a href="comunidade.html"social</a> </div>
+        <a href="index.html">Início</a> <a href="paginas/sobre.html">Sobre</a> <a href="https://youtube.com/@maykjjr" target="_blank">YouTube</a> <a href="paginas/comunidade.html">Social</a> </div>
     <img src="assets/img/logo-icon.png" alt="MIX-SA-MODS" class="site-logo"> </nav>
 
 <header>
@@ -178,24 +177,12 @@
         <button class="btn btn-category active" onclick="setCategory('todos', this)">TUDO</button> <button class="btn btn-category" onclick="setCategory('textura', this)">TEXTURAS</button> <button class="btn btn-category" onclick="setCategory('script', this)">SCRIPTS/CLEO</button> <button class="btn btn-category" onclick="setCategory('veiculo', this)">VEÍCULOS</button> <button class="btn btn-category" onclick="setCategory('correcao', this)">CORREÇÃO</button> </div>
 </div>
 
-<div class="container" id="modList">
-
-    <div class="mod-card" data-category="script">
-        <img src="mods/img/mod-gasolina.png" alt="Mod Gasolina" class="mod-img">
-        <div class="mod-info">
-            <h2>Mod Gasolina Realista</h2>
-            <p>Adiciona um sistema de combustível realista, obrigando o jogador a abastecer em postos espalhados pelo mapa.</p>
-            <a href="mods/mod-gasolina.html" class="btn btn-download">VER DETALHES</a>
-        </div>
+<div class="container" id="modList"> <div class="mod-card" data-category="script"> <img src="mods/img/mod-gasolina.png" alt="Mod Gasolina" class="mod-img"> <div class="mod-info">
+            <h2>Mod Gasolina Realista</h2> <p>Adiciona um sistema de combustível realista, obrigando o jogador a abastecer em postos espalhados pelo mapa.</p> <a href="mods/mod-gasolina.html" class="btn btn-download">VER DETALHES</a> </div>
     </div>
 
-    <div class="mod-card" data-category="textura"> 
-        <img src="mods/img/placeholder.png" alt="Novo Mod" class="mod-img">
-        <div class="mod-info">
-            <h2>Céu Realista 4K</h2>
-            <p>Melhora drasticamente as texturas das nuvens e o ciclo de dia/noite do jogo.</p>
-            <a href="#" class="btn btn-download">EM BREVE</a>
-        </div>
+    <div class="mod-card" data-category="textura"> <img src="mods/img/placeholder.png" alt="Novo Mod" class="mod-img"> <div class="mod-info">
+            <h2>Céu Realista 4K</h2> <p>Melhora drasticamente as texturas das nuvens e o ciclo de dia/noite do jogo.</p> <a href="#" class="btn btn-download">EM BREVE</a> </div>
     </div>
 
 </div>
@@ -204,38 +191,33 @@
     <p>&copy; 2026 MIX-SA-MODS - Desenvolvido por MaykJJr</p> </footer>
 
 <script>
-    let currentCategory = 'todos'; // Variável que guarda qual categoria está selecionada no momento
+    let currentCategory = 'todos'; // Variável da categoria ativa no momento
 
-    // Função que define a categoria quando você clica no botão
-    function setCategory(category, el) {
-        let buttons = document.getElementsByClassName('btn-category'); // Pega todos os botões de categoria
-        for (let btn of buttons) { btn.classList.remove('active'); } // Remove a cor verde de todos eles
-        el.classList.add('active'); // Adiciona a cor verde apenas no botão que você clicou
-
-        currentCategory = category; // Atualiza a categoria atual
-        filterMods(); // Chama a função de filtrar para atualizar a lista na tela
+    function setCategory(category, el) { // Função para trocar de categoria
+        let buttons = document.getElementsByClassName('btn-category'); // Seleciona botões de categoria
+        for (let btn of buttons) { btn.classList.remove('active'); } // Remove estilo ativo de todos
+        el.classList.add('active'); // Aplica estilo ativo no selecionado
+        currentCategory = category; // Define a nova categoria
+        filterMods(); // Atualiza a filtragem
     }
 
-    // Função que filtra os mods por nome e por categoria ao mesmo tempo
-    function filterMods() {
-        let input = document.getElementById('searchInput').value.toLowerCase(); // Pega o que foi digitado e converte para letras minúsculas
-        let cards = document.getElementsByClassName('mod-card'); // Pega todos os cards de mods da página
+    function filterMods() { // Função principal de pesquisa e filtro
+        let input = document.getElementById('searchInput').value.toLowerCase(); // Valor da pesquisa
+        let cards = document.getElementsByClassName('mod-card'); // Pega todos os cards
 
-        for (let i = 0; i < cards.length; i++) {
-            let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase(); // Pega o título do mod atual do loop
-            let category = cards[i].getAttribute('data-category'); // Pega a categoria do mod atual do loop
+        for (let i = 0; i < cards.length; i++) { // Loop em cada card
+            let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase(); // Pega o título
+            let category = cards[i].getAttribute('data-category'); // Pega a categoria
+            let matchSearch = title.includes(input); // Verifica se o nome bate
+            let matchCategory = (currentCategory === 'todos' || category === currentCategory); // Verifica se a categoria bate
 
-            let matchSearch = title.includes(input); // Verifica se o nome digitado existe no título do mod
-            let matchCategory = (currentCategory === 'todos' || category === currentCategory); // Verifica se a categoria do mod bate com o filtro
-
-            // Se o nome e a categoria combinarem:
-            if (matchSearch && matchCategory) {
+            if (matchSearch && matchCategory) { // Se ambos baterem
                 cards[i].style.display = ""; // Mostra o card
-                cards[i].style.animation = 'none'; // Reseta a animação de entrada
-                cards[i].offsetHeight; // Comando "truque" para o navegador entender o reset da animação
-                cards[i].style.animation = null; // Reativa a animação de entrada
+                cards[i].style.animation = 'none'; // Reseta animação
+                cards[i].offsetHeight; // Força renderização do navegador
+                cards[i].style.animation = null; // Reinicia animação de entrada
             } else {
-                cards[i].style.display = "none"; // Se não bater, esconde o card
+                cards[i].style.display = "none"; // Esconde o card se não bater
             }
         }
     }
