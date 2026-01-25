@@ -90,7 +90,7 @@
             margin-bottom: 20px;
         }
 
-        /* --- CARDS E IMAGENS --- */
+        /* --- CARDS CENTRALIZADOS E PERCEPTÍVEIS --- */
         .container { max-width: 800px; margin: auto; padding: 20px; }
 
         .mod-card {
@@ -109,7 +109,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .mod-card:hover { border-color: #00ff00; }
+        .mod-card:hover { border-color: #00ff00; transform: translateY(-5px); }
 
         .mod-img { 
             width: 100%; 
@@ -120,9 +120,29 @@
             display: block;
         }
 
-        .mod-info { padding: 20px; text-align: left; }
-        .mod-card h2 { color: #00ff00; margin: 0 0 10px 0; font-size: 22px; }
-        .mod-card p { color: #bbb; font-size: 14px; line-height: 1.5; margin-bottom: 15px; }
+        /* AJUSTE DE CENTRALIZAÇÃO AQUI */
+        .mod-info { 
+            padding: 25px; 
+            text-align: center; /* Centraliza tudo dentro da info */
+        }
+        
+        .mod-card h2 { 
+            color: #00ff00; 
+            margin: 0 0 12px 0; 
+            font-size: 24px; /* Aumentei um pouco para destaque */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .mod-card p { 
+            color: #eeeeee; /* Cor mais clara para ficar perceptível */
+            font-size: 15px; 
+            line-height: 1.6; 
+            margin-bottom: 20px;
+            max-width: 90%; /* Evita que o texto encoste nas bordas */
+            margin-left: auto;
+            margin-right: auto;
+        }
 
         /* Botões de Categoria */
         .btn {
@@ -147,7 +167,7 @@
             border-color: #00ff00;
         }
 
-        /* --- O BOTÃO "VER DETALHES" FICOU LEGAL AGORA --- */
+        /* O BOTÃO "VER DETALHES" REFORMULADO */
         .btn-download { 
             background: linear-gradient(45deg, #00ff00, #00cc00, #00ff88);
             background-size: 200% 200%;
@@ -162,7 +182,7 @@
             font-size: 15px;
             letter-spacing: 1px;
             box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3);
-            animation: gradientMove 3s ease infinite; /* Gradiente que se mexe sozinho */
+            animation: gradientMove 3s ease infinite;
         }
 
         @keyframes gradientMove {
@@ -173,17 +193,11 @@
 
         .btn-download:hover { 
             box-shadow: 0 0 25px rgba(0, 255, 0, 0.7);
-            transform: translateY(-3px);
-            background-color: #00ff00;
+            transform: scale(1.02);
         }
 
-        .btn-download i {
-            transition: 0.3s;
-        }
-
-        .btn-download:hover i {
-            transform: translateX(5px); /* Seta se mexe no hover */
-        }
+        .btn-download i { transition: 0.3s; }
+        .btn-download:hover i { transform: translateX(5px); }
 
         footer { padding: 40px 20px; color: #555; font-size: 13px; border-top: 1px solid #1a1a1a; }
     </style>
