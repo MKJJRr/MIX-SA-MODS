@@ -1,114 +1,108 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
+<!DOCTYPE html> <html lang="pt-br"> <head>
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mod gasolina realista - MIX-SA-MODS</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Mod gasolina realista - MIX-SA-MODS</title> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-    <link rel="manifest" href="../manifest.json">
-    <meta name="theme-color" content="#1a1a1a">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-    <style>
+    <link rel="manifest" href="../manifest.json"> <meta name="theme-color" content="#1a1a1a"> <meta name="apple-mobile-web-app-capable" content="yes"> <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <style>
+        /* --- ESTILOS DA PÁGINA DO MOD --- */
         body { 
-            background-color: #0f0f0f; 
-            color: white; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            text-align: center; 
-            padding: 10px; 
-            margin: 0; 
-            animation: fadeInPage 0.8s ease; /* Animação ao carregar a página */
+            background-color: #0f0f0f; /* Fundo preto padrão do site */
+            color: white; /* Texto principal em branco */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fonte padrão */
+            text-align: center; /* Centraliza o conteúdo geral */
+            padding: 10px; /* Espaço nas bordas para o conteúdo não colar na tela */
+            margin: 0; /* Remove margens externas */
+            animation: fadeInPage 0.8s ease; /* Aplica animação de aparecer suavemente */
         }
 
+        /* Animação de FadeIn (Aparecer) */
         @keyframes fadeInPage {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from { opacity: 0; } /* Começa invisível */
+            to { opacity: 1; } /* Termina visível */
         }
 
-        /* Barra de Topo com Botão Voltar */
+        /* --- BARRA DE TOPO (BOTÃO VOLTAR) --- */
         .top-bar {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 15px;
-            max-width: 600px;
-            margin: 0 auto 5px auto;
+            display: flex; /* Ativa flexbox */
+            align-items: center; /* Alinha o botão verticalmente */
+            justify-content: flex-start; /* Alinha o botão à esquerda */
+            padding: 15px; /* Espaço interno da barra */
+            max-width: 600px; /* Largura máxima para combinar com o container abaixo */
+            margin: 0 auto 5px auto; /* Centraliza a barra e dá espaço embaixo */
         }
 
         .btn-voltar-topo {
-            text-decoration: none;
-            color: #00ff00;
-            font-weight: bold;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            background: #1e1e1e;
-            padding: 10px 18px;
-            border-radius: 50px;
-            border: 1px solid #333;
-            transition: 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            text-decoration: none; /* Remove sublinhado do link */
+            color: #00ff00; /* Texto verde neon */
+            font-weight: bold; /* Deixa o texto em negrito */
+            font-size: 14px; /* Tamanho da letra */
+            display: flex; /* Alinha a seta e o texto lado a lado */
+            align-items: center; /* Centraliza seta e texto verticalmente */
+            background: #1e1e1e; /* Fundo cinza escuro do botão */
+            padding: 10px 18px; /* Tamanho do botão */
+            border-radius: 50px; /* Formato arredondado (pílula) */
+            border: 1px solid #333; /* Borda cinza discreta */
+            transition: 0.3s; /* Suaviza as animações de hover */
+            text-transform: uppercase; /* Letras maiúsculas */
+            letter-spacing: 1px; /* Espaçamento entre as letras */
         }
 
         .seta-neon {
-            margin-right: 12px;
-            font-size: 22px;
-            line-height: 0;
-            color: #00ff00;
-            text-shadow: 0 0 8px #00ff00;
+            margin-right: 12px; /* Espaço entre a seta e a palavra "Voltar" */
+            font-size: 22px; /* Seta um pouco maior que o texto */
+            line-height: 0; /* Evita que a seta empurre a altura da linha */
+            color: #00ff00; /* Cor verde da seta */
+            text-shadow: 0 0 8px #00ff00; /* Brilho neon na seta */
             font-weight: bold;
         }
 
         .btn-voltar-topo:hover {
-            background: #252525;
-            border-color: #00ff00;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
-            transform: translateX(-5px);
+            background: #252525; /* Escurece o fundo ao passar o mouse */
+            border-color: #00ff00; /* Borda fica verde neon */
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.2); /* Brilho verde ao redor do botão */
+            transform: translateX(-5px); /* Move o botão levemente para a esquerda (efeito de retorno) */
         }
 
+        /* --- CONTAINER PRINCIPAL --- */
         .container { 
-            max-width: 600px; 
-            margin: auto; 
-            background: #1e1e1e; 
-            padding: 20px; 
-            border-radius: 15px; 
-            border: 1px solid #333;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            max-width: 600px; /* Largura máxima da caixa de informações */
+            margin: auto; /* Centraliza a caixa na tela */
+            background: #1e1e1e; /* Fundo cinza do card */
+            padding: 20px; /* Espaço interno */
+            border-radius: 15px; /* Cantos arredondados */
+            border: 1px solid #333; /* Borda da caixa */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5); /* Sombra para dar profundidade */
         }
 
-        /* Thumbnail ajustada com efeito hover */
+        /* Imagem do Mod (Print) */
         .mod-print { 
-            width: 100%; 
-            height: auto;
-            max-height: 300px;
-            object-fit: contain;
-            border-radius: 10px; 
-            margin-bottom: 20px; 
-            border: 1px solid #444; 
-            background: #000;
+            width: 100%; /* Largura total do container */
+            height: auto; /* Mantém a proporção */
+            max-height: 300px; /* Não deixa a imagem ficar alta demais no PC */
+            object-fit: contain; /* Garante que a imagem apareça inteira sem cortes */
+            border-radius: 10px; /* Cantos arredondados na imagem */
+            margin-bottom: 20px; /* Espaço abaixo da imagem */
+            border: 1px solid #444; /* Borda cinza na imagem */
+            background: #000; /* Fundo preto caso a imagem tenha transparência ou seja menor */
             transition: 0.3s;
         }
         .mod-print:hover {
-            border-color: #00ff00;
-            transform: scale(1.01);
+            border-color: #00ff00; /* Borda da imagem brilha em verde no hover */
+            transform: scale(1.01); /* Aumenta a imagem bem pouquinho no hover */
         }
 
+        /* Caixa de Detalhes Técnicos */
         .info-box { 
-            text-align: left; 
-            background: #252525; 
-            padding: 15px; 
-            border-radius: 8px; 
-            margin-bottom: 20px; 
-            border-left: 4px solid #00ff00; 
+            text-align: left; /* Alinha os textos (Tamanho, Créditos) à esquerda */
+            background: #252525; /* Fundo mais escuro que o container */
+            padding: 15px; /* Espaço interno */
+            border-radius: 8px; /* Cantos arredondados */
+            margin-bottom: 20px; /* Espaço antes da descrição */
+            border-left: 4px solid #00ff00; /* Detalhe lateral verde neon */
         }
 
-        /* Botões com efeitos de animação */
+        /* --- ESTILO DOS BOTÕES (LINKS) --- */
         .btn-link { 
-            display: flex;
+            display: flex; /* Flexbox para centralizar ícone e texto */
             align-items: center;
             justify-content: center;
             padding: 16px; 
@@ -117,40 +111,44 @@
             border-radius: 10px; 
             transition: 0.3s; 
             text-transform: uppercase;
-            gap: 12px;
-            box-sizing: border-box;
+            gap: 12px; /* Espaço entre o ícone e o texto */
+            box-sizing: border-box; /* Garante que o padding não estoure a largura */
         }
 
+        /* Botão do YouTube */
         .btn-youtube { 
-            background: #ff0000; 
+            background: #ff0000; /* Cor oficial do YouTube */
             color: white; 
             margin-bottom: 20px; 
         }
         .btn-youtube:hover { 
-            background: #cc0000; 
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+            background: #cc0000; /* Vermelho mais escuro no hover */
+            transform: translateY(-2px); /* Efeito de flutuar ao passar o mouse */
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3); /* Sombra vermelha */
         }
 
+        /* Botão de Download */
         .btn-download { 
-            background: #00ff00; 
-            color: black; 
+            background: #00ff00; /* Verde neon */
+            color: black; /* Texto preto para leitura */
         }
         .btn-download:hover { 
-            background: #00cc00; 
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
+            background: #00cc00; /* Verde mais escuro no hover */
+            transform: translateY(-2px); /* Efeito de flutuar */
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3); /* Sombra verde */
         }
 
+        /* --- SEÇÃO DE COMENTÁRIOS --- */
         .comentarios-section {
-            margin-top: 40px;
-            text-align: left;
-            border-top: 1px solid #333;
-            padding-top: 20px;
+            margin-top: 40px; /* Espaço entre os botões e os comentários */
+            text-align: left; /* Título dos comentários à esquerda */
+            border-top: 1px solid #333; /* Linha divisória */
+            padding-top: 20px; /* Espaço após a linha */
         }
 
+        /* Ajuste para o Disqus (Sistema de Comentários) */
         #disqus_thread {
-            color-scheme: dark !important;
+            color-scheme: dark !important; /* Força o tema escuro nos comentários */
             background: transparent !important;
         }
     </style>
@@ -164,11 +162,7 @@
     </div>
 
     <div class="container">
-        <h1>Mod Gasolina Realista</h1>
-
-        <img src="img/mod-gasolina.png" alt="Print do Mod" class="mod-print">
-
-        <div class="info-box">
+        <h1>Mod Gasolina Realista</h1> <img src="img/mod-gasolina.png" alt="Print do Mod" class="mod-print"> <div class="info-box">
             <strong style="color: #00ff00;">Informações:</strong>
             <p>• Tamanho: 1KB</p>
             <p>• Requisitos: GTA SA Android (Qualquer versão)</p>
@@ -196,16 +190,17 @@
 
     <script>
         var disqus_config = function () {
-            this.page.url = window.location.href;  
-            this.page.identifier = window.location.pathname; 
-            this.theme = 'dark';
+            this.page.url = window.location.href;  // Informa ao Disqus a URL da página atual
+            this.page.identifier = window.location.pathname; // Usa o caminho da página como ID único
+            this.theme = 'dark'; // Define o tema escuro
         };
 
         (function() { 
             var d = document, s = d.createElement('script');
+            // Link do seu shortname do Disqus (único para seu site)
             s.src = 'https://https-maikotds-github-io-mix-sa-mods-index-html.disqus.com/embed.js';
             s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s);
+            (d.head || d.body).appendChild(s); // Insere o script na página
         })();
     </script>
 
