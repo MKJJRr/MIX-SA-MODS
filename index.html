@@ -27,7 +27,7 @@
 
         .mod-card {
             background-color: #1e1e1e; border-radius: 12px; overflow: hidden; margin-bottom: 25px; border: 1px solid #333; transition: transform 0.3s;
-            position: relative; /* Adicionado apenas para o ícone flutuar */
+            position: relative; 
             animation: slideIn 0.5s ease forwards, neonPulse 3s infinite ease-in-out;
         }
         
@@ -42,14 +42,24 @@
         .btn-category.active { background-color: #00ff00; color: black; border-color: #00ff00; }
         .btn-download { background-color: #00ff00; color: #000; width: 100%; box-sizing: border-box; }
 
-        /* --- O AJUSTE QUE VOCÊ PEDIU --- */
         .btn-share {
-            position: absolute; top: 10px; right: 10px; /* Canto superior direito */
+            position: absolute; top: 10px; right: 10px;
             background-color: rgba(0,0,0,0.6); color: #00ff00; border: 1px solid #00ff00;
             width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
             font-size: 14px; cursor: pointer; z-index: 10; transition: 0.3s;
         }
         .btn-share:active { background-color: #00ff00; color: black; }
+
+        /* --- ESTILO DO NOVO TOAST (MENSAGEM DE CÓPIA) --- */
+        #toast {
+            visibility: hidden; min-width: 200px; background-color: #1a1a1a; color: #00ff00;
+            text-align: center; border-radius: 50px; border: 1px solid #00ff00; padding: 12px;
+            position: fixed; z-index: 3000; left: 50%; bottom: 30px; transform: translateX(-50%);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4); font-weight: bold; font-size: 14px;
+        }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2s; }
+        @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
+        @keyframes fadeout { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
 
         #backToTop { position: fixed; bottom: 20px; right: 20px; background-color: #00ff00; color: black; width: 45px; height: 45px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 24px; z-index: 2000; border: none; box-shadow: 0 0 15px rgba(0, 255, 0, 0.4); }
         footer { padding: 40px 20px; color: #555; font-size: 13px; border-top: 1px solid #1a1a1a; }
@@ -103,6 +113,8 @@
     </div>
 </div>
 
+<div id="toast">Link copiado! 🔗</div>
+
 <button id="backToTop" onclick="scrollToTop()">↑</button>
 
 <footer>
@@ -114,7 +126,17 @@
     function updateCounter() { let cards = document.getElementsByClassName('mod-card'); let visible = 0; for (let card of cards) { if (card.style.display !== "none") visible++; } document.getElementById('modCounter').innerText = "Exibindo " + visible + " mods de GTA SA"; }
     function setCategory(category, el) { let buttons = document.getElementsByClassName('btn-category'); for (let btn of buttons) btn.classList.remove('active'); el.classList.add('active'); currentCategory = category; filterMods(); }
     function filterMods() { let input = document.getElementById('searchInput').value.toLowerCase(); let cards = document.getElementsByClassName('mod-card'); for (let i = 0; i < cards.length; i++) { let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase(); let category = cards[i].getAttribute('data-category'); let matchSearch = title.includes(input); let matchCategory = (currentCategory === 'todos' || category === currentCategory); cards[i].style.display = (matchSearch && matchCategory) ? "" : "none"; } updateCounter(); }
-    function copyLink(url) { const fullUrl = window.location.origin + '/' + url; navigator.clipboard.writeText(fullUrl).then(() => { alert("Link do mod copiado com sucesso!"); }); }
+    
+    // FUNÇÃO ATUALIZADA: Agora usa Toast em vez de alert
+    function copyLink(url) { 
+        const fullUrl = window.location.origin + '/' + url; 
+        navigator.clipboard.writeText(fullUrl).then(() => { 
+            var x = document.getElementById("toast");
+            x.className = "show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 2500);
+        }); 
+    }
+    
     window.onscroll = function() { let btn = document.getElementById("backToTop"); btn.style.display = (window.scrollY > 300) ? "flex" : "none"; };
     function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
     window.onload = updateCounter;
