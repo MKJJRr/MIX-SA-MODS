@@ -3,25 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="pageTitle">Carregando Mod...</title>
+    <title id="pageTitle">Carregando Mod... - MIX-SA-MODS</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* AQUI VAI TODO O SEU CSS QUE VOCÊ JÁ TINHA */
         body { background-color: #0f0f0f; color: white; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 10px; margin: 0; }
+        
         .top-bar { display: flex; align-items: center; justify-content: flex-start; padding: 15px; max-width: 600px; margin: 0 auto 5px auto; }
-        .btn-voltar-topo { text-decoration: none; color: var(--main-color, #00ff00); font-weight: bold; background: #1e1e1e; padding: 10px 18px; border-radius: 50px; border: 1px solid #333; display: flex; align-items: center; text-transform: uppercase; }
-        .container { max-width: 600px; margin: auto; background: #1e1e1e; padding: 20px; border-radius: 15px; border: 1px solid #333; }
+        
+        /* Botão Voltar agora aponta para a raiz */
+        .btn-voltar-topo { text-decoration: none; color: var(--main-color, #00ff00); font-weight: bold; background: #1e1e1e; padding: 10px 18px; border-radius: 50px; border: 1px solid #333; display: flex; align-items: center; text-transform: uppercase; transition: 0.3s; }
+        .btn-voltar-topo:hover { border-color: var(--main-color); transform: translateX(-5px); }
+
+        .container { max-width: 600px; margin: auto; background: #1e1e1e; padding: 20px; border-radius: 15px; border: 1px solid #333; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        
         .mod-print { width: 100%; height: auto; border-radius: 10px; margin-bottom: 20px; border: 1px solid #444; background: #000; }
+        
         .info-box { text-align: left; background: #252525; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid var(--main-color, #00ff00); }
+        
         .btn-link { display: flex; align-items: center; justify-content: center; padding: 16px; text-decoration: none; font-weight: bold; border-radius: 10px; transition: 0.3s; text-transform: uppercase; gap: 12px; margin-bottom: 15px; }
+        
         .btn-youtube { background: #ff0000; color: white; }
         .btn-download { background: var(--main-color, #00ff00); color: black; }
+        
+        .comentarios-section { margin-top: 40px; text-align: left; border-top: 1px solid #333; padding-top: 20px; }
     </style>
 </head>
 <body>
 
     <div class="top-bar">
-        <a href="../index.html" class="btn-voltar-topo">← Voltar</a>
+        <a href="../index.html" class="btn-voltar-topo">
+            <span style="margin-right: 10px;">←</span> Voltar
+        </a>
     </div>
 
     <div class="container">
@@ -34,40 +46,42 @@
             <p>• Autor: <span id="modAutor">---</span></p>
         </div>
 
-        <p id="modDescricao" style="color: #ccc; line-height: 1.6;"></p>
+        <p id="modDescricao" style="color: #ccc; line-height: 1.6; margin-bottom: 25px;"></p>
 
         <a id="btnYoutube" href="#" class="btn-link btn-youtube" target="_blank" style="display:none">
-            <i class="fa-brands fa-youtube"></i> VER VÍDEO
+            <i class="fa-brands fa-youtube"></i> VER NO YOUTUBE
         </a>
 
         <a id="btnDownload" href="#" class="btn-link btn-download" target="_blank">
-            <i class="fa-solid fa-download"></i> BAIXAR MOD
+            <i class="fa-solid fa-download"></i> BAIXAR AGORA
         </a>
 
         <div class="comentarios-section">
+            <h3 id="comentTitle" style="color: var(--main-color, #00ff00);"><i class="fa-solid fa-comments"></i> COMENTÁRIOS</h3>
             <div id="disqus_thread"></div>
         </div>
     </div>
 
     <script src="../mods.js"></script>
     <script>
-        // Pega o ID da URL (?id=nome-do-mod)
         const params = new URLSearchParams(window.location.search);
         const modId = params.get('id');
         
-        // Aplica a cor do tema salva no localStorage
         const corSalva = localStorage.getItem('site_theme') || '#00ff00';
         document.documentElement.style.setProperty('--main-color', corSalva);
 
-        // Busca os dados no mods.js
+        // Busca os dados no listaDeMods (que está no mods.js)
         const mod = listaDeMods.find(m => m.id === modId);
 
         if(mod) {
             document.getElementById('pageTitle').innerText = mod.titulo + " - MIX-SA-MODS";
             document.getElementById('modTitulo').innerText = mod.titulo;
-            document.getElementById('modImagem').src = mod.imagem;
+            
+            // Adiciona "../" antes da imagem pois o HTML está na pasta /mods/
+            document.getElementById('modImagem').src = "../" + mod.imagem;
+            
             document.getElementById('modDescricao').innerText = mod.descricao;
-            document.getElementById('modTamanho').innerText = mod.tamanho || '1MB';
+            document.getElementById('modTamanho').innerText = mod.tamanho || '---';
             document.getElementById('modAutor').innerText = mod.autor || 'Desconhecido';
             document.getElementById('btnDownload').href = mod.downloadLink;
 
@@ -76,6 +90,20 @@
                 btnYt.style.display = 'flex';
                 btnYt.href = mod.youtube;
             }
+
+            // --- CONFIGURAÇÃO DISQUS DINÂMICO ---
+            var disqus_config = function () {
+                this.page.url = window.location.href;
+                this.page.identifier = modId; // Garante que cada mod tenha seus próprios comentários
+            };
+            (function() {
+                var d = document, s = d.createElement('script');
+                s.src = 'https://https-maikotds-github-io-mix-sa-mods-index-html.disqus.com/embed.js';
+                s.setAttribute('data-timestamp', +new Date());
+                (d.head || d.body).appendChild(s);
+            })();
+        } else {
+            document.getElementById('modTitulo').innerText = "Mod não encontrado!";
         }
     </script>
 </body>
