@@ -50,7 +50,7 @@
         }
         .btn-share:active { background-color: #00ff00; color: black; }
 
-        /* --- ESTILO DO NOVO TOAST (MENSAGEM DE CÓPIA) --- */
+        /* --- ESTILO DO TOAST (MENSAGEM DE CÓPIA) --- */
         #toast {
             visibility: hidden; min-width: 200px; background-color: #1a1a1a; color: #00ff00;
             text-align: center; border-radius: 50px; border: 1px solid #00ff00; padding: 12px;
@@ -61,11 +61,25 @@
         @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
         @keyframes fadeout { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
 
+        /* --- ESTILO DA BARRA DE PROGRESSO (OPÇÃO 3) --- */
+        .progress-container {
+            position: fixed; top: 0; z-index: 2100; /* Acima do Nav */
+            width: 100%; height: 4px; background: transparent;
+        }
+        .progress-bar {
+            height: 4px; background: #00ff00; width: 0%;
+            box-shadow: 0 0 10px #00ff00; transition: width 0.1s ease;
+        }
+
         #backToTop { position: fixed; bottom: 20px; right: 20px; background-color: #00ff00; color: black; width: 45px; height: 45px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 24px; z-index: 2000; border: none; box-shadow: 0 0 15px rgba(0, 255, 0, 0.4); }
         footer { padding: 40px 20px; color: #555; font-size: 13px; border-top: 1px solid #1a1a1a; }
     </style>
 </head>
 <body>
+
+<div class="progress-container">
+    <div class="progress-bar" id="myBar"></div>
+</div>
 
 <nav>
     <div class="nav-links">
@@ -123,11 +137,26 @@
 
 <script>
     let currentCategory = 'todos';
+
+    // Barra de Progresso
+    window.onscroll = function() { 
+        // Lógica do botão Voltar ao Topo
+        let btn = document.getElementById("backToTop");
+        btn.style.display = (window.scrollY > 300) ? "flex" : "none";
+
+        // Lógica da Barra de Progresso
+        var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        var scrolled = (winScroll / height) * 100;
+        document.getElementById("myBar").style.width = scrolled + "%";
+    };
+
     function updateCounter() { let cards = document.getElementsByClassName('mod-card'); let visible = 0; for (let card of cards) { if (card.style.display !== "none") visible++; } document.getElementById('modCounter').innerText = "Exibindo " + visible + " mods de GTA SA"; }
+    
     function setCategory(category, el) { let buttons = document.getElementsByClassName('btn-category'); for (let btn of buttons) btn.classList.remove('active'); el.classList.add('active'); currentCategory = category; filterMods(); }
+    
     function filterMods() { let input = document.getElementById('searchInput').value.toLowerCase(); let cards = document.getElementsByClassName('mod-card'); for (let i = 0; i < cards.length; i++) { let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase(); let category = cards[i].getAttribute('data-category'); let matchSearch = title.includes(input); let matchCategory = (currentCategory === 'todos' || category === currentCategory); cards[i].style.display = (matchSearch && matchCategory) ? "" : "none"; } updateCounter(); }
     
-    // FUNÇÃO ATUALIZADA: Agora usa Toast em vez de alert
     function copyLink(url) { 
         const fullUrl = window.location.origin + '/' + url; 
         navigator.clipboard.writeText(fullUrl).then(() => { 
@@ -137,7 +166,6 @@
         }); 
     }
     
-    window.onscroll = function() { let btn = document.getElementById("backToTop"); btn.style.display = (window.scrollY > 300) ? "flex" : "none"; };
     function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
     window.onload = updateCounter;
 </script>
