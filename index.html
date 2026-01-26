@@ -1,216 +1,187 @@
 <!DOCTYPE html> 
 <html lang="pt-br"> <head>
-    <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>MIX-SA-MODS | GTA SA Android</title> <meta name="description" content="Baixe os melhores mods para GTA San Andreas Mobile: Scripts Cleo, Texturas 4K e Correções para Android e muito mais."> <link rel="icon" href="assets/img/logo-icon.png" sizes="32x32"> <link rel="icon" href="assets/img/logo-icon.png" sizes="192x192"> <link rel="apple-touch-icon" href="assets/img/logo-icon.png"> <link rel="manifest" href="manifest.json"> <meta name="theme-color" content="#1a1a1a"> <meta name="apple-mobile-web-app-capable" content="yes"> <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <style>
+    <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>MIX-SA-MODS | GTA SA Android</title>
+    <link rel="icon" href="assets/img/logo-icon.png">
+    
+    <style>
         /* --- ESTILOS GERAIS --- */
         body {
-            background-color: #0f0f0f; /* Fundo cinza quase preto */
-            color: #ffffff; /* Texto branco padrão */
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fonte do site */
-            margin: 0; /* Remove margens externas */
-            padding: 0; /* Remove preenchimentos internos */
-            text-align: center; /* Centraliza textos gerais */
+            background-color: #0f0f0f;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
         }
 
-        /* --- BARRA DE NAVEGAÇÃO (MENU) --- */
+        /* --- MENU (BARRA DE NAVEGAÇÃO) --- */
         nav {
-            background-color: #1a1a1a; /* Cor de fundo do menu */
-            padding: 10px 20px; /* Espaço interno do menu */
-            position: sticky; /* Gruda o menu no topo */
-            top: 0; /* Posição da fixação */
-            border-bottom: 2px solid #00ff00; /* Linha verde neon inferior */
-            z-index: 1000; /* Fica acima de tudo */
-            display: flex; /* Alinha itens em linha */
-            align-items: center; /* Centraliza itens verticalmente */
-            justify-content: space-between; /* Logo de um lado, links do outro */
+            background-color: #1a1a1a;
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            border-bottom: 2px solid #00ff00;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-
-        .nav-links { display: flex; gap: 15px; } /* Espaço de 15px entre os links */
-
+        .nav-links { display: flex; gap: 15px; }
         nav a {
-            color: #00ff00; /* Links agora são verdes neon por padrão */
-            text-decoration: none; /* Sem sublinhado */
-            margin: 0 5px; /* Margem lateral entre links */
-            font-weight: bold; /* Negrito */
-            text-transform: uppercase; /* Letras maiúsculas */
-            font-size: 13px; /* Tamanho da letra */
-            transition: 0.3s; /* Suaviza a animação */
+            color: #00ff00;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 13px;
+            transition: 0.3s;
         }
-        nav a:hover { color: #ffffff; } /* Fica branco ao passar o mouse/tocar */
+        nav a:hover { color: #ffffff; }
+        .site-logo { height: 40px; width: auto; }
 
-        .site-logo { height: 40px; width: auto; } /* Tamanho da logo no menu */
-
-        /* --- CABEÇALHO (BANNER) --- */
+        /* --- CABEÇALHO --- */
         header {
-            padding: 50px 20px; /* Espaçamento do banner */
-            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('assets/img/banner.jpg'); /* Fundo escurecido com imagem */
-            background-size: cover; /* Imagem cobre todo o header */
-            border-bottom: 1px solid #222; /* Linha discreta abaixo */
+            padding: 50px 20px;
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('assets/img/banner.jpg');
+            background-size: cover;
+            border-bottom: 1px solid #222;
         }
 
         /* --- CONTROLES (PESQUISA E CATEGORIAS) --- */
-        .controls-container {
-            padding: 20px; /* Espaçamento da área de filtros */
-            max-width: 400px; /* Acompanha a largura dos cards */
-            margin: auto; /* Centraliza na tela */
-        }
+        .controls-container { padding: 20px; max-width: 400px; margin: auto; }
         #searchInput {
-            width: 90%; /* Largura da barra de pesquisa */
-            padding: 15px; /* Grossura da barra */
-            border-radius: 50px; /* Formato de pílula */
-            border: 2px solid #333; /* Borda cinza escura */
-            background-color: #1a1a1a; /* Fundo interno da barra */
-            color: white; /* Cor da letra digitada */
-            font-size: 16px; /* Tamanho da letra */
-            outline: none; /* Remove borda azul do navegador */
-            transition: 0.3s; /* Suaviza efeito neon */
-            margin-bottom: 20px; /* Espaço para os botões abaixo */
+            width: 90%;
+            padding: 15px;
+            border-radius: 50px;
+            border: 2px solid #333;
+            background-color: #1a1a1a;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+            margin-bottom: 20px;
         }
-        #searchInput:focus { border-color: #00ff00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); } /* Brilho neon no foco */
+        #searchInput:focus { border-color: #00ff00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
 
-        .category-buttons {
-            display: flex; /* Botões em linha */
-            justify-content: center; /* Centraliza botões */
-            flex-wrap: wrap; /* Quebra linha se necessário */
-            gap: 10px; /* Espaço entre botões */
-            margin-bottom: 20px; /* Espaço antes dos mods */
+        .category-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+
+        /* --- CARDS E ANIMAÇÃO NEON PULSANTE --- */
+        .container { max-width: 400px; margin: auto; padding: 10px; }
+
+        /* Animação que faz a borda "respirar" luz verde */
+        @keyframes neonPulse {
+            0% { box-shadow: 0 0 5px rgba(0, 255, 0, 0.2); border-color: #333; }
+            50% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.5); border-color: #00ff00; }
+            100% { box-shadow: 0 0 5px rgba(0, 255, 0, 0.2); border-color: #333; }
         }
-
-        /* --- CARDS E IMAGENS (SISTEMA DE MODS) --- */
-        .container { max-width: 400px; margin: auto; padding: 10px; } /* Largura padrão dos cards */
 
         .mod-card {
-            background-color: #1e1e1e; /* Fundo do card */
-            border-radius: 12px; /* Cantos arredondados */
-            overflow: hidden; /* Mantém conteúdo dentro dos cantos */
-            margin-bottom: 20px; /* Distância entre cards */
-            border: 1px solid #333; /* Borda inicial */
-            transition: transform 0.3s, border-color 0.3s; /* Suaviza interações */
-            display: block;  /* Card se comporta como bloco */
-            animation: slideIn 0.5s ease forwards; /* Animação de entrada */
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); } /* Inicia embaixo e invisível */
-            to { opacity: 1; transform: translateY(0); } /* Sobe e aparece */
-        }
-
-        .mod-card:hover { border-color: #00ff00; } /* Borda verde no hover */
-        .mod-card:active { transform: scale(0.98); } /* Efeito de clique */
-
-        .mod-img { 
-            width: 100%; /* Largura total do card */
-            height: auto; /* Respeita a proporção da imagem */
-            object-fit: contain; /* Mostra a imagem inteira sem cortes */
-            background-color: #000; /* Fundo preto para vazios */
-            display: block; /* Remove espaços na base */
-            border-bottom: 1px solid #333; /* Divisória para o texto */
-        }
-
-        .mod-info { padding: 15px; text-align: left; } /* Info do mod alinhada à esquerda */
-        
-        .mod-card h2 { 
-            color: #00ff00; /* Título verde neon */
-            margin: 0 0 8px 0; /* Margens controladas */
-            font-size: 18px; /* Tamanho do título */
-            text-transform: uppercase; /* Maiúsculas */
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            border: 1px solid #333;
+            transition: transform 0.3s;
+            animation: slideIn 0.5s ease forwards, neonPulse 3s infinite ease-in-out; /* Aplica o pulso neon */
         }
         
-        .mod-card p { 
-            color: #bbb; /* Descrição cinza claro */
-            font-size: 13px; /* Tamanho da letra */
-            line-height: 1.4; /* Espaço entre linhas */
-            margin-bottom: 15px; /* Distância para o botão */
-            display: -webkit-box; /* Ativa limite de linhas */
-            -webkit-line-clamp: 3; /* Máximo 3 linhas */
-            -webkit-box-orient: vertical; /* Orientação vertical */
-            overflow: hidden; /* Esconde excesso de texto */
-        }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .mod-img { width: 100%; height: auto; display: block; border-bottom: 1px solid #333; }
+        .mod-info { padding: 15px; text-align: left; }
+        .mod-card h2 { color: #00ff00; font-size: 18px; text-transform: uppercase; margin: 0 0 8px 0; }
+        .mod-card p { color: #bbb; font-size: 13px; line-height: 1.4; margin-bottom: 15px; }
 
         /* --- BOTÕES --- */
         .btn {
-            display: inline-block; /* Alinhamento em bloco na linha */
-            padding: 12px 24px; /* Tamanho do clique */
-            text-decoration: none; /* Remove sublinhado */
-            font-weight: bold; /* Negrito */
-            border-radius: 8px; /* Cantos arredondados */
-            transition: 0.3s; /* Suaviza cores */
-            cursor: pointer; /* Mãozinha no mouse */
-            border: none; /* Remove bordas de sistema */
-            text-transform: uppercase; /* Maiúsculas */
-            font-size: 13px; /* Tamanho da fonte */
+            display: inline-block;
+            padding: 12px 24px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+            text-transform: uppercase;
+            font-size: 13px;
+            text-align: center;
+            border: none;
+            cursor: pointer;
         }
+        .btn-category { background-color: #252525; color: #888; border: 1px solid #333; }
+        .btn-category.active { background-color: #00ff00; color: black; border-color: #00ff00; }
+        .btn-download { background-color: #00ff00; color: #000; width: 100%; box-sizing: border-box; }
 
-        .btn-category { background-color: #252525; color: #888; border: 1px solid #333; } /* Estilo inativo */
-
-        .btn-category.active { 
-            background-color: #00ff00; /* Verde quando ativo */
-            color: black; /* Texto preto para contraste */
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4); /* Brilho neon */
-            border-color: #00ff00; /* Borda verde */
+        /* Botão de Compartilhar */
+        .btn-share {
+            background-color: transparent;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            margin-top: 10px;
+            width: 100%;
+            padding: 10px;
+            font-size: 11px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
         }
+        .btn-share:active { background-color: #00ff00; color: black; }
 
-        .btn-download { 
-            background-color: #00ff00; /* Botão de ação principal verde */
-            color: #000; /* Texto preto */
-            width: 100%; /* Largura total do card */
-            box-sizing: border-box; /* Padding não aumenta a largura */
-            text-align: center; /* Centraliza texto */
-        }
-        .btn-download:hover { background-color: #00cc00; box-shadow: 0 5px 15px rgba(0, 255, 0, 0.2); } /* Escurece no hover */
-
-        /* --- RODAPÉ --- */
-        footer { padding: 40px 20px; color: #555; font-size: 13px; border-top: 1px solid #1a1a1a; } /* Estilo do rodapé */
-
-        /* --- NOVO: ESTILO DO BOTÃO SUBIR AO TOPO --- */
+        /* Botão Subir ao Topo */
         #backToTop {
-            position: fixed; /* Fixa o botão na tela */
-            bottom: 20px; /* Distância do fundo */
-            right: 20px; /* Distância da direita */
-            background-color: #00ff00; /* Cor verde neon */
-            color: black; /* Seta na cor preta */
-            width: 45px; /* Largura do botão */
-            height: 45px; /* Altura do botão */
-            border-radius: 50%; /* Torna o botão redondo */
-            display: none; /* Inicia escondido */
-            align-items: center; /* Centraliza a seta */
-            justify-content: center; /* Centraliza a seta */
-            font-size: 24px; /* Tamanho da seta */
-            cursor: pointer; /* Cursor de mãozinha */
-            z-index: 2000; /* Fica acima de tudo */
-            border: none; /* Remove borda */
-            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4); /* Brilho neon */
+            position: fixed; bottom: 20px; right: 20px;
+            background-color: #00ff00; color: black;
+            width: 45px; height: 45px; border-radius: 50%;
+            display: none; align-items: center; justify-content: center;
+            font-size: 24px; z-index: 2000; border: none;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
         }
+
+        footer { padding: 40px 20px; color: #555; font-size: 13px; border-top: 1px solid #1a1a1a; }
     </style>
 </head>
 <body>
 
 <nav>
     <div class="nav-links">
-        <a href="index.html">Início</a> <a href="paginas/sobre.html">Sobre</a> <a href="https://youtube.com/@maykjjr" target="_blank">YouTube</a> <a href="paginas/comunidade.html">Social</a> </div>
-    <img src="assets/img/logo-icon.png" alt="MIX-SA-MODS" class="site-logo"> </nav>
+        <a href="index.html">Início</a>
+        <a href="paginas/sobre.html">Sobre</a>
+        <a href="https://youtube.com/@maykjjr" target="_blank">YouTube</a>
+        <a href="paginas/comunidade.html">Social</a>
+    </div>
+    <img src="assets/img/logo-icon.png" alt="Logo" class="site-logo">
+</nav>
 
 <header>
-    <h1 style="font-size: 35px; margin-bottom: 5px;">MIX-SA-MODS</h1> <p style="color: #00ff00; font-weight: bold;">O ponto de encontro dos modders de GTA SA Mobile</p> <p id="modCounter" style="color: #888; font-size: 14px; margin-top: 10px;">Carregando mods...</p> 
+    <h1 style="font-size: 35px; margin: 0;">MIX-SA-MODS</h1>
+    <p style="color: #00ff00; font-weight: bold; margin-top: 5px;">O ponto de encontro dos modders de GTA SA Mobile</p>
+    <p id="modCounter" style="color: #888; font-size: 14px; margin-top: 10px;">Carregando mods...</p>
 </header>
 
 <div class="controls-container">
-    <input type="text" id="searchInput" onkeyup="filterMods()" placeholder="Pesquisar mod..."> <div class="category-buttons">
-        <button class="btn btn-category active" onclick="setCategory('todos', this)">TUDO</button> <button class="btn btn-category" onclick="setCategory('textura', this)">TEXTURAS</button> <button class="btn btn-category" onclick="setCategory('script', this)">SCRIPTS/CLEO</button> <button class="btn btn-category" onclick="setCategory('veiculo', this)">VEÍCULOS</button> <button class="btn btn-category" onclick="setCategory('correcao', this)">CORREÇÃO</button> </div>
+    <input type="text" id="searchInput" onkeyup="filterMods()" placeholder="Pesquisar mod...">
+    <div class="category-buttons">
+        <button class="btn btn-category active" onclick="setCategory('todos', this)">TUDO</button>
+        <button class="btn btn-category" onclick="setCategory('textura', this)">TEXTURAS</button>
+        <button class="btn btn-category" onclick="setCategory('script', this)">SCRIPTS</button>
+    </div>
 </div>
 
-<div class="container" id="modList"> <div class="mod-card" data-category="script"> <img src="mods/img/mod-gasolina.png" alt="Mod Gasolina" class="mod-img">
+<div class="container" id="modList">
+
+    <div class="mod-card" data-category="script">
+        <img src="mods/img/mod-gasolina.png" class="mod-img">
         <div class="mod-info">
             <h2>Mod Gasolina Realista</h2>
-            <p>Adiciona um sistema de combustível realista, obrigando o jogador a abastecer em postos espalhados pelo mapa.</p>
+            <p>Adiciona um sistema de combustível realista nos postos de San Andreas.</p>
             <a href="mods/mod-gasolina.html" class="btn btn-download">VER DETALHES</a>
+            <button class="btn-share" onclick="copyLink('mods/mod-gasolina.html')">🔗 COPIAR LINK</button>
         </div>
     </div>
 
-    <div class="mod-card" data-category="textura"> <img src="mods/img/placeholder.png" alt="Novo Mod" class="mod-img">
+    <div class="mod-card" data-category="textura">
+        <img src="mods/img/placeholder.png" class="mod-img">
         <div class="mod-info">
             <h2>Céu Realista 4K</h2>
-            <p>Melhora drasticamente as texturas das nuvens e o ciclo de dia/noite do jogo.</p>
+            <p>Novas texturas para nuvens e clima melhorado para Android.</p>
             <a href="#" class="btn btn-download">EM BREVE</a>
+            <button class="btn-share" onclick="copyLink('index.html')">🔗 COPIAR LINK</button>
         </div>
     </div>
 
@@ -219,72 +190,59 @@
 <button id="backToTop" onclick="scrollToTop()">↑</button>
 
 <footer>
-    <p>&copy; 2026 MIX-SA-MODS - Desenvolvido por MaykJJr</p> </footer>
+    <p>&copy; 2026 MIX-SA-MODS - Desenvolvido por MaykJJr</p>
+</footer>
 
 <script>
-    let currentCategory = 'todos'; // Categoria ativa
+    let currentCategory = 'todos';
 
-    // NOVO: FUNÇÃO PARA ATUALIZAR O CONTADOR
+    // Atualiza o contador de mods na tela
     function updateCounter() {
-        // Conta apenas os cards que não estão escondidos (display diferente de none)
         let cards = document.getElementsByClassName('mod-card');
-        let totalVisible = 0;
-        for (let card of cards) {
-            if (card.style.display !== "none") {
-                totalVisible++;
-            }
-        }
-        document.getElementById('modCounter').innerText = "Exibindo " + totalVisible + " mods de GTA SA";
+        let visible = 0;
+        for (let card of cards) { if (card.style.display !== "none") visible++; }
+        document.getElementById('modCounter').innerText = "Exibindo " + visible + " mods de GTA SA";
     }
 
-    // Chama o contador pela primeira vez ao carregar a página
-    window.onload = updateCounter;
-
-    function setCategory(category, el) { // Troca de categoria
+    // Filtro de Categorias
+    function setCategory(category, el) {
         let buttons = document.getElementsByClassName('btn-category');
-        for (let btn of buttons) { btn.classList.remove('active'); }
+        for (let btn of buttons) btn.classList.remove('active');
         el.classList.add('active');
         currentCategory = category;
         filterMods();
     }
 
-    function filterMods() { // Filtra pesquisa e categoria
+    // Filtro de Pesquisa
+    function filterMods() {
         let input = document.getElementById('searchInput').value.toLowerCase();
         let cards = document.getElementsByClassName('mod-card');
-
         for (let i = 0; i < cards.length; i++) {
             let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase();
             let category = cards[i].getAttribute('data-category');
             let matchSearch = title.includes(input);
             let matchCategory = (currentCategory === 'todos' || category === currentCategory);
-
-            if (matchSearch && matchCategory) {
-                cards[i].style.display = "";
-                cards[i].style.animation = 'none';
-                cards[i].offsetHeight;
-                cards[i].style.animation = null;
-            } else {
-                cards[i].style.display = "none";
-            }
+            cards[i].style.display = (matchSearch && matchCategory) ? "" : "none";
         }
-        updateCounter(); // ATUALIZA O CONTADOR AO FILTRAR
+        updateCounter();
     }
 
-    // NOVO: LÓGICA DO BOTÃO SUBIR AO TOPO
+    // Função para Copiar Link
+    function copyLink(url) {
+        const fullUrl = window.location.origin + '/' + url;
+        navigator.clipboard.writeText(fullUrl).then(() => {
+            alert("Link do mod copiado com sucesso!");
+        });
+    }
+
+    // Botão Voltar ao Topo
     window.onscroll = function() {
         let btn = document.getElementById("backToTop");
-        // Se rolar mais de 300px para baixo, o botão aparece
-        if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
-            btn.style.display = "flex";
-        } else {
-            btn.style.display = "none";
-        }
+        btn.style.display = (window.scrollY > 300) ? "flex" : "none";
     };
+    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 
-    function scrollToTop() {
-        // Faz a página subir suavemente
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+    window.onload = updateCounter;
 </script>
 
 </body>
