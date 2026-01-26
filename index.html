@@ -66,7 +66,6 @@
         /* --- CARDS E ANIMAÇÃO NEON PULSANTE --- */
         .container { max-width: 400px; margin: auto; padding: 10px; }
 
-        /* Animação que faz a borda "respirar" luz verde */
         @keyframes neonPulse {
             0% { box-shadow: 0 0 5px rgba(0, 255, 0, 0.2); border-color: #333; }
             50% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.5); border-color: #00ff00; }
@@ -79,8 +78,8 @@
             overflow: hidden;
             margin-bottom: 25px;
             border: 1px solid #333;
-            transition: transform 0.3s;
-            animation: slideIn 0.5s ease forwards, neonPulse 3s infinite ease-in-out; /* Aplica o pulso neon */
+            position: relative; /* ESSENCIAL para o botão de link ficar preso ao card */
+            animation: slideIn 0.5s ease forwards, neonPulse 3s infinite ease-in-out;
         }
         
         @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -90,7 +89,28 @@
         .mod-card h2 { color: #00ff00; font-size: 18px; text-transform: uppercase; margin: 0 0 8px 0; }
         .mod-card p { color: #bbb; font-size: 13px; line-height: 1.4; margin-bottom: 15px; }
 
-        /* --- BOTÕES --- */
+        /* --- BOTÃO DE COMPARTILHAR (FLUTUANTE NO CANTO) --- */
+        .btn-share {
+            position: absolute; /* Flutua sobre o card */
+            top: 10px; /* Distância do topo */
+            right: 10px; /* Distância da direita */
+            background-color: rgba(0, 0, 0, 0.7); /* Fundo preto transparente */
+            color: #00ff00; /* Ícone verde */
+            border: 1px solid #00ff00; /* Borda verde neon */
+            width: 35px; /* Tamanho pequeno */
+            height: 35px; /* Tamanho pequeno */
+            border-radius: 50%; /* Redondo */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10; /* Fica acima da imagem */
+            transition: 0.3s;
+            font-size: 16px;
+        }
+        .btn-share:hover { background-color: #00ff00; color: #000; } /* Inverte cores no hover */
+
+        /* --- BOTÕES PRINCIPAIS --- */
         .btn {
             display: inline-block;
             padding: 12px 24px;
@@ -106,22 +126,6 @@
         .btn-category { background-color: #252525; color: #888; border: 1px solid #333; }
         .btn-category.active { background-color: #00ff00; color: black; border-color: #00ff00; }
         .btn-download { background-color: #00ff00; color: #000; width: 100%; box-sizing: border-box; }
-
-        /* Botão de Compartilhar */
-        .btn-share {
-            background-color: transparent;
-            color: #00ff00;
-            border: 1px solid #00ff00;
-            margin-top: 10px;
-            width: 100%;
-            padding: 10px;
-            font-size: 11px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-        .btn-share:active { background-color: #00ff00; color: black; }
 
         /* Botão Subir ao Topo */
         #backToTop {
@@ -166,22 +170,22 @@
 <div class="container" id="modList">
 
     <div class="mod-card" data-category="script">
+        <button class="btn-share" onclick="copyLink('mods/mod-gasolina.html')" title="Copiar Link">🔗</button>
         <img src="mods/img/mod-gasolina.png" class="mod-img">
         <div class="mod-info">
             <h2>Mod Gasolina Realista</h2>
             <p>Adiciona um sistema de combustível realista nos postos de San Andreas.</p>
             <a href="mods/mod-gasolina.html" class="btn btn-download">VER DETALHES</a>
-            <button class="btn-share" onclick="copyLink('mods/mod-gasolina.html')">🔗 COPIAR LINK</button>
         </div>
     </div>
 
     <div class="mod-card" data-category="textura">
+        <button class="btn-share" onclick="copyLink('index.html')" title="Copiar Link">🔗</button>
         <img src="mods/img/placeholder.png" class="mod-img">
         <div class="mod-info">
             <h2>Céu Realista 4K</h2>
             <p>Novas texturas para nuvens e clima melhorado para Android.</p>
             <a href="#" class="btn btn-download">EM BREVE</a>
-            <button class="btn-share" onclick="copyLink('index.html')">🔗 COPIAR LINK</button>
         </div>
     </div>
 
@@ -196,7 +200,6 @@
 <script>
     let currentCategory = 'todos';
 
-    // Atualiza o contador de mods na tela
     function updateCounter() {
         let cards = document.getElementsByClassName('mod-card');
         let visible = 0;
@@ -204,7 +207,6 @@
         document.getElementById('modCounter').innerText = "Exibindo " + visible + " mods de GTA SA";
     }
 
-    // Filtro de Categorias
     function setCategory(category, el) {
         let buttons = document.getElementsByClassName('btn-category');
         for (let btn of buttons) btn.classList.remove('active');
@@ -213,7 +215,6 @@
         filterMods();
     }
 
-    // Filtro de Pesquisa
     function filterMods() {
         let input = document.getElementById('searchInput').value.toLowerCase();
         let cards = document.getElementsByClassName('mod-card');
@@ -227,7 +228,6 @@
         updateCounter();
     }
 
-    // Função para Copiar Link
     function copyLink(url) {
         const fullUrl = window.location.origin + '/' + url;
         navigator.clipboard.writeText(fullUrl).then(() => {
@@ -235,7 +235,6 @@
         });
     }
 
-    // Botão Voltar ao Topo
     window.onscroll = function() {
         let btn = document.getElementById("backToTop");
         btn.style.display = (window.scrollY > 300) ? "flex" : "none";
