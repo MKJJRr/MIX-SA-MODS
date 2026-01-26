@@ -50,7 +50,6 @@
         }
         .btn-share:active { background-color: #00ff00; color: black; }
 
-        /* --- ESTILO DO TOAST (MENSAGEM DE CÓPIA) --- */
         #toast {
             visibility: hidden; min-width: 200px; background-color: #1a1a1a; color: #00ff00;
             text-align: center; border-radius: 50px; border: 1px solid #00ff00; padding: 12px;
@@ -61,25 +60,28 @@
         @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
         @keyframes fadeout { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
 
-        /* --- ESTILO DA BARRA DE PROGRESSO (OPÇÃO 3) --- */
-        .progress-container {
-            position: fixed; top: 0; z-index: 2100; /* Acima do Nav */
-            width: 100%; height: 4px; background: transparent;
-        }
-        .progress-bar {
-            height: 4px; background: #00ff00; width: 0%;
-            box-shadow: 0 0 10px #00ff00; transition: width 0.1s ease;
-        }
+        .progress-container { position: fixed; top: 0; z-index: 2100; width: 100%; height: 4px; background: transparent; }
+        .progress-bar { height: 4px; background: #00ff00; width: 0%; box-shadow: 0 0 10px #00ff00; transition: width 0.1s ease; }
 
         #backToTop { position: fixed; bottom: 20px; right: 20px; background-color: #00ff00; color: black; width: 45px; height: 45px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 24px; z-index: 2000; border: none; box-shadow: 0 0 15px rgba(0, 255, 0, 0.4); }
+        
+        /* --- NOVO MENU DE ENGRENAGEM (MOD ALEATÓRIO) --- */
+        .settings-menu { position: fixed; bottom: 20px; left: 20px; z-index: 2000; }
+        #btnSettings { background-color: #1a1a1a; color: #00ff00; width: 45px; height: 45px; border-radius: 50%; border: 1px solid #00ff00; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px rgba(0,255,0,0.2); transition: 0.3s; }
+        #btnSettings:active { transform: rotate(90deg); }
+        
+        .settings-options { position: absolute; bottom: 55px; left: 0; background: #1a1a1a; border: 1px solid #00ff00; border-radius: 8px; width: 150px; display: none; flex-direction: column; overflow: hidden; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
+        .settings-options button { background: none; border: none; color: white; padding: 12px; text-align: left; cursor: pointer; font-size: 13px; font-weight: bold; border-bottom: 1px solid #333; }
+        .settings-options button:hover { background: #00ff00; color: black; }
+        .settings-options.active { display: flex; animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
         footer { padding: 40px 20px; color: #555; font-size: 13px; border-top: 1px solid #1a1a1a; }
     </style>
 </head>
 <body>
 
-<div class="progress-container">
-    <div class="progress-bar" id="myBar"></div>
-</div>
+<div class="progress-container"><div class="progress-bar" id="myBar"></div></div>
 
 <nav>
     <div class="nav-links">
@@ -127,34 +129,47 @@
     </div>
 </div>
 
-<div id="toast">Link copiado! 🔗</div>
+<div class="settings-menu">
+    <div class="settings-options" id="settingsOptions">
+        <button onclick="randomMod()">🎲 Mod Aleatório</button>
+        </div>
+    <button id="btnSettings" onclick="toggleSettings()" title="Opções">⚙️</button>
+</div>
 
+<div id="toast">Link copiado! 🔗</div>
 <button id="backToTop" onclick="scrollToTop()">↑</button>
 
-<footer>
-    <p>&copy; 2026 MIX-SA-MODS - Desenvolvido por MaykJJr</p>
-</footer>
+<footer><p>&copy; 2026 MIX-SA-MODS - Desenvolvido por MaykJJr</p></footer>
 
 <script>
     let currentCategory = 'todos';
 
-    // Barra de Progresso
     window.onscroll = function() { 
-        // Lógica do botão Voltar ao Topo
         let btn = document.getElementById("backToTop");
         btn.style.display = (window.scrollY > 300) ? "flex" : "none";
-
-        // Lógica da Barra de Progresso
         var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
         var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         var scrolled = (winScroll / height) * 100;
         document.getElementById("myBar").style.width = scrolled + "%";
     };
 
+    function toggleSettings() {
+        document.getElementById("settingsOptions").classList.toggle("active");
+    }
+
+    function randomMod() {
+        let cards = document.querySelectorAll('.mod-card');
+        let randomIndex = Math.floor(Math.random() * cards.length);
+        cards[randomIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Efeito de destaque temporário
+        cards[randomIndex].style.transform = "scale(1.05)";
+        setTimeout(() => { cards[randomIndex].style.transform = "scale(1)"; }, 1000);
+        toggleSettings(); // Fecha o menu
+    }
+
     function updateCounter() { let cards = document.getElementsByClassName('mod-card'); let visible = 0; for (let card of cards) { if (card.style.display !== "none") visible++; } document.getElementById('modCounter').innerText = "Exibindo " + visible + " mods de GTA SA"; }
-    
     function setCategory(category, el) { let buttons = document.getElementsByClassName('btn-category'); for (let btn of buttons) btn.classList.remove('active'); el.classList.add('active'); currentCategory = category; filterMods(); }
-    
     function filterMods() { let input = document.getElementById('searchInput').value.toLowerCase(); let cards = document.getElementsByClassName('mod-card'); for (let i = 0; i < cards.length; i++) { let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase(); let category = cards[i].getAttribute('data-category'); let matchSearch = title.includes(input); let matchCategory = (currentCategory === 'todos' || category === currentCategory); cards[i].style.display = (matchSearch && matchCategory) ? "" : "none"; } updateCounter(); }
     
     function copyLink(url) { 
