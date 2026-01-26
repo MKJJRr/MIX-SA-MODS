@@ -4,24 +4,36 @@ const listaDeMods = [
         id: "gasolina",
         categoria: "script",
         titulo: "Mod Gasolina Realista",
-        descricao: "Adiciona um sistema de combustível realista nos postos.",
+        descricao: "Adiciona um sistema de combustível realista nos postos espalhados por San Andreas.",
         imagem: "mods/img/mod-gasolina.png",
-        link: "mods/mod-gasolina.html"
+        link: "mods/pagina-mod.html?id=gasolina", // Agora aponta para o molde!
+        downloadLink: "https://modsfire.com/UbA68J1Y4Jn9i1A", // Link real
+        youtube: "https://youtu.be/AV6Kaa7RnHY", // Link do vídeo
+        tamanho: "1KB",
+        autor: "MaykJJr"
     },
     {
         id: "fusca",
         categoria: "veiculo",
         titulo: "Fusca Rebaixado",
-        descricao: "O clássico Fusca com suspensão a ar e som forte.",
+        descricao: "O clássico Fusca com suspensão a ar, rodas orbital e som forte nas portas.",
         imagem: "mods/img/fusca.png",
-        link: "mods/fusca-rebaixado.html"
+        link: "mods/pagina-mod.html?id=fusca", // Mesmo molde, ID diferente
+        downloadLink: "https://www.mediafire.com/link-do-fusca",
+        youtube: "", // Se não tiver vídeo, deixe vazio
+        tamanho: "5MB",
+        autor: "Desconhecido"
     },
     {
-        id: "gasolina2", // MUDADO: IDs nunca podem ser iguais!
+        id: "gasolina2",
         categoria: "script",
-        titulo: "Mod Gasolina V2", // MUDADO: Só para teste
-        descricao: "Versão atualizada do sistema de combustível.",
+        titulo: "Mod Gasolina V2",
+        descricao: "Versão atualizada do sistema de combustível com novos ícones no mapa.",
         imagem: "mods/img/mod-gasolina.png",
-        link: "mods/mod-gasolina.html"
-    } // Remova a vírgula do último item se for o final da lista (boa prática)
+        link: "mods/pagina-mod.html?id=gasolina2",
+        downloadLink: "https://modsfire.com/outro-link",
+        youtube: "https://youtu.be/exemplo",
+        tamanho: "2KB",
+        autor: "Mayk J"
+    }
 ];
