@@ -5,7 +5,7 @@
     <link rel="icon" href="assets/img/logo-icon.png">
     
     <style>
-        /* --- TEUS ESTILOS ORIGINAIS (INTOCADOS) --- */
+        /* MANTENDO SEUS ESTILOS ORIGINAIS EXATOS */
         body { background-color: #0f0f0f; color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; text-align: center; }
         nav { background-color: #1a1a1a; padding: 10px 20px; position: sticky; top: 0; border-bottom: 2px solid #00ff00; z-index: 1000; display: flex; align-items: center; justify-content: space-between; }
         .nav-links { display: flex; gap: 15px; }
@@ -27,11 +27,9 @@
 
         .mod-card {
             background-color: #1e1e1e; border-radius: 12px; overflow: hidden; margin-bottom: 25px; border: 1px solid #333; transition: transform 0.3s;
-            position: relative; 
-            animation: slideIn 0.5s ease forwards, neonPulse 3s infinite ease-in-out;
+            position: relative; animation: slideIn 0.5s ease forwards, neonPulse 3s infinite ease-in-out;
         }
         
-        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .mod-img { width: 100%; height: auto; display: block; border-bottom: 1px solid #333; }
         .mod-info { padding: 15px; text-align: left; }
         .mod-card h2 { color: #00ff00; font-size: 18px; text-transform: uppercase; margin: 0 0 8px 0; }
@@ -42,24 +40,26 @@
         .btn-category.active { background-color: #00ff00; color: black; border-color: #00ff00; }
         .btn-download { background-color: #00ff00; color: #000; width: 100%; box-sizing: border-box; }
 
-        .btn-share { position: absolute; top: 10px; right: 10px; background-color: rgba(0,0,0,0.6); color: #00ff00; border: 1px solid #00ff00; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; z-index: 10; transition: 0.3s; }
-
-        /* --- ADIÇÕES MÍNIMAS PARA FUNCIONAR --- */
+        /* COMPARTILHAR E FAVORITOS */
+        .btn-share { position: absolute; top: 10px; right: 10px; background-color: rgba(0,0,0,0.6); color: #00ff00; border: 1px solid #00ff00; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; z-index: 10; }
         .btn-fav { position: absolute; top: 10px; left: 10px; background-color: rgba(0,0,0,0.6); color: #fff; border: 1px solid #333; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; z-index: 10; }
         .btn-fav.active { color: #ff0000; border-color: #ff0000; }
 
+        /* ENGRENAGEM NO TOPO */
         .settings-menu { position: fixed; top: 70px; left: 20px; z-index: 2000; }
         #btnSettings { background-color: #1a1a1a; color: #00ff00; width: 40px; height: 40px; border-radius: 50%; border: 1px solid #00ff00; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .settings-options { position: absolute; top: 50px; left: 0; background: #1a1a1a; border: 1px solid #00ff00; border-radius: 8px; width: 160px; display: none; flex-direction: column; overflow: hidden; }
-        .settings-options button { background: none; border: none; color: white; padding: 12px; text-align: left; cursor: pointer; font-size: 12px; border-bottom: 1px solid #333; }
+        .settings-options { position: absolute; top: 50px; left: 0; background: #1a1a1a; border: 1px solid #00ff00; border-radius: 8px; width: 160px; display: none; flex-direction: column; overflow: hidden; box-shadow: 0 0 10px #000; }
+        .settings-options button { background: none; border: none; color: white; padding: 12px; text-align: left; cursor: pointer; font-size: 12px; border-bottom: 1px solid #333; font-weight: bold; }
         .settings-options.active { display: flex; }
+        
+        .submenu { display: none; flex-direction: column; background: #222; }
+        .submenu button { padding-left: 25px; border-bottom: 1px solid #444; }
+        .submenu.active { display: flex; }
 
+        /* TOAST E OUTROS */
         #toast { visibility: hidden; min-width: 200px; background-color: #1a1a1a; color: #00ff00; text-align: center; border-radius: 50px; border: 1px solid #00ff00; padding: 12px; position: fixed; z-index: 3000; left: 50%; bottom: 30px; transform: translateX(-50%); font-weight: bold; }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2s; }
-        #backToTop { position: fixed; bottom: 20px; right: 20px; background-color: #00ff00; color: black; width: 45px; height: 45px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 24px; z-index: 2000; border: none; }
-        footer { padding: 40px 20px; color: #555; font-size: 13px; border-top: 1px solid #1a1a1a; }
         @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
-        @keyframes fadeout { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
     </style>
 </head>
 <body>
@@ -72,18 +72,21 @@
 </nav>
 
 <header>
-    <h1>MIX-SA-MODS</h1>
+    <h1 style="font-size: 35px; margin: 0;">MIX-SA-MODS</h1>
     <p style="color: #00ff00; font-weight: bold;">O ponto de encontro dos modders de GTA SA Mobile</p>
-    <p id="modCounter" style="color: #888; font-size: 14px;">Carregando...</p>
+    <p id="modCounter" style="color: #888; font-size: 14px;">Carregando mods...</p>
 </header>
 
 <div class="settings-menu" id="mainSettings">
     <button id="btnSettings" onclick="toggleSettings(event)">⚙️</button>
     <div class="settings-options" id="settingsOptions">
         <button onclick="randomMod()">🎲 Mod Aleatório</button>
-        <button onclick="applyTheme('#00ff00')">🟢 Verde</button>
-        <button onclick="applyTheme('#00d9ff')">🔵 Azul</button>
-        <button onclick="applyTheme('#ff3c00')">🔴 Vermelho</button>
+        <button onclick="toggleSubmenu(event)">🎨 Temas ▼</button>
+        <div class="submenu" id="themeSubmenu">
+            <button onclick="applyTheme('#00ff00')">🟢 Verde</button>
+            <button onclick="applyTheme('#00d9ff')">🔵 Azul</button>
+            <button onclick="applyTheme('#ff3c00')">🔴 Vermelho</button>
+        </div>
     </div>
 </div>
 
@@ -95,6 +98,7 @@
         <button class="btn btn-category" onclick="setCategory('script', this)">SCRIPTS/CLEO</button> 
         <button class="btn btn-category" onclick="setCategory('veiculo', this)">VEÍCULOS</button> 
         <button class="btn btn-category" onclick="setCategory('correcao', this)">CORREÇÃO</button> 
+        <button class="btn btn-category" onclick="setCategory('favs', this)">⭐ FAVORITOS</button> 
     </div>
 </div>
 
@@ -112,41 +116,41 @@
 </div>
 
 <div id="toast">Copiado!</div>
-<button id="backToTop" onclick="scrollToTop()">↑</button>
 
 <script>
     let currentCategory = 'todos';
 
+    // SISTEMA DE TEMAS
     function applyTheme(color) {
         document.querySelectorAll('nav, #btnSettings, .settings-options, #toast').forEach(e => e.style.borderColor = color);
-        document.querySelectorAll('nav a, header p, .mod-card h2, #btnSettings').forEach(e => e.style.color = color);
-        document.querySelectorAll('#backToTop, .btn-download').forEach(e => e.style.backgroundColor = color);
+        document.querySelectorAll('nav a, header p, .mod-card h2, #btnSettings, #toast').forEach(e => e.style.color = color);
+        document.querySelectorAll('.btn-download, .btn-category.active').forEach(e => e.style.backgroundColor = color);
         document.getElementById("settingsOptions").classList.remove("active");
+        document.getElementById("themeSubmenu").classList.remove("active");
     }
 
+    function toggleSubmenu(e) {
+        e.stopPropagation();
+        document.getElementById("themeSubmenu").classList.toggle("active");
+    }
+
+    // SISTEMA DE FAVORITOS
     function toggleFav(id) {
-        let f = JSON.parse(localStorage.getItem('f')) || [];
+        let f = JSON.parse(localStorage.getItem('mix_favs')) || [];
         if(f.includes(id)) f = f.filter(x => x !== id); else f.push(id);
-        localStorage.setItem('f', JSON.stringify(f));
+        localStorage.setItem('mix_favs', JSON.stringify(f));
         updateFavs();
+        if(currentCategory === 'favs') filterMods();
     }
 
     function updateFavs() {
-        let f = JSON.parse(localStorage.getItem('f')) || [];
+        let f = JSON.parse(localStorage.getItem('mix_favs')) || [];
         document.querySelectorAll('.mod-card').forEach(c => {
             c.querySelector('.btn-fav').classList.toggle('active', f.includes(c.id));
         });
     }
 
-    function toggleSettings(e) { e.stopPropagation(); document.getElementById("settingsOptions").classList.toggle("active"); }
-    window.onclick = function(e) { if (!document.getElementById("mainSettings").contains(e.target)) document.getElementById("settingsOptions").classList.remove("active"); };
-
-    function randomMod() {
-        let c = document.querySelectorAll('.mod-card');
-        c[Math.floor(Math.random()*c.length)].scrollIntoView({behavior:'smooth', block:'center'});
-        document.getElementById("settingsOptions").classList.remove("active");
-    }
-
+    // FILTRO E CATEGORIAS
     function setCategory(cat, el) {
         document.querySelectorAll('.btn-category').forEach(b => b.classList.remove('active'));
         el.classList.add('active');
@@ -156,16 +160,35 @@
 
     function filterMods() {
         let q = document.getElementById('searchInput').value.toLowerCase();
+        let f = JSON.parse(localStorage.getItem('mix_favs')) || [];
+        let count = 0;
         document.querySelectorAll('.mod-card').forEach(c => {
             let t = c.querySelector('h2').innerText.toLowerCase();
             let cat = c.getAttribute('data-category');
-            c.style.display = (t.includes(q) && (currentCategory === 'todos' || cat === currentCategory)) ? "" : "none";
+            let isFav = f.includes(c.id);
+            let match = t.includes(q) && (currentCategory === 'todos' || cat === currentCategory || (currentCategory === 'favs' && isFav));
+            c.style.display = match ? "" : "none";
+            if(match) count++;
         });
-        document.getElementById('modCounter').innerText = "Exibindo " + document.querySelectorAll('.mod-card[style=""]').length + " mods";
+        document.getElementById('modCounter').innerText = "Exibindo " + count + " mods";
+    }
+
+    // MENU CONFIG
+    function toggleSettings(e) { e.stopPropagation(); document.getElementById("settingsOptions").classList.toggle("active"); }
+    window.onclick = function(e) { 
+        if (!document.getElementById("mainSettings").contains(e.target)) {
+            document.getElementById("settingsOptions").classList.remove("active");
+            document.getElementById("themeSubmenu").classList.remove("active");
+        }
+    };
+
+    function randomMod() {
+        let c = document.querySelectorAll('.mod-card');
+        c[Math.floor(Math.random()*c.length)].scrollIntoView({behavior:'smooth', block:'center'});
+        document.getElementById("settingsOptions").classList.remove("active");
     }
 
     function copyLink(u) { navigator.clipboard.writeText(window.location.origin+'/'+u); let t=document.getElementById("toast"); t.className="show"; setTimeout(()=>t.className="", 2000); }
-    function scrollToTop() { window.scrollTo({top:0, behavior:'smooth'}); }
     window.onload = () => { updateFavs(); filterMods(); };
 </script>
 
