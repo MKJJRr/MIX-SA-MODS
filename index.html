@@ -65,16 +65,15 @@
 
         #backToTop { position: fixed; bottom: 20px; right: 20px; background-color: #00ff00; color: black; width: 45px; height: 45px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 24px; z-index: 2000; border: none; box-shadow: 0 0 15px rgba(0, 255, 0, 0.4); }
         
-        /* --- NOVO MENU DE ENGRENAGEM (MOD ALEATÓRIO) --- */
-        .settings-menu { position: fixed; bottom: 20px; left: 20px; z-index: 2000; }
-        #btnSettings { background-color: #1a1a1a; color: #00ff00; width: 45px; height: 45px; border-radius: 50%; border: 1px solid #00ff00; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px rgba(0,255,0,0.2); transition: 0.3s; }
-        #btnSettings:active { transform: rotate(90deg); }
+        /* --- MENU DE ENGRENAGEM NO TOPO --- */
+        .settings-menu { position: fixed; top: 70px; left: 20px; z-index: 2000; }
+        #btnSettings { background-color: #1a1a1a; color: #00ff00; width: 40px; height: 40px; border-radius: 50%; border: 1px solid #00ff00; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px rgba(0,255,0,0.2); transition: 0.3s; }
         
-        .settings-options { position: absolute; bottom: 55px; left: 0; background: #1a1a1a; border: 1px solid #00ff00; border-radius: 8px; width: 150px; display: none; flex-direction: column; overflow: hidden; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
+        .settings-options { position: absolute; top: 50px; left: 0; background: #1a1a1a; border: 1px solid #00ff00; border-radius: 8px; width: 160px; display: none; flex-direction: column; overflow: hidden; box-shadow: 0 0 15px rgba(0,0,0,0.8); }
         .settings-options button { background: none; border: none; color: white; padding: 12px; text-align: left; cursor: pointer; font-size: 13px; font-weight: bold; border-bottom: 1px solid #333; }
         .settings-options button:hover { background: #00ff00; color: black; }
-        .settings-options.active { display: flex; animation: slideUp 0.3s ease; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .settings-options.active { display: flex; animation: fadeInDown 0.3s ease; }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
         footer { padding: 40px 20px; color: #555; font-size: 13px; border-top: 1px solid #1a1a1a; }
     </style>
@@ -95,6 +94,13 @@
     <p style="color: #00ff00; font-weight: bold; margin-top: 5px;">O ponto de encontro dos modders de GTA SA Mobile</p>
     <p id="modCounter" style="color: #888; font-size: 14px; margin-top: 10px;">Carregando mods...</p>
 </header>
+
+<div class="settings-menu" id="mainSettings">
+    <button id="btnSettings" onclick="toggleSettings(event)" title="Configurações">⚙️</button>
+    <div class="settings-options" id="settingsOptions">
+        <button onclick="randomMod()">🎲 Mod Aleatório</button>
+        </div>
+</div>
 
 <div class="controls-container">
     <input type="text" id="searchInput" onkeyup="filterMods()" placeholder="Pesquisar mod...">
@@ -129,13 +135,6 @@
     </div>
 </div>
 
-<div class="settings-menu">
-    <div class="settings-options" id="settingsOptions">
-        <button onclick="randomMod()">🎲 Mod Aleatório</button>
-        </div>
-    <button id="btnSettings" onclick="toggleSettings()" title="Opções">⚙️</button>
-</div>
-
 <div id="toast">Link copiado! 🔗</div>
 <button id="backToTop" onclick="scrollToTop()">↑</button>
 
@@ -144,6 +143,7 @@
 <script>
     let currentCategory = 'todos';
 
+    // Scroll e Barra de Progresso
     window.onscroll = function() { 
         let btn = document.getElementById("backToTop");
         btn.style.display = (window.scrollY > 300) ? "flex" : "none";
@@ -153,21 +153,34 @@
         document.getElementById("myBar").style.width = scrolled + "%";
     };
 
-    function toggleSettings() {
+    // FUNÇÕES DO MENU DE CONFIGURAÇÕES
+    function toggleSettings(event) {
+        event.stopPropagation(); // Impede que o clique no botão feche o menu imediatamente
         document.getElementById("settingsOptions").classList.toggle("active");
     }
 
+    // FECHAR AO CLICAR FORA
+    window.onclick = function(event) {
+        let menu = document.getElementById("settingsOptions");
+        let btn = document.getElementById("btnSettings");
+        // Se o clique não foi no menu nem no botão, fecha o menu
+        if (!menu.contains(event.target) && event.target !== btn) {
+            menu.classList.remove("active");
+        }
+    };
+
     function randomMod() {
         let cards = document.querySelectorAll('.mod-card');
-        let randomIndex = Math.floor(Math.random() * cards.length);
-        cards[randomIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
-        
-        // Efeito de destaque temporário
-        cards[randomIndex].style.transform = "scale(1.05)";
-        setTimeout(() => { cards[randomIndex].style.transform = "scale(1)"; }, 1000);
-        toggleSettings(); // Fecha o menu
+        if (cards.length > 0) {
+            let randomIndex = Math.floor(Math.random() * cards.length);
+            cards[randomIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            cards[randomIndex].style.transform = "scale(1.05)";
+            setTimeout(() => { cards[randomIndex].style.transform = "scale(1)"; }, 1000);
+        }
+        document.getElementById("settingsOptions").classList.remove("active");
     }
 
+    // SISTEMA DE FILTRO E CONTADOR
     function updateCounter() { let cards = document.getElementsByClassName('mod-card'); let visible = 0; for (let card of cards) { if (card.style.display !== "none") visible++; } document.getElementById('modCounter').innerText = "Exibindo " + visible + " mods de GTA SA"; }
     function setCategory(category, el) { let buttons = document.getElementsByClassName('btn-category'); for (let btn of buttons) btn.classList.remove('active'); el.classList.add('active'); currentCategory = category; filterMods(); }
     function filterMods() { let input = document.getElementById('searchInput').value.toLowerCase(); let cards = document.getElementsByClassName('mod-card'); for (let i = 0; i < cards.length; i++) { let title = cards[i].getElementsByTagName('h2')[0].innerText.toLowerCase(); let category = cards[i].getAttribute('data-category'); let matchSearch = title.includes(input); let matchCategory = (currentCategory === 'todos' || category === currentCategory); cards[i].style.display = (matchSearch && matchCategory) ? "" : "none"; } updateCounter(); }
