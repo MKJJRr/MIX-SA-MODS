@@ -2,57 +2,86 @@
 <html lang="pt-br"> 
 <head>
     <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>MIX-SA-MODS | GTA SA Android</title>
+    <link rel="icon" href="assets/img/logo-icon.png">
     
     <style>
-        /* ÚNICA ALTERAÇÃO NO CSS: Adicionei a variável para a cor não resetar */
-        :root { --cor-neon: #00ff00; }
-
+        /* MANTENDO SEUS ESTILOS ORIGINAIS EXATOS */
         body { background-color: #0f0f0f; color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; text-align: center; }
-        nav { background-color: #1a1a1a; padding: 10px 20px; position: sticky; top: 0; border-bottom: 2px solid var(--cor-neon); z-index: 1000; display: flex; align-items: center; justify-content: space-between; }
+        nav { background-color: #1a1a1a; padding: 10px 20px; position: sticky; top: 0; border-bottom: 2px solid #00ff00; z-index: 1000; display: flex; align-items: center; justify-content: space-between; }
         .nav-links { display: flex; gap: 15px; }
-        nav a { color: var(--cor-neon); text-decoration: none; font-weight: bold; text-transform: uppercase; font-size: 13px; transition: 0.3s; }
-        .mod-card h2 { color: var(--cor-neon); font-size: 18px; text-transform: uppercase; margin: 0 0 8px 0; }
-        
-        .btn-category { background-color: #252525; color: #888; border: 1px solid #333; }
-        /* O segredo do bug estava aqui: agora ele usa a variável */
-        .btn-category.active { background-color: var(--cor-neon); color: black; border-color: var(--cor-neon); }
-        .btn-download { background-color: var(--cor-neon); color: #000; width: 100%; font-weight: bold; }
-
-        /* MANTENDO SEUS OUTROS ESTILOS */
-        .settings-menu { position: fixed; top: 70px; left: 20px; z-index: 2000; }
-        #btnSettings { background-color: #1a1a1a; color: var(--cor-neon); width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--cor-neon); cursor: pointer; }
-        .settings-options { position: absolute; top: 50px; left: 0; background: #1a1a1a; border: 1px solid var(--cor-neon); border-radius: 8px; width: 160px; display: none; flex-direction: column; }
-        .settings-options.active { display: flex; }
-        .submenu { display: none; flex-direction: column; background: #222; }
-        .submenu.active { display: flex; }
-        .submenu button { color: white; background: none; border: none; padding: 10px; text-align: left; cursor: pointer; border-bottom: 1px solid #333; }
-
-        .btn-fav { position: absolute; top: 10px; left: 10px; background-color: rgba(0,0,0,0.6); color: #fff; border: 1px solid #333; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; }
-        .btn-fav.active { color: #ff0000; border-color: #ff0000; }
-        .mod-card { background-color: #1e1e1e; border-radius: 12px; overflow: hidden; margin-bottom: 25px; border: 1px solid #333; position: relative; }
+        nav a { color: #00ff00; text-decoration: none; font-weight: bold; text-transform: uppercase; font-size: 13px; transition: 0.3s; }
+        nav a:hover { color: #ffffff; }
+        .site-logo { height: 40px; width: auto; }
+        header { padding: 50px 20px; background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('assets/img/banner.jpg'); background-size: cover; border-bottom: 1px solid #222; }
+        .controls-container { padding: 20px; max-width: 400px; margin: auto; }
+        #searchInput { width: 90%; padding: 15px; border-radius: 50px; border: 2px solid #333; background-color: #1a1a1a; color: white; outline: none; transition: 0.3s; margin-bottom: 20px; }
+        #searchInput:focus { border-color: #00ff00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
+        .category-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
         .container { max-width: 400px; margin: auto; padding: 10px; }
-        header { padding: 50px 20px; }
+
+        @keyframes neonPulse {
+            0% { box-shadow: 0 0 5px rgba(0, 255, 0, 0.2); border-color: #333; }
+            50% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.5); border-color: #00ff00; }
+            100% { box-shadow: 0 0 5px rgba(0, 255, 0, 0.2); border-color: #333; }
+        }
+
+        .mod-card {
+            background-color: #1e1e1e; border-radius: 12px; overflow: hidden; margin-bottom: 25px; border: 1px solid #333; transition: transform 0.3s;
+            position: relative; animation: slideIn 0.5s ease forwards, neonPulse 3s infinite ease-in-out;
+        }
+        
+        .mod-img { width: 100%; height: auto; display: block; border-bottom: 1px solid #333; }
+        .mod-info { padding: 15px; text-align: left; }
+        .mod-card h2 { color: #00ff00; font-size: 18px; text-transform: uppercase; margin: 0 0 8px 0; }
+        .mod-card p { color: #bbb; font-size: 13px; line-height: 1.4; margin-bottom: 15px; }
+
+        .btn { display: inline-block; padding: 12px 24px; text-decoration: none; font-weight: bold; border-radius: 8px; text-transform: uppercase; font-size: 13px; text-align: center; border: none; cursor: pointer; }
+        .btn-category { background-color: #252525; color: #888; border: 1px solid #333; }
+        .btn-category.active { background-color: #00ff00; color: black; border-color: #00ff00; }
+        .btn-download { background-color: #00ff00; color: #000; width: 100%; box-sizing: border-box; }
+
+        /* COMPARTILHAR E FAVORITOS */
+        .btn-share { position: absolute; top: 10px; right: 10px; background-color: rgba(0,0,0,0.6); color: #00ff00; border: 1px solid #00ff00; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; z-index: 10; }
+        .btn-fav { position: absolute; top: 10px; left: 10px; background-color: rgba(0,0,0,0.6); color: #fff; border: 1px solid #333; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; z-index: 10; }
+        .btn-fav.active { color: #ff0000; border-color: #ff0000; }
+
+        /* ENGRENAGEM NO TOPO */
+        .settings-menu { position: fixed; top: 70px; left: 20px; z-index: 2000; }
+        #btnSettings { background-color: #1a1a1a; color: #00ff00; width: 40px; height: 40px; border-radius: 50%; border: 1px solid #00ff00; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .settings-options { position: absolute; top: 50px; left: 0; background: #1a1a1a; border: 1px solid #00ff00; border-radius: 8px; width: 160px; display: none; flex-direction: column; overflow: hidden; box-shadow: 0 0 10px #000; }
+        .settings-options button { background: none; border: none; color: white; padding: 12px; text-align: left; cursor: pointer; font-size: 12px; border-bottom: 1px solid #333; font-weight: bold; }
+        .settings-options.active { display: flex; }
+        
+        .submenu { display: none; flex-direction: column; background: #222; }
+        .submenu button { padding-left: 25px; border-bottom: 1px solid #444; }
+        .submenu.active { display: flex; }
+
+        /* TOAST E OUTROS */
+        #toast { visibility: hidden; min-width: 200px; background-color: #1a1a1a; color: #00ff00; text-align: center; border-radius: 50px; border: 1px solid #00ff00; padding: 12px; position: fixed; z-index: 3000; left: 50%; bottom: 30px; transform: translateX(-50%); font-weight: bold; }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2s; }
+        @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
     </style>
 </head>
 <body>
 
 <nav>
     <div class="nav-links">
-        <a href="index.html">Início</a> <a href="paginas/sobre.html">Sobre</a>
+        <a href="index.html">Início</a> <a href="paginas/sobre.html">Sobre</a> <a href="https://youtube.com/@maykjjr" target="_blank">YouTube</a> <a href="paginas/comunidade.html">Social</a>
     </div>
-    <img src="assets/img/logo-icon.png" alt="Logo" style="height:40px">
+    <img src="assets/img/logo-icon.png" alt="Logo" class="site-logo">
 </nav>
 
 <header>
-    <h1>MIX-SA-MODS</h1>
-    <p style="color: var(--cor-neon); font-weight: bold;">GTA SA Android Mods</p>
-    <p id="modCounter" style="color: #888; font-size: 14px;">Carregando...</p>
+    <h1 style="font-size: 35px; margin: 0;">MIX-SA-MODS</h1>
+    <p id="headerP" style="color: #00ff00; font-weight: bold;">O ponto de encontro dos modders de GTA SA Mobile</p>
+    <p id="modCounter" style="color: #888; font-size: 14px;">Carregando mods...</p>
 </header>
 
 <div class="settings-menu" id="mainSettings">
     <button id="btnSettings" onclick="toggleSettings(event)">⚙️</button>
     <div class="settings-options" id="settingsOptions">
-        <button style="color:white; background:none; border:none; padding:10px; text-align:left; cursor:pointer;" onclick="toggleSubmenu(event)">🎨 Temas ▼</button>
+        <button onclick="randomMod()">🎲 Mod Aleatório</button>
+        <button onclick="toggleSubmenu(event)">🎨 Temas ▼</button>
         <div class="submenu" id="themeSubmenu">
             <button onclick="applyTheme('#00ff00')">🟢 Verde</button>
             <button onclick="applyTheme('#00d9ff')">🔵 Azul</button>
@@ -62,11 +91,13 @@
 </div>
 
 <div class="controls-container">
-    <input type="text" id="searchInput" onkeyup="filterMods()" placeholder="Pesquisar..." style="width:90%; padding:15px; border-radius:50px; background:#1a1a1a; color:white; border:1px solid #333; margin-bottom:20px;">
-    <div class="category-buttons">
+    <input type="text" id="searchInput" onkeyup="filterMods()" placeholder="Pesquisar mod...">
+    <div class="category-buttons" id="catGroup">
         <button class="btn btn-category active" onclick="setCategory('todos', this)">TUDO</button> 
         <button class="btn btn-category" onclick="setCategory('textura', this)">TEXTURAS</button> 
         <button class="btn btn-category" onclick="setCategory('script', this)">SCRIPTS/CLEO</button> 
+        <button class="btn btn-category" onclick="setCategory('veiculo', this)">VEÍCULOS</button> 
+        <button class="btn btn-category" onclick="setCategory('correcao', this)">CORREÇÃO</button> 
         <button class="btn btn-category" onclick="setCategory('favs', this)">⭐ FAVORITOS</button> 
     </div>
 </div>
@@ -74,20 +105,31 @@
 <div class="container" id="modList">
     <div class="mod-card" data-category="script" id="m1">
         <button class="btn-fav" onclick="toggleFav('m1')">❤</button>
+        <button class="btn-share" onclick="copyLink('mods/mod-gasolina.html')">🔗</button>
+        <img src="mods/img/mod-gasolina.png" class="mod-img">
         <div class="mod-info">
-            <h2>Mod Gasolina</h2>
-            <p>Sistema de combustível realista.</p>
-            <button class="btn-download">DOWNLOAD</button>
+            <h2>Mod Gasolina Realista</h2>
+            <p>Adiciona um sistema de combustível realista nos postos de San Andreas.</p>
+            <a href="mods/mod-gasolina.html" class="btn btn-download">VER DETALHES</a>
         </div>
     </div>
 </div>
 
+<div id="toast">Copiado!</div>
+
 <script>
     let currentCategory = 'todos';
+    let selectedColor = '#00ff00'; // Armazena a cor do tema atual
 
-    // APLICAR TEMA VIA VARIÁVEL (Corrige o bug da categoria)
+    // SISTEMA DE TEMAS
     function applyTheme(color) {
-        document.documentElement.style.setProperty('--cor-neon', color);
+        selectedColor = color;
+        document.querySelectorAll('nav, #btnSettings, .settings-options, #toast').forEach(e => e.style.borderColor = color);
+        document.querySelectorAll('nav a, header p, .mod-card h2, #btnSettings, #toast').forEach(e => e.style.color = color);
+        document.querySelectorAll('.btn-download, .btn-category.active').forEach(e => {
+            e.style.backgroundColor = color;
+            if(e.classList.contains('btn-category')) e.style.borderColor = color;
+        });
         document.getElementById("settingsOptions").classList.remove("active");
         document.getElementById("themeSubmenu").classList.remove("active");
     }
@@ -97,15 +139,7 @@
         document.getElementById("themeSubmenu").classList.toggle("active");
     }
 
-    function toggleSettings(e) { e.stopPropagation(); document.getElementById("settingsOptions").classList.toggle("active"); }
-
-    function setCategory(cat, el) {
-        document.querySelectorAll('.btn-category').forEach(b => b.classList.remove('active'));
-        el.classList.add('active');
-        currentCategory = cat;
-        filterMods();
-    }
-
+    // SISTEMA DE FAVORITOS
     function toggleFav(id) {
         let f = JSON.parse(localStorage.getItem('mix_favs')) || [];
         if(f.includes(id)) f = f.filter(x => x !== id); else f.push(id);
@@ -119,6 +153,26 @@
         document.querySelectorAll('.mod-card').forEach(c => {
             c.querySelector('.btn-fav').classList.toggle('active', f.includes(c.id));
         });
+    }
+
+    // FILTRO E CATEGORIAS
+    function setCategory(cat, el) {
+        // Limpa estilos de todos os botões
+        document.querySelectorAll('.btn-category').forEach(b => {
+            b.classList.remove('active');
+            b.style.backgroundColor = "";
+            b.style.borderColor = "";
+            b.style.color = "";
+        });
+        
+        // Ativa o novo botão e reaplica a cor do tema selecionado
+        el.classList.add('active');
+        el.style.backgroundColor = selectedColor;
+        el.style.borderColor = selectedColor;
+        el.style.color = "black";
+        
+        currentCategory = cat;
+        filterMods();
     }
 
     function filterMods() {
@@ -136,7 +190,24 @@
         document.getElementById('modCounter').innerText = "Exibindo " + count + " mods";
     }
 
-    window.onclick = () => { document.getElementById("settingsOptions").classList.remove("active"); };
+    // MENU CONFIG
+    function toggleSettings(e) { e.stopPropagation(); document.getElementById("settingsOptions").classList.toggle("active"); }
+    window.onclick = function(e) { 
+        if (!document.getElementById("mainSettings").contains(e.target)) {
+            document.getElementById("settingsOptions").classList.remove("active");
+            document.getElementById("themeSubmenu").classList.remove("active");
+        }
+    };
+
+    function randomMod() {
+        let c = document.querySelectorAll('.mod-card');
+        if(c.length > 0) {
+            c[Math.floor(Math.random()*c.length)].scrollIntoView({behavior:'smooth', block:'center'});
+        }
+        document.getElementById("settingsOptions").classList.remove("active");
+    }
+
+    function copyLink(u) { navigator.clipboard.writeText(window.location.origin+'/'+u); let t=document.getElementById("toast"); t.className="show"; setTimeout(()=>t.className="", 2000); }
     window.onload = () => { updateFavs(); filterMods(); };
 </script>
 
