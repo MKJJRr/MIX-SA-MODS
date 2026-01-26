@@ -10,38 +10,83 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="icon" href="assets/img/logo-icon.png">
     
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap" rel="stylesheet">
+    
     <style id="dynamic-theme">
+        :root { --main-color: #00ff00; }
         @keyframes neonPulse {
             0% { box-shadow: 0 0 5px rgba(0, 255, 0, 0.2); border-color: #333; }
-            50% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.5); border-color: #00ff00; }
+            50% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.5); border-color: var(--main-color); }
             100% { box-shadow: 0 0 5px rgba(0, 255, 0, 0.2); border-color: #333; }
         }
     </style>
 
     <style>
-        /* ESTILOS ORIGINAIS MANTIDOS */
         body { background-color: #0f0f0f; color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; text-align: center; }
-        nav { background-color: #1a1a1a; padding: 10px 20px; position: sticky; top: 0; border-bottom: 2px solid #00ff00; z-index: 1000; display: flex; align-items: center; justify-content: space-between; }
+        
+        /* TÍTULO COM VIDA (NEON ANIMADO) */
+        header h1 { 
+            font-family: 'Orbitron', sans-serif;
+            font-size: 42px; 
+            margin: 0; 
+            letter-spacing: 3px;
+            color: #fff;
+            text-shadow: 0 0 10px var(--main-color);
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { text-shadow: 0 0 10px var(--main-color), 0 0 20px var(--main-color); transform: scale(1); }
+            to { text-shadow: 0 0 20px var(--main-color), 0 0 40px var(--main-color); transform: scale(1.02); }
+        }
+
+        nav { background-color: #1a1a1a; padding: 10px 20px; position: sticky; top: 0; border-bottom: 2px solid var(--main-color); z-index: 1000; display: flex; align-items: center; justify-content: space-between; }
         .nav-links { display: flex; gap: 15px; }
-        nav a { color: #00ff00; text-decoration: none; font-weight: bold; text-transform: uppercase; font-size: 13px; transition: 0.3s; }
+        nav a { color: var(--main-color); text-decoration: none; font-weight: bold; text-transform: uppercase; font-size: 13px; transition: 0.3s; }
         nav a:hover { color: #ffffff; }
         .site-logo { height: 40px; width: auto; }
-        header { padding: 50px 20px; background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('assets/img/banner.jpg'); background-size: cover; border-bottom: 1px solid #222; }
+        
+        header { padding: 60px 20px; background: linear-gradient(rgba(0,0,0,0.8), rgba(15,15,15,1)), url('assets/img/banner.jpg'); background-size: cover; background-position: center; border-bottom: 1px solid #222; }
+        
         .controls-container { padding: 20px; max-width: 400px; margin: auto; }
         #searchInput { width: 90%; padding: 15px; border-radius: 50px; border: 2px solid #333; background-color: #1a1a1a; color: white; outline: none; transition: 0.3s; margin-bottom: 20px; }
-        #searchInput:focus { border-color: #00ff00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
+        #searchInput:focus { border-color: var(--main-color); box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
+        
         .category-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
         .container { max-width: 400px; margin: auto; padding: 10px; min-height: 300px; }
 
-        /* MODO GRADE */
         .mod-card {
             background-color: #1e1e1e; border-radius: 12px; overflow: hidden; margin-bottom: 25px; border: 1px solid #333; transition: 0.3s;
             position: relative; animation: slideIn 0.5s ease forwards, neonPulse 3s infinite ease-in-out;
         }
         .mod-img { width: 100%; height: auto; display: block; border-bottom: 1px solid #333; }
         .mod-info { padding: 15px; text-align: left; }
-        .mod-card h2 { color: #00ff00; font-size: 18px; text-transform: uppercase; margin: 0 0 8px 0; }
+        .mod-card h2 { color: var(--main-color); font-size: 18px; text-transform: uppercase; margin: 0 0 8px 0; }
         .mod-card p { color: #bbb; font-size: 13px; line-height: 1.4; margin-bottom: 15px; }
+
+        .btn { display: inline-block; padding: 12px 24px; text-decoration: none; font-weight: bold; border-radius: 8px; text-transform: uppercase; font-size: 13px; text-align: center; border: none; cursor: pointer; }
+        .btn-category { background-color: #252525; color: #888; border: 1px solid #333; }
+        .btn-category.active { background-color: var(--main-color); color: black; border-color: var(--main-color); }
+        .btn-download { background-color: var(--main-color); color: #000; width: 100%; box-sizing: border-box; font-weight: 900; }
+
+        .btn-share { position: absolute; top: 10px; right: 10px; background-color: rgba(0,0,0,0.6); color: var(--main-color); border: 1px solid var(--main-color); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; z-index: 10; }
+        .btn-fav { position: absolute; top: 10px; left: 10px; background-color: rgba(0,0,0,0.6); color: #fff; border: 1px solid #333; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; z-index: 10; }
+        .btn-fav.active { color: #ff0000; border-color: #ff0000; }
+
+        .settings-menu { position: fixed; top: 70px; left: 20px; z-index: 2000; }
+        #btnSettings { background-color: #1a1a1a; color: var(--main-color); width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--main-color); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .settings-options { position: absolute; top: 50px; left: 0; background: #1a1a1a; border: 1px solid var(--main-color); border-radius: 8px; width: 160px; display: none; flex-direction: column; overflow: hidden; box-shadow: 0 0 10px #000; }
+        .settings-options button { background: none; border: none; color: white; padding: 12px; text-align: left; cursor: pointer; font-size: 12px; border-bottom: 1px solid #333; font-weight: bold; }
+        .settings-options.active { display: flex; }
+        
+        .submenu { display: none; flex-direction: column; background: #222; }
+        .submenu button { padding-left: 25px; border-bottom: 1px solid #444; }
+        .submenu.active { display: flex; }
+
+        #toast { visibility: hidden; min-width: 200px; background-color: #1a1a1a; color: var(--main-color); text-align: center; border-radius: 50px; border: 1px solid var(--main-color); padding: 12px; position: fixed; z-index: 3000; left: 50%; bottom: 30px; transform: translateX(-50%); font-weight: bold; }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2s; }
+        @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         /* MODO LISTA */
         .list-mode .mod-card { display: flex; align-items: center; margin-bottom: 15px; height: 100px; }
@@ -50,31 +95,6 @@
         .list-mode .mod-card p { display: none; }
         .list-mode .mod-card h2 { font-size: 14px; margin: 0; }
         .list-mode .btn-download { padding: 5px; font-size: 10px; margin-top: 5px; width: auto; align-self: flex-start; }
-        .list-mode .btn-fav, .list-mode .btn-share { width: 25px; height: 25px; font-size: 10px; }
-
-        .btn { display: inline-block; padding: 12px 24px; text-decoration: none; font-weight: bold; border-radius: 8px; text-transform: uppercase; font-size: 13px; text-align: center; border: none; cursor: pointer; }
-        .btn-category { background-color: #252525; color: #888; border: 1px solid #333; }
-        .btn-category.active { background-color: #00ff00; color: black; border-color: #00ff00; }
-        .btn-download { background-color: #00ff00; color: #000; width: 100%; box-sizing: border-box; }
-
-        .btn-share { position: absolute; top: 10px; right: 10px; background-color: rgba(0,0,0,0.6); color: #00ff00; border: 1px solid #00ff00; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; z-index: 10; }
-        .btn-fav { position: absolute; top: 10px; left: 10px; background-color: rgba(0,0,0,0.6); color: #fff; border: 1px solid #333; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; z-index: 10; }
-        .btn-fav.active { color: #ff0000; border-color: #ff0000; }
-
-        .settings-menu { position: fixed; top: 70px; left: 20px; z-index: 2000; }
-        #btnSettings { background-color: #1a1a1a; color: #00ff00; width: 40px; height: 40px; border-radius: 50%; border: 1px solid #00ff00; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .settings-options { position: absolute; top: 50px; left: 0; background: #1a1a1a; border: 1px solid #00ff00; border-radius: 8px; width: 160px; display: none; flex-direction: column; overflow: hidden; box-shadow: 0 0 10px #000; }
-        .settings-options button { background: none; border: none; color: white; padding: 12px; text-align: left; cursor: pointer; font-size: 12px; border-bottom: 1px solid #333; font-weight: bold; }
-        .settings-options.active { display: flex; }
-        
-        .submenu { display: none; flex-direction: column; background: #222; }
-        .submenu button { padding-left: 25px; border-bottom: 1px solid #444; }
-        .submenu.active { display: flex; }
-
-        #toast { visibility: hidden; min-width: 200px; background-color: #1a1a1a; color: #00ff00; text-align: center; border-radius: 50px; border: 1px solid #00ff00; padding: 12px; position: fixed; z-index: 3000; left: 50%; bottom: 30px; transform: translateX(-50%); font-weight: bold; }
-        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2s; }
-        @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -87,8 +107,8 @@
 </nav>
 
 <header>
-    <h1 style="font-size: 35px; margin: 0;">MIX-SA-MODS</h1>
-    <p id="headerP" style="color: #00ff00; font-weight: bold;">O ponto de encontro dos modders de GTA SA Mobile</p>
+    <h1>MIX-SA-MODS</h1>
+    <p id="headerP" style="color: var(--main-color); font-weight: bold; margin-top: 10px;">O ponto de encontro dos modders de GTA SA Mobile</p>
     <p id="modCounter" style="color: #888; font-size: 14px;">Iniciando sistema...</p>
 </header>
 
@@ -105,9 +125,10 @@
 
         <button onclick="toggleSubmenu(event, 'themeSubmenu')">🎨 Temas ▼</button>
         <div class="submenu" id="themeSubmenu">
-            <button onclick="applyTheme('#00ff00')">🟢 Verde - padrão</button>
+            <button onclick="applyTheme('#00ff00')">🟢 Verde</button>
             <button onclick="applyTheme('#00d9ff')">🔵 Azul</button>
             <button onclick="applyTheme('#ff3c00')">🔴 Vermelho</button>
+            <button onclick="applyTheme('#ff00ff')">🟣 Roxo</button>
         </div>
     </div>
 </div>
@@ -116,11 +137,11 @@
     <input type="text" id="searchInput" onkeyup="filterMods()" placeholder="Pesquisar mod...">
     <div class="category-buttons" id="catGroup">
         <button class="btn btn-category active" onclick="setCategory('todos', this)">TUDO</button> 
-        <button class="btn btn-category" onclick="setCategory('textura', this)">TEXTURAS</button> 
+        <button class="btn btn-category" onclick="setCategory('cleo', this)">CLEO</button> 
         <button class="btn btn-category" onclick="setCategory('veiculo', this)">VEÍCULOS</button> 
+        <button class="btn btn-category" onclick="setCategory('textura', this)">TEXTURAS</button> 
         <button class="btn btn-category" onclick="setCategory('correcao', this)">CORREÇÃO</button> 
         <button class="btn btn-category" onclick="setCategory('favs', this)">⭐ FAVORITOS</button> 
-        <button class="btn btn-category" onclick="setCategory('cleo', this)">CLEO</button> 
     </div>
 </div>
 
@@ -135,25 +156,18 @@
     let selectedColor = localStorage.getItem('site_theme') || '#00ff00';
     let viewMode = localStorage.getItem('view_mode') || 'grid';
 
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('sw.js').catch(err => console.log('SW fail', err));
-        });
-    }
-
-    // NOVA FUNÇÃO: GERA OS CARDS DINAMICAMENTE
+    // FUNÇÃO QUE GERA OS CARDS
     function carregarMods() {
         const container = document.getElementById('modList');
-        if (!container) return;
+        if (!container || typeof listaDeMods === 'undefined') return;
         container.innerHTML = ""; 
 
-        // listaDeMods vem do arquivo mods.js
         listaDeMods.forEach(mod => {
             const card = `
                 <div class="mod-card" data-category="${mod.categoria}" id="${mod.id}">
                     <button class="btn-fav" onclick="toggleFav('${mod.id}')">❤</button>
                     <button class="btn-share" onclick="copyLink('${mod.link}')">🔗</button>
-                    <img src="${mod.imagem}" class="mod-img">
+                    <img src="${mod.imagem}" class="mod-img" loading="lazy">
                     <div class="mod-info">
                         <h2>${mod.titulo}</h2>
                         <p>${mod.descricao}</p>
@@ -171,17 +185,20 @@
         localStorage.setItem('view_mode', mode);
         if (mode === 'list') container.classList.add('list-mode');
         else container.classList.remove('list-mode');
-        
-        document.getElementById("settingsOptions").classList.remove("active");
-        document.querySelectorAll(".submenu").forEach(s => s.classList.remove("active"));
+        closeMenus();
     }
 
     function applyTheme(color, save = true) {
         selectedColor = color;
         if(save) localStorage.setItem('site_theme', color);
-        let r = parseInt(color.slice(1,3), 16), g = parseInt(color.slice(3,5), 16), b = parseInt(color.slice(5,7), 16);
+        
+        // Atualiza a variável de cor principal no CSS
+        document.documentElement.style.setProperty('--main-color', color);
+        
+        const r = parseInt(color.slice(1,3), 16), g = parseInt(color.slice(3,5), 16), b = parseInt(color.slice(5,7), 16);
         
         document.getElementById('dynamic-theme').innerHTML = `
+            :root { --main-color: ${color}; }
             @keyframes neonPulse {
                 0% { box-shadow: 0 0 5px rgba(${r}, ${g}, ${b}, 0.2); border-color: #333; }
                 50% { box-shadow: 0 0 15px rgba(${r}, ${g}, ${b}, 0.5); border-color: ${color}; }
@@ -190,6 +207,8 @@
         `;
 
         document.getElementById('metaTheme').content = color;
+        
+        // Aplica cores dinâmicas via JS para garantir compatibilidade
         document.querySelectorAll('nav, #btnSettings, .settings-options, #toast, .btn-share').forEach(e => e.style.borderColor = color);
         document.querySelectorAll('nav a, header p, .mod-card h2, #btnSettings, #toast, .btn-share').forEach(e => e.style.color = color);
         document.querySelectorAll('.btn-download, .btn-category.active').forEach(e => {
@@ -197,8 +216,7 @@
             if(e.classList.contains('btn-category')) e.style.borderColor = color;
         });
         
-        document.getElementById("settingsOptions").classList.remove("active");
-        document.querySelectorAll(".submenu").forEach(s => s.classList.remove("active"));
+        closeMenus();
     }
 
     function toggleSubmenu(e, id) {
@@ -255,33 +273,35 @@
 
     function toggleSettings(e) { e.stopPropagation(); document.getElementById("settingsOptions").classList.toggle("active"); }
     
+    function closeMenus() {
+        document.getElementById("settingsOptions").classList.remove("active");
+        document.querySelectorAll(".submenu").forEach(s => s.classList.remove("active"));
+    }
+
     window.onclick = function(e) { 
-        if (!document.getElementById("mainSettings").contains(e.target)) {
-            document.getElementById("settingsOptions").classList.remove("active");
-            document.querySelectorAll(".submenu").forEach(s => s.classList.remove("active"));
-        }
+        if (!document.getElementById("mainSettings").contains(e.target)) closeMenus();
     };
 
     function randomMod() {
-        let c = document.querySelectorAll('.mod-card');
+        let c = document.querySelectorAll('.mod-card:not([style*="display: none"])');
         if(c.length > 0) c[Math.floor(Math.random()*c.length)].scrollIntoView({behavior:'smooth', block:'center'});
-        document.getElementById("settingsOptions").classList.remove("active");
+        closeMenus();
     }
 
     function copyLink(u) { 
-        navigator.clipboard.writeText(window.location.origin+'/'+u); 
+        const fullUrl = window.location.origin + (u.startsWith('/') ? '' : '/') + u;
+        navigator.clipboard.writeText(fullUrl); 
         let t=document.getElementById("toast"); 
         t.className="show"; 
         setTimeout(()=>t.className="", 2000); 
     }
     
-    // CARREGAMENTO INICIAL ORGANIZADO
     window.onload = () => { 
-        carregarMods(); // 1. Cria os cards
-        applyTheme(selectedColor, false); // 2. Aplica cores
-        changeView(viewMode); // 3. Aplica visual
-        updateFavs(); // 4. Marca favoritos
-        filterMods(); // 5. Conta mods
+        carregarMods();
+        applyTheme(selectedColor, false);
+        changeView(viewMode);
+        updateFavs(); 
+        filterMods(); 
     };
 </script>
 
