@@ -33,7 +33,7 @@
         .category-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
         .container { max-width: 400px; margin: auto; padding: 10px; }
 
-        /* ESTILO DO CARD (MODO GRADE - PADRÃO) */
+        /* MODO GRADE */
         .mod-card {
             background-color: #1e1e1e; border-radius: 12px; overflow: hidden; margin-bottom: 25px; border: 1px solid #333; transition: 0.3s;
             position: relative; animation: slideIn 0.5s ease forwards, neonPulse 3s infinite ease-in-out;
@@ -43,11 +43,11 @@
         .mod-card h2 { color: #00ff00; font-size: 18px; text-transform: uppercase; margin: 0 0 8px 0; }
         .mod-card p { color: #bbb; font-size: 13px; line-height: 1.4; margin-bottom: 15px; }
 
-        /* ESTILO MODO LISTA (ATIVADO VIA JS) */
+        /* MODO LISTA */
         .list-mode .mod-card { display: flex; align-items: center; margin-bottom: 15px; height: 100px; }
         .list-mode .mod-img { width: 120px; height: 100%; object-fit: cover; border-bottom: none; border-right: 1px solid #333; }
         .list-mode .mod-info { padding: 10px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
-        .list-mode .mod-card p { display: none; } /* Esconde descrição na lista para poupar espaço */
+        .list-mode .mod-card p { display: none; }
         .list-mode .mod-card h2 { font-size: 14px; margin: 0; }
         .list-mode .btn-download { padding: 5px; font-size: 10px; margin-top: 5px; width: auto; align-self: flex-start; }
         .list-mode .btn-fav, .list-mode .btn-share { width: 25px; height: 25px; font-size: 10px; }
@@ -96,8 +96,14 @@
     <button id="btnSettings" onclick="toggleSettings(event)">⚙️</button>
     <div class="settings-options" id="settingsOptions">
         <button onclick="randomMod()">🎲 Mod Aleatório</button>
-        <button id="btnViewMode" onclick="toggleViewMode()">📱 Modo: Grade</button>
-        <button onclick="toggleSubmenu(event)">🎨 Temas ▼</button>
+        
+        <button onclick="toggleSubmenu(event, 'viewSubmenu')">📱 Visualização ▼</button>
+        <div class="submenu" id="viewSubmenu">
+            <button onclick="changeView('grid')">📱 Grade</button>
+            <button onclick="changeView('list')">📄 Lista</button>
+        </div>
+
+        <button onclick="toggleSubmenu(event, 'themeSubmenu')">🎨 Temas ▼</button>
         <div class="submenu" id="themeSubmenu">
             <button onclick="applyTheme('#00ff00')">🟢 Verde</button>
             <button onclick="applyTheme('#00d9ff')">🔵 Azul</button>
@@ -136,7 +142,7 @@
 <script>
     let currentCategory = 'todos';
     let selectedColor = localStorage.getItem('site_theme') || '#00ff00';
-    let viewMode = localStorage.getItem('view_mode') || 'grid'; // SALVA O MODO DE VISÃO
+    let viewMode = localStorage.getItem('view_mode') || 'grid';
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
@@ -144,21 +150,21 @@
         });
     }
 
-    // FUNÇÃO PARA ALTERNAR GRADE/LISTA
-    function toggleViewMode() {
+    // ALTERNAR VISUALIZAÇÃO
+    function changeView(mode) {
         const container = document.getElementById('modList');
-        const btn = document.getElementById('btnViewMode');
+        viewMode = mode;
+        localStorage.setItem('view_mode', mode);
         
-        if (viewMode === 'grid') {
-            viewMode = 'list';
+        if (mode === 'list') {
             container.classList.add('list-mode');
-            btn.innerText = "📱 Modo: Lista";
         } else {
-            viewMode = 'grid';
             container.classList.remove('list-mode');
-            btn.innerText = "📱 Modo: Grade";
         }
-        localStorage.setItem('view_mode', viewMode);
+        
+        // Fecha os menus após escolher
+        document.getElementById("settingsOptions").classList.remove("active");
+        document.querySelectorAll(".submenu").forEach(s => s.classList.remove("active"));
     }
 
     function applyTheme(color, save = true) {
@@ -185,10 +191,20 @@
         });
         
         document.getElementById("settingsOptions").classList.remove("active");
-        document.getElementById("themeSubmenu").classList.remove("active");
+        document.querySelectorAll(".submenu").forEach(s => s.classList.remove("active"));
     }
 
-    function toggleSubmenu(e) { e.stopPropagation(); document.getElementById("themeSubmenu").classList.toggle("active"); }
+    // MELHORADO PARA SUPORTAR MÚLTIPLOS SUBMENUS
+    function toggleSubmenu(e, id) {
+        e.stopPropagation();
+        const sub = document.getElementById(id);
+        const isOpen = sub.classList.contains("active");
+        
+        // Fecha outros submenus antes de abrir o novo
+        document.querySelectorAll(".submenu").forEach(s => s.classList.remove("active"));
+        
+        if(!isOpen) sub.classList.add("active");
+    }
 
     function toggleFav(id) {
         let f = JSON.parse(localStorage.getItem('mix_favs')) || [];
@@ -234,10 +250,11 @@
     }
 
     function toggleSettings(e) { e.stopPropagation(); document.getElementById("settingsOptions").classList.toggle("active"); }
+    
     window.onclick = function(e) { 
         if (!document.getElementById("mainSettings").contains(e.target)) {
             document.getElementById("settingsOptions").classList.remove("active");
-            document.getElementById("themeSubmenu").classList.remove("active");
+            document.querySelectorAll(".submenu").forEach(s => s.classList.remove("active"));
         }
     };
 
@@ -251,11 +268,7 @@
     
     window.onload = () => { 
         applyTheme(selectedColor, false);
-        // Carrega o modo de visão salvo
-        if(viewMode === 'list') {
-            viewMode = 'grid'; // Reset temporário para o toggle funcionar
-            toggleViewMode();
-        }
+        changeView(viewMode);
         updateFavs(); 
         filterMods(); 
     };
