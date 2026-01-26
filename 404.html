@@ -1,62 +1,84 @@
-<!DOCTYPE html> <html lang="pt-br"> <head>
-    <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Página não encontrada - MIX-SA-MODS</title> <link rel="stylesheet" href="style.css"> <style>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página não encontrada - MIX-SA-MODS</title>
+    
+    <style>
         /* --- ESTILO DA PÁGINA DE ERRO --- */
         body {
-            background-color: #0f0f0f; /* Fundo cinza quase preto, igual ao resto do site */
-            margin: 0; /* Remove qualquer espaço indesejado nas bordas */
-            display: flex; /* Ativa o sistema Flexbox para facilitar a centralização */
-            justify-content: center; /* Centraliza o conteúdo horizontalmente (esquerda/direita) */
-            align-items: center; /* Centraliza o conteúdo verticalmente (cima/baixo) */
-            height: 100vh; /* Faz o corpo da página ocupar 100% da altura da tela do dispositivo */
-            font-family: Arial, sans-serif; /* Define uma fonte simples e legível */
-            overflow: hidden; /* Esconde barras de rolagem para a página ficar estática e limpa */
+            background-color: #0f0f0f;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
         }
 
         .error-container {
-            text-align: center; /* Garante que todos os textos dentro da caixa fiquem centralizados */
-            padding: 20px; /* Espaçamento interno para o texto não encostar nas bordas em telas pequenas */
+            text-align: center;
+            padding: 20px;
         }
 
         .error-code {
-            font-size: 100px; /* Tamanho gigante para o número 404 */
-            color: #00ff00; /* Cor verde neon padrão da MIX-SA-MODS */
-            font-weight: bold; /* Deixa o número bem grosso/destacado */
-            margin: 0; /* Remove espaços extras ao redor do número */
-            line-height: 1; /* Ajusta a altura da linha para o texto debaixo não ficar longe demais */
+            font-size: 100px;
+            color: #00ff00; /* Cor padrão inicial */
+            font-weight: bold;
+            margin: 0;
+            line-height: 1;
         }
 
         .error-message {
-            font-size: 24px; /* Tamanho do título "MISSÃO FRACASSADA" */
-            color: white; /* Cor branca para dar contraste com o fundo escuro */
-            margin: 10px 0 20px 0; /* Espaçamento: 10px em cima e 20px embaixo */
-            text-transform: uppercase; /* Força o texto a ficar todo em MAIÚSCULO */
+            font-size: 24px;
+            color: white;
+            margin: 10px 0 20px 0;
+            text-transform: uppercase;
         }
 
         .error-subtext {
-            color: #aaa; /* Cor cinza para a descrição, indicando que é um texto secundário */
-            margin-bottom: 40px; /* Dá uma distância maior antes do botão de voltar */
-            font-size: 16px; /* Tamanho padrão de leitura */
+            color: #aaa;
+            margin-bottom: 40px;
+            font-size: 16px;
         }
 
         /* --- ESTILO DO BOTÃO VOLTAR --- */
         .btn-voltar {
-            display: inline-block; /* Permite que o link aceite preenchimento (padding) e margens */
-            background-color: #00ff00; /* Cor de fundo verde neon */
-            color: black; /* Texto preto para destacar dentro do verde */
-            padding: 15px 30px; /* Deixa o botão grande e fácil de clicar no celular */
-            text-decoration: none; /* Remove o sublinhado padrão de links */
-            font-weight: bold; /* Texto em negrito */
-            border-radius: 5px; /* Arredonda levemente os cantos do botão */
-            text-transform: uppercase; /* Texto do botão em MAIÚSCULO */
-            transition: background 0.3s; /* Suaviza a troca de cor quando o usuário interage */
+            display: inline-block;
+            background-color: #00ff00; /* Cor padrão inicial */
+            color: black;
+            padding: 15px 30px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            text-transform: uppercase;
+            transition: background 0.3s;
         }
 
         .btn-voltar:hover {
-            background-color: #00cc00; /* Escurece o verde quando passa o mouse no PC */
+            filter: brightness(0.8);
         }
     </style>
+
+    <script>
+        // Carrega a cor salva no LocalStorage para manter o tema escolhido
+        window.onload = () => {
+            const savedColor = localStorage.getItem('site_theme');
+            if (savedColor) {
+                document.querySelector('.error-code').style.color = savedColor;
+                document.querySelector('.btn-voltar').style.backgroundColor = savedColor;
+            }
+        };
+    </script>
 </head>
 <body>
-    <div class="error-container"> <div class="error-code">404</div> <h1 class="error-message">MISSÃO FRACASSADA!</h1> <p class="error-subtext">O mod que você procura foi "preso" ou "faleceu".</p> <a href="index.html" class="btn-voltar">Voltar ao Início</a> </div>
+    <div class="error-container"> 
+        <div class="error-code">404</div> 
+        <h1 class="error-message">MISSÃO FRACASSADA!</h1> 
+        <p class="error-subtext">O mod que você procura foi "preso" ou "faleceu".</p> 
+        <a href="index.html" class="btn-voltar">Voltar ao Início</a> 
+    </div>
 </body>
 </html>
