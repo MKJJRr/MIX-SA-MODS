@@ -5,67 +5,60 @@
     <link rel="icon" href="assets/img/logo-icon.png">
     
     <style>
-        /* --- SISTEMA DE TEMAS (VARIAVEL DE COR) --- */
-        :root {
-            --cor-neon: #00ff00;
-        }
-
-        /* --- MANTENDO SEUS ESTILOS EXATOS --- */
+        /* MANTENDO SEUS ESTILOS ORIGINAIS EXATOS */
         body { background-color: #0f0f0f; color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; text-align: center; }
-        nav { background-color: #1a1a1a; padding: 10px 20px; position: sticky; top: 0; border-bottom: 2px solid var(--cor-neon); z-index: 1000; display: flex; align-items: center; justify-content: space-between; }
+        nav { background-color: #1a1a1a; padding: 10px 20px; position: sticky; top: 0; border-bottom: 2px solid #00ff00; z-index: 1000; display: flex; align-items: center; justify-content: space-between; }
         .nav-links { display: flex; gap: 15px; }
-        nav a { color: var(--cor-neon); text-decoration: none; font-weight: bold; text-transform: uppercase; font-size: 13px; transition: 0.3s; }
+        nav a { color: #00ff00; text-decoration: none; font-weight: bold; text-transform: uppercase; font-size: 13px; transition: 0.3s; }
         nav a:hover { color: #ffffff; }
         .site-logo { height: 40px; width: auto; }
         header { padding: 50px 20px; background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('assets/img/banner.jpg'); background-size: cover; border-bottom: 1px solid #222; }
         .controls-container { padding: 20px; max-width: 400px; margin: auto; }
         #searchInput { width: 90%; padding: 15px; border-radius: 50px; border: 2px solid #333; background-color: #1a1a1a; color: white; outline: none; transition: 0.3s; margin-bottom: 20px; }
-        #searchInput:focus { border-color: var(--cor-neon); box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
+        #searchInput:focus { border-color: #00ff00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
         .category-buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
         .container { max-width: 400px; margin: auto; padding: 10px; }
 
         @keyframes neonPulse {
             0% { box-shadow: 0 0 5px rgba(0, 255, 0, 0.2); border-color: #333; }
-            50% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.5); border-color: var(--cor-neon); }
+            50% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.5); border-color: #00ff00; }
             100% { box-shadow: 0 0 5px rgba(0, 255, 0, 0.2); border-color: #333; }
         }
 
         .mod-card {
             background-color: #1e1e1e; border-radius: 12px; overflow: hidden; margin-bottom: 25px; border: 1px solid #333; transition: transform 0.3s;
-            position: relative; animation: slideIn 0.5s ease forwards, neonPulse 3s infinite ease-in-out;
+            position: relative; 
+            animation: slideIn 0.5s ease forwards, neonPulse 3s infinite ease-in-out;
         }
         
         @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .mod-img { width: 100%; height: auto; display: block; border-bottom: 1px solid #333; }
         .mod-info { padding: 15px; text-align: left; }
-        .mod-card h2 { color: var(--cor-neon); font-size: 18px; text-transform: uppercase; margin: 0 0 8px 0; }
+        .mod-card h2 { color: #00ff00; font-size: 18px; text-transform: uppercase; margin: 0 0 8px 0; }
         .mod-card p { color: #bbb; font-size: 13px; line-height: 1.4; margin-bottom: 15px; }
 
         .btn { display: inline-block; padding: 12px 24px; text-decoration: none; font-weight: bold; border-radius: 8px; text-transform: uppercase; font-size: 13px; text-align: center; border: none; cursor: pointer; }
         .btn-category { background-color: #252525; color: #888; border: 1px solid #333; }
-        .btn-category.active { background-color: var(--cor-neon); color: black; border-color: var(--cor-neon); }
-        .btn-download { background-color: var(--cor-neon); color: #000; width: 100%; box-sizing: border-box; }
+        .btn-category.active { background-color: #00ff00; color: black; border-color: #00ff00; }
+        .btn-download { background-color: #00ff00; color: #000; width: 100%; box-sizing: border-box; }
 
-        /* COMPARTILHAR E FAVORITOS */
-        .btn-share { position: absolute; top: 10px; right: 10px; background-color: rgba(0,0,0,0.6); color: var(--cor-neon); border: 1px solid var(--cor-neon); width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; z-index: 10; }
+        .btn-share { position: absolute; top: 10px; right: 10px; background-color: rgba(0,0,0,0.6); color: #00ff00; border: 1px solid #00ff00; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; z-index: 10; }
+
+        /* ADICIONADO APENAS O NECESSÁRIO PARA AS NOVAS FUNÇÕES */
         .btn-fav { position: absolute; top: 10px; left: 10px; background-color: rgba(0,0,0,0.6); color: #fff; border: 1px solid #333; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; z-index: 10; }
         .btn-fav.active { color: #ff0000; border-color: #ff0000; }
 
-        /* BARRA DE PROGRESSO E TOAST */
-        .progress-container { position: fixed; top: 0; z-index: 2100; width: 100%; height: 4px; background: transparent; }
-        .progress-bar { height: 4px; background: var(--cor-neon); width: 0%; box-shadow: 0 0 10px var(--cor-neon); transition: width 0.1s ease; }
-        #toast { visibility: hidden; min-width: 200px; background-color: #1a1a1a; color: var(--cor-neon); text-align: center; border-radius: 50px; border: 1px solid var(--cor-neon); padding: 12px; position: fixed; z-index: 3000; left: 50%; bottom: 30px; transform: translateX(-50%); box-shadow: 0 0 15px var(--cor-neon); font-weight: bold; }
-        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2s; }
-
-        /* ENGRENAGEM E OPÇÕES */
         .settings-menu { position: fixed; top: 70px; left: 20px; z-index: 2000; }
-        #btnSettings { background-color: #1a1a1a; color: var(--cor-neon); width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--cor-neon); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-        .settings-options { position: absolute; top: 50px; left: 0; background: #1a1a1a; border: 1px solid var(--cor-neon); border-radius: 8px; width: 170px; display: none; flex-direction: column; overflow: hidden; box-shadow: 0 0 10px #000; }
-        .settings-options button { background: none; border: none; color: white; padding: 12px; text-align: left; cursor: pointer; font-size: 12px; border-bottom: 1px solid #333; font-weight: bold; }
-        .settings-options button:hover { background: #222; }
+        #btnSettings { background-color: #1a1a1a; color: #00ff00; width: 40px; height: 40px; border-radius: 50%; border: 1px solid #00ff00; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .settings-options { position: absolute; top: 50px; left: 0; background: #1a1a1a; border: 1px solid #00ff00; border-radius: 8px; width: 160px; display: none; flex-direction: column; overflow: hidden; }
+        .settings-options button { background: none; border: none; color: white; padding: 12px; text-align: left; cursor: pointer; font-size: 12px; border-bottom: 1px solid #333; }
         .settings-options.active { display: flex; }
 
-        #backToTop { position: fixed; bottom: 20px; right: 20px; background-color: var(--cor-neon); color: black; width: 45px; height: 45px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 24px; z-index: 2000; border: none; }
+        .progress-container { position: fixed; top: 0; z-index: 2100; width: 100%; height: 4px; background: transparent; }
+        .progress-bar { height: 4px; background: #00ff00; width: 0%; box-shadow: 0 0 10px #00ff00; transition: width 0.1s ease; }
+        #toast { visibility: hidden; min-width: 200px; background-color: #1a1a1a; color: #00ff00; text-align: center; border-radius: 50px; border: 1px solid #00ff00; padding: 12px; position: fixed; z-index: 3000; left: 50%; bottom: 30px; transform: translateX(-50%); font-weight: bold; }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2s; }
+        #backToTop { position: fixed; bottom: 20px; right: 20px; background-color: #00ff00; color: black; width: 45px; height: 45px; border-radius: 50%; display: none; align-items: center; justify-content: center; z-index: 2000; border: none; }
         footer { padding: 40px 20px; color: #555; font-size: 13px; border-top: 1px solid #1a1a1a; }
         @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
         @keyframes fadeout { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
@@ -84,7 +77,7 @@
 
 <header>
     <h1 style="font-size: 35px; margin: 0;">MIX-SA-MODS</h1>
-    <p style="color: var(--cor-neon); font-weight: bold; margin-top: 5px;">O ponto de encontro dos modders de GTA SA Mobile</p>
+    <p style="color: #00ff00; font-weight: bold; margin-top: 5px;">O ponto de encontro dos modders de GTA SA Mobile</p>
     <p id="modCounter" style="color: #888; font-size: 14px; margin-top: 10px;">Carregando mods...</p>
 </header>
 
@@ -92,9 +85,9 @@
     <button id="btnSettings" onclick="toggleSettings(event)">⚙️</button>
     <div class="settings-options" id="settingsOptions">
         <button onclick="randomMod()">🎲 Mod Aleatório</button>
-        <button onclick="changeTheme('#00ff00')">🟢 Tema Verde</button>
-        <button onclick="changeTheme('#00d9ff')">🔵 Tema Azul</button>
-        <button onclick="changeTheme('#ff3c00')">🔴 Tema Vermelho</button>
+        <button onclick="setTheme('#00ff00')">🟢 Verde</button>
+        <button onclick="setTheme('#00d9ff')">🔵 Azul</button>
+        <button onclick="setTheme('#ff3c00')">🔴 Vermelho</button>
     </div>
 </div>
 
@@ -109,25 +102,14 @@
 </div>
 
 <div class="container" id="modList">
-    <div class="mod-card" data-category="script" id="gasolina_real">
-        <button class="btn-fav" onclick="toggleFav('gasolina_real')">❤</button>
+    <div class="mod-card" data-category="script" id="mod-gasolina">
+        <button class="btn-fav" onclick="toggleFav('mod-gasolina')">❤</button>
         <button class="btn-share" onclick="copyLink('mods/mod-gasolina.html')">🔗</button>
         <img src="mods/img/mod-gasolina.png" class="mod-img">
         <div class="mod-info">
             <h2>Mod Gasolina Realista</h2>
             <p>Adiciona um sistema de combustível realista nos postos de San Andreas.</p>
             <a href="mods/mod-gasolina.html" class="btn btn-download">VER DETALHES</a>
-        </div>
-    </div>
-
-    <div class="mod-card" data-category="textura" id="ceu_4k">
-        <button class="btn-fav" onclick="toggleFav('ceu_4k')">❤</button>
-        <button class="btn-share" onclick="copyLink('index.html')">🔗</button>
-        <img src="mods/img/placeholder.png" class="mod-img">
-        <div class="mod-info">
-            <h2>Céu Realista 4K</h2>
-            <p>Novas texturas para nuvens e clima melhorado para Android.</p>
-            <a href="#" class="btn btn-download">EM BREVE</a>
         </div>
     </div>
 </div>
@@ -140,33 +122,24 @@
 <script>
     let currentCategory = 'todos';
 
-    // SCROLL E PROGRESSO
-    window.onscroll = function() { 
-        document.getElementById("backToTop").style.display = (window.scrollY > 300) ? "flex" : "none";
-        var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-        var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        var scrolled = (winScroll / height) * 100;
-        document.getElementById("myBar").style.width = scrolled + "%";
-    };
-
-    // SISTEMA DE TEMAS
-    function changeTheme(color) {
-        document.documentElement.style.setProperty('--cor-neon', color);
+    function setTheme(color) {
+        // Altera apenas os elementos que usam o verde original
+        document.querySelectorAll('nav, #btnSettings, .settings-options, #toast').forEach(el => el.style.borderColor = color);
+        document.querySelectorAll('nav a, header p, .mod-card h2, #btnSettings, #toast').forEach(el => el.style.color = color);
+        document.querySelectorAll('.progress-bar, #backToTop').forEach(el => el.style.backgroundColor = color);
         document.getElementById("settingsOptions").classList.remove("active");
     }
 
-    // SISTEMA DE FAVORITOS
     function toggleFav(id) {
-        let favs = JSON.parse(localStorage.getItem('mods_favs')) || [];
-        if(favs.includes(id)) { favs = favs.filter(i => i !== id); }
-        else { favs.push(id); }
-        localStorage.setItem('mods_favs', JSON.stringify(favs));
+        let favs = JSON.parse(localStorage.getItem('mix_favs')) || [];
+        if(favs.includes(id)) favs = favs.filter(f => f !== id);
+        else favs.push(id);
+        localStorage.setItem('mix_favs', JSON.stringify(favs));
         renderFavs();
-        if(currentCategory === 'favs') filterMods();
     }
 
     function renderFavs() {
-        let favs = JSON.parse(localStorage.getItem('mods_favs')) || [];
+        let favs = JSON.parse(localStorage.getItem('mix_favs')) || [];
         document.querySelectorAll('.mod-card').forEach(card => {
             let btn = card.querySelector('.btn-fav');
             if(favs.includes(card.id)) btn.classList.add('active');
@@ -174,7 +147,6 @@
         });
     }
 
-    // MENU CONFIGURAÇÕES
     function toggleSettings(e) { e.stopPropagation(); document.getElementById("settingsOptions").classList.toggle("active"); }
     window.onclick = function(e) { if (!document.getElementById("mainSettings").contains(e.target)) document.getElementById("settingsOptions").classList.remove("active"); };
 
@@ -185,45 +157,27 @@
         document.getElementById("settingsOptions").classList.remove("active");
     }
 
-    // FILTRO E CONTADOR
-    function setCategory(cat, el) {
-        let buttons = document.getElementsByClassName('btn-category');
-        for (let btn of buttons) btn.classList.remove('active');
-        el.classList.add('active');
-        currentCategory = cat;
-        filterMods();
+    function updateCounter() { let cards = document.getElementsByClassName('mod-card'); let visible = 0; for (let card of cards) { if (card.style.display !== "none") visible++; } document.getElementById('modCounter').innerText = "Exibindo " + visible + " mods de GTA SA"; }
+    function setCategory(cat, el) { 
+        let buttons = document.getElementsByClassName('btn-category'); for (let btn of buttons) btn.classList.remove('active'); 
+        el.classList.add('active'); currentCategory = cat; filterMods(); 
     }
-
+    
     function filterMods() {
         let input = document.getElementById('searchInput').value.toLowerCase();
-        let favs = JSON.parse(localStorage.getItem('mods_favs')) || [];
+        let favs = JSON.parse(localStorage.getItem('mix_favs')) || [];
         let cards = document.getElementsByClassName('mod-card');
-        
         for (let card of cards) {
             let title = card.querySelector('h2').innerText.toLowerCase();
             let cat = card.getAttribute('data-category');
             let isFav = favs.includes(card.id);
-            
-            let matchSearch = title.includes(input);
-            let matchCat = (currentCategory === 'todos' || cat === currentCategory || (currentCategory === 'favs' && isFav));
-            
-            card.style.display = (matchSearch && matchCat) ? "" : "none";
+            let match = title.includes(input) && (currentCategory === 'todos' || cat === currentCategory || (currentCategory === 'favs' && isFav));
+            card.style.display = match ? "" : "none";
         }
         updateCounter();
     }
 
-    function updateCounter() {
-        let visible = Array.from(document.getElementsByClassName('mod-card')).filter(c => c.style.display !== "none").length;
-        document.getElementById('modCounter').innerText = "Exibindo " + visible + " mods de GTA SA";
-    }
-
-    function copyLink(url) { 
-        navigator.clipboard.writeText(window.location.origin + '/' + url).then(() => { 
-            let x = document.getElementById("toast"); x.className = "show";
-            setTimeout(() => x.className = "", 2500);
-        }); 
-    }
-    
+    function copyLink(url) { navigator.clipboard.writeText(window.location.origin + '/' + url).then(() => { let x = document.getElementById("toast"); x.className = "show"; setTimeout(() => x.className = "", 2500); }); }
     function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
     window.onload = function() { renderFavs(); updateCounter(); };
 </script>
