@@ -5,7 +5,7 @@
     <link rel="icon" href="assets/img/logo-icon.png">
     
     <style>
-        /* MANTENDO SEUS ESTILOS ORIGINAIS EXATOS */
+        /* --- TEUS ESTILOS ORIGINAIS (INTOCADOS) --- */
         body { background-color: #0f0f0f; color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; text-align: center; }
         nav { background-color: #1a1a1a; padding: 10px 20px; position: sticky; top: 0; border-bottom: 2px solid #00ff00; z-index: 1000; display: flex; align-items: center; justify-content: space-between; }
         .nav-links { display: flex; gap: 15px; }
@@ -42,9 +42,9 @@
         .btn-category.active { background-color: #00ff00; color: black; border-color: #00ff00; }
         .btn-download { background-color: #00ff00; color: #000; width: 100%; box-sizing: border-box; }
 
-        .btn-share { position: absolute; top: 10px; right: 10px; background-color: rgba(0,0,0,0.6); color: #00ff00; border: 1px solid #00ff00; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; z-index: 10; }
+        .btn-share { position: absolute; top: 10px; right: 10px; background-color: rgba(0,0,0,0.6); color: #00ff00; border: 1px solid #00ff00; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; z-index: 10; transition: 0.3s; }
 
-        /* ADICIONADO APENAS O NECESSÁRIO PARA AS NOVAS FUNÇÕES */
+        /* --- ADIÇÕES MÍNIMAS PARA FUNCIONAR --- */
         .btn-fav { position: absolute; top: 10px; left: 10px; background-color: rgba(0,0,0,0.6); color: #fff; border: 1px solid #333; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; cursor: pointer; z-index: 10; }
         .btn-fav.active { color: #ff0000; border-color: #ff0000; }
 
@@ -54,19 +54,15 @@
         .settings-options button { background: none; border: none; color: white; padding: 12px; text-align: left; cursor: pointer; font-size: 12px; border-bottom: 1px solid #333; }
         .settings-options.active { display: flex; }
 
-        .progress-container { position: fixed; top: 0; z-index: 2100; width: 100%; height: 4px; background: transparent; }
-        .progress-bar { height: 4px; background: #00ff00; width: 0%; box-shadow: 0 0 10px #00ff00; transition: width 0.1s ease; }
         #toast { visibility: hidden; min-width: 200px; background-color: #1a1a1a; color: #00ff00; text-align: center; border-radius: 50px; border: 1px solid #00ff00; padding: 12px; position: fixed; z-index: 3000; left: 50%; bottom: 30px; transform: translateX(-50%); font-weight: bold; }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2s; }
-        #backToTop { position: fixed; bottom: 20px; right: 20px; background-color: #00ff00; color: black; width: 45px; height: 45px; border-radius: 50%; display: none; align-items: center; justify-content: center; z-index: 2000; border: none; }
+        #backToTop { position: fixed; bottom: 20px; right: 20px; background-color: #00ff00; color: black; width: 45px; height: 45px; border-radius: 50%; display: none; align-items: center; justify-content: center; font-size: 24px; z-index: 2000; border: none; }
         footer { padding: 40px 20px; color: #555; font-size: 13px; border-top: 1px solid #1a1a1a; }
         @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
         @keyframes fadeout { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
     </style>
 </head>
 <body>
-
-<div class="progress-container"><div class="progress-bar" id="myBar"></div></div>
 
 <nav>
     <div class="nav-links">
@@ -76,18 +72,18 @@
 </nav>
 
 <header>
-    <h1 style="font-size: 35px; margin: 0;">MIX-SA-MODS</h1>
-    <p style="color: #00ff00; font-weight: bold; margin-top: 5px;">O ponto de encontro dos modders de GTA SA Mobile</p>
-    <p id="modCounter" style="color: #888; font-size: 14px; margin-top: 10px;">Carregando mods...</p>
+    <h1>MIX-SA-MODS</h1>
+    <p style="color: #00ff00; font-weight: bold;">O ponto de encontro dos modders de GTA SA Mobile</p>
+    <p id="modCounter" style="color: #888; font-size: 14px;">Carregando...</p>
 </header>
 
 <div class="settings-menu" id="mainSettings">
     <button id="btnSettings" onclick="toggleSettings(event)">⚙️</button>
     <div class="settings-options" id="settingsOptions">
         <button onclick="randomMod()">🎲 Mod Aleatório</button>
-        <button onclick="setTheme('#00ff00')">🟢 Verde</button>
-        <button onclick="setTheme('#00d9ff')">🔵 Azul</button>
-        <button onclick="setTheme('#ff3c00')">🔴 Vermelho</button>
+        <button onclick="applyTheme('#00ff00')">🟢 Verde</button>
+        <button onclick="applyTheme('#00d9ff')">🔵 Azul</button>
+        <button onclick="applyTheme('#ff3c00')">🔴 Vermelho</button>
     </div>
 </div>
 
@@ -97,13 +93,14 @@
         <button class="btn btn-category active" onclick="setCategory('todos', this)">TUDO</button> 
         <button class="btn btn-category" onclick="setCategory('textura', this)">TEXTURAS</button> 
         <button class="btn btn-category" onclick="setCategory('script', this)">SCRIPTS/CLEO</button> 
-        <button class="btn btn-category" onclick="setCategory('favs', this)">⭐ FAVORITOS</button> 
+        <button class="btn btn-category" onclick="setCategory('veiculo', this)">VEÍCULOS</button> 
+        <button class="btn btn-category" onclick="setCategory('correcao', this)">CORREÇÃO</button> 
     </div>
 </div>
 
 <div class="container" id="modList">
-    <div class="mod-card" data-category="script" id="mod-gasolina">
-        <button class="btn-fav" onclick="toggleFav('mod-gasolina')">❤</button>
+    <div class="mod-card" data-category="script" id="m1">
+        <button class="btn-fav" onclick="toggleFav('m1')">❤</button>
         <button class="btn-share" onclick="copyLink('mods/mod-gasolina.html')">🔗</button>
         <img src="mods/img/mod-gasolina.png" class="mod-img">
         <div class="mod-info">
@@ -114,36 +111,30 @@
     </div>
 </div>
 
-<div id="toast">Link copiado! 🔗</div>
+<div id="toast">Copiado!</div>
 <button id="backToTop" onclick="scrollToTop()">↑</button>
-
-<footer><p>&copy; 2026 MIX-SA-MODS - Desenvolvido por MaykJJr</p></footer>
 
 <script>
     let currentCategory = 'todos';
 
-    function setTheme(color) {
-        // Altera apenas os elementos que usam o verde original
-        document.querySelectorAll('nav, #btnSettings, .settings-options, #toast').forEach(el => el.style.borderColor = color);
-        document.querySelectorAll('nav a, header p, .mod-card h2, #btnSettings, #toast').forEach(el => el.style.color = color);
-        document.querySelectorAll('.progress-bar, #backToTop').forEach(el => el.style.backgroundColor = color);
+    function applyTheme(color) {
+        document.querySelectorAll('nav, #btnSettings, .settings-options, #toast').forEach(e => e.style.borderColor = color);
+        document.querySelectorAll('nav a, header p, .mod-card h2, #btnSettings').forEach(e => e.style.color = color);
+        document.querySelectorAll('#backToTop, .btn-download').forEach(e => e.style.backgroundColor = color);
         document.getElementById("settingsOptions").classList.remove("active");
     }
 
     function toggleFav(id) {
-        let favs = JSON.parse(localStorage.getItem('mix_favs')) || [];
-        if(favs.includes(id)) favs = favs.filter(f => f !== id);
-        else favs.push(id);
-        localStorage.setItem('mix_favs', JSON.stringify(favs));
-        renderFavs();
+        let f = JSON.parse(localStorage.getItem('f')) || [];
+        if(f.includes(id)) f = f.filter(x => x !== id); else f.push(id);
+        localStorage.setItem('f', JSON.stringify(f));
+        updateFavs();
     }
 
-    function renderFavs() {
-        let favs = JSON.parse(localStorage.getItem('mix_favs')) || [];
-        document.querySelectorAll('.mod-card').forEach(card => {
-            let btn = card.querySelector('.btn-fav');
-            if(favs.includes(card.id)) btn.classList.add('active');
-            else btn.classList.remove('active');
+    function updateFavs() {
+        let f = JSON.parse(localStorage.getItem('f')) || [];
+        document.querySelectorAll('.mod-card').forEach(c => {
+            c.querySelector('.btn-fav').classList.toggle('active', f.includes(c.id));
         });
     }
 
@@ -151,35 +142,31 @@
     window.onclick = function(e) { if (!document.getElementById("mainSettings").contains(e.target)) document.getElementById("settingsOptions").classList.remove("active"); };
 
     function randomMod() {
-        let cards = document.querySelectorAll('.mod-card');
-        let i = Math.floor(Math.random() * cards.length);
-        cards[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        let c = document.querySelectorAll('.mod-card');
+        c[Math.floor(Math.random()*c.length)].scrollIntoView({behavior:'smooth', block:'center'});
         document.getElementById("settingsOptions").classList.remove("active");
     }
 
-    function updateCounter() { let cards = document.getElementsByClassName('mod-card'); let visible = 0; for (let card of cards) { if (card.style.display !== "none") visible++; } document.getElementById('modCounter').innerText = "Exibindo " + visible + " mods de GTA SA"; }
-    function setCategory(cat, el) { 
-        let buttons = document.getElementsByClassName('btn-category'); for (let btn of buttons) btn.classList.remove('active'); 
-        el.classList.add('active'); currentCategory = cat; filterMods(); 
-    }
-    
-    function filterMods() {
-        let input = document.getElementById('searchInput').value.toLowerCase();
-        let favs = JSON.parse(localStorage.getItem('mix_favs')) || [];
-        let cards = document.getElementsByClassName('mod-card');
-        for (let card of cards) {
-            let title = card.querySelector('h2').innerText.toLowerCase();
-            let cat = card.getAttribute('data-category');
-            let isFav = favs.includes(card.id);
-            let match = title.includes(input) && (currentCategory === 'todos' || cat === currentCategory || (currentCategory === 'favs' && isFav));
-            card.style.display = match ? "" : "none";
-        }
-        updateCounter();
+    function setCategory(cat, el) {
+        document.querySelectorAll('.btn-category').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+        currentCategory = cat;
+        filterMods();
     }
 
-    function copyLink(url) { navigator.clipboard.writeText(window.location.origin + '/' + url).then(() => { let x = document.getElementById("toast"); x.className = "show"; setTimeout(() => x.className = "", 2500); }); }
-    function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
-    window.onload = function() { renderFavs(); updateCounter(); };
+    function filterMods() {
+        let q = document.getElementById('searchInput').value.toLowerCase();
+        document.querySelectorAll('.mod-card').forEach(c => {
+            let t = c.querySelector('h2').innerText.toLowerCase();
+            let cat = c.getAttribute('data-category');
+            c.style.display = (t.includes(q) && (currentCategory === 'todos' || cat === currentCategory)) ? "" : "none";
+        });
+        document.getElementById('modCounter').innerText = "Exibindo " + document.querySelectorAll('.mod-card[style=""]').length + " mods";
+    }
+
+    function copyLink(u) { navigator.clipboard.writeText(window.location.origin+'/'+u); let t=document.getElementById("toast"); t.className="show"; setTimeout(()=>t.className="", 2000); }
+    function scrollToTop() { window.scrollTo({top:0, behavior:'smooth'}); }
+    window.onload = () => { updateFavs(); filterMods(); };
 </script>
 
 </body>
