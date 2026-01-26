@@ -1,53 +1,47 @@
 // =========================================================
-// CONFIGURAÇÕES DO SERVICE WORKER (sw.js)
-// Focado na estrutura real das suas pastas: assets, mods, paginas
+// CONFIGURAÇÕES DO SERVICE WORKER (sw.js) - AJUSTE DE PASTAS
 // =========================================================
 
-const CACHE_NAME = 'mix-sa-mods-v1';
+const CACHE_NAME = 'mix-sa-mods-v3'; // Versão 3 para forçar atualização
 
-// Lista baseada nos seus prints do GitHub
 const ASSETS_TO_CACHE = [
-    '/',
-    '/index.html',
-    '/manifest.json',
-    '/404.html',
-    // Imagens do Sistema (assets/img)
-    '/assets/img/banner.jpg',
-    '/assets/img/logo-icon.png',
-    // Páginas Secundárias (paginas/)
-    '/paginas/comunidade.html',
-    '/paginas/sobre.html',
-    // Mod de Exemplo (mods/)
-    '/mods/mod-gasolina.html',
-    '/mods/img/mod-gasolina.png'
+    './',
+    './index.html',
+    './mods.js',
+    './manifest.json',
+    './404.html',
+    // Caminhos para a pasta 'paginas'
+    './paginas/sobre.html',
+    './paginas/comunidade.html',
+    // Imagens do Sistema
+    './assets/img/banner.jpg',
+    './assets/img/logo-icon.png',
+    // O molde automático dentro da pasta 'mods'
+    './mods/pagina-mod.html'
 ];
 
-// Instalação: Salva os arquivos no celular
+// O restante do código (install, activate, fetch) continua o mesmo...
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            console.log('SW: Cache de arquivos do GitHub realizado!');
+            console.log('SW: Cache atualizado com pastas corretas!');
             return cache.addAll(ASSETS_TO_CACHE);
         })
     );
 });
 
-// Ativação: Limpa lixo de versões antigas
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
                 cacheNames.map((cache) => {
-                    if (cache !== CACHE_NAME) {
-                        return caches.delete(cache);
-                    }
+                    if (cache !== CACHE_NAME) return caches.delete(cache);
                 })
             );
         })
     );
 });
 
-// Estratégia de Busca: Cache primeiro, depois Internet
 self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request).then((response) => {
