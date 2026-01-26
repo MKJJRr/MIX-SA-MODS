@@ -2,7 +2,7 @@
 // CONFIGURAÇÕES DO SERVICE WORKER (sw.js) - AJUSTE DE PASTAS
 // =========================================================
 
-const CACHE_NAME = 'mix-sa-mods-v3'; // Versão 3 para forçar atualização
+const CACHE_NAME = 'mix-sa-mods-v4'; // Versão 3 para forçar atualização
 
 const ASSETS_TO_CACHE = [
     './',
