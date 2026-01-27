@@ -4,11 +4,9 @@ let currentCategory = 'todos';
 let selectedColor = localStorage.getItem('site_theme') || '#00ff00';
 let viewMode = localStorage.getItem('view_mode') || 'grid';
 
-// Configuração oficial do projeto MIX-SA-MODS
 const SUPABASE_URL = 'https://egfxnzebciuyidaahezc.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_7QAzm1GleD0QjNKfO-dtbw_JyOLcHr0';
 
-// Inicializa o cliente do Supabase
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 /* --- FUNÇÕES DE AUTENTICAÇÃO E PERFIL --- */
@@ -22,15 +20,58 @@ function fecharLogin() {
     document.getElementById('auth-error').innerText = "";
 }
 
-// Funções para o Modal de Perfil
-function abrirPerfil(email) {
-    const display = document.getElementById('user-email-display');
-    if (display) display.innerText = email;
+// Abre o perfil carregando os metadados do usuário
+async function abrirPerfil(email) {
+    const { data: { user } } = await _supabase.auth.getUser();
+    
+    document.getElementById('user-email-display').innerText = email;
+    
+    // Carrega Nickname e Foto salvos no MetaData do Supabase
+    const meta = user.user_metadata;
+    if (meta) {
+        document.getElementById('profile-name').value = meta.display_name || "";
+        document.getElementById('profile-pic-url').value = meta.avatar_url || "";
+        if (meta.avatar_url) {
+            document.getElementById('user-avatar').src = meta.avatar_url;
+        }
+    }
+    
     document.getElementById('profile-overlay').style.display = 'flex';
 }
 
 function fecharPerfil() {
     document.getElementById('profile-overlay').style.display = 'none';
+}
+
+// Salva Nickname, Foto e Nova Senha
+async function salvarPerfil() {
+    const newName = document.getElementById('profile-name').value;
+    const newPic = document.getElementById('profile-pic-url').value;
+    const newPass = document.getElementById('new-password').value;
+
+    const updates = {
+        data: { display_name: newName, avatar_url: newPic }
+    };
+
+    // Atualiza metadados (Nome e Foto)
+    const { error: metaError } = await _supabase.auth.updateUser(updates);
+    
+    // Se digitou algo em senha, atualiza a senha também
+    if (newPass.length > 0) {
+        if (newPass.length < 6) {
+            alert("A nova senha deve ter no mínimo 6 caracteres!");
+            return;
+        }
+        await _supabase.auth.updateUser({ password: newPass });
+    }
+
+    if (metaError) {
+        alert("Erro ao atualizar: " + metaError.message);
+    } else {
+        alert("Perfil atualizado com sucesso!");
+        if (newPic) document.getElementById('user-avatar').src = newPic;
+        fecharPerfil();
+    }
 }
 
 async function cadastrar() {
@@ -48,7 +89,7 @@ async function cadastrar() {
     if (error) {
         errorMsg.innerText = "Erro: " + error.message;
     } else {
-        alert("Conta criada! Agora clique em ENTRAR.");
+        alert("Conta criada com sucesso!");
         errorMsg.innerText = "";
     }
 }
@@ -61,7 +102,7 @@ async function entrar() {
     const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
-        errorMsg.innerText = "Login inválido ou dados incorretos.";
+        errorMsg.innerText = "Dados incorretos ou e-mail não confirmado.";
     } else {
         fecharLogin();
         location.reload(); 
@@ -74,9 +115,10 @@ async function checarSessao() {
     
     if (session) {
         if (navBtn) {
-            navBtn.innerText = "Perfil";
+            // Se tiver um nome salvo, mostra o nome, senão mostra "Perfil"
+            const name = session.user.user_metadata.display_name;
+            navBtn.innerText = name ? name.toUpperCase() : "PERFIL";
             navBtn.style.color = "var(--main-color)";
-            // Ao clicar em Perfil, abre o Modal de Informações em vez do confirm
             navBtn.onclick = () => abrirPerfil(session.user.email);
         }
     }
@@ -87,7 +129,7 @@ async function sair() {
     location.reload();
 }
 
-/* --- FUNÇÕES DO SITE --- */
+/* --- FUNÇÕES DO SITE (CÓDIGO ORIGINAL MANTIDO) --- */
 
 function carregarMods() {
     const container = document.getElementById('modList');
@@ -124,11 +166,8 @@ function changeView(mode) {
 function applyTheme(color, save = true) {
     selectedColor = color;
     if(save) localStorage.setItem('site_theme', color);
-    
     document.documentElement.style.setProperty('--main-color', color);
-    
     const r = parseInt(color.slice(1,3), 16), g = parseInt(color.slice(3,5), 16), b = parseInt(color.slice(5,7), 16);
-    
     const dynamicTheme = document.getElementById('dynamic-theme');
     if (dynamicTheme) {
         dynamicTheme.innerHTML = `
@@ -140,17 +179,14 @@ function applyTheme(color, save = true) {
             }
         `;
     }
-
     const metaTheme = document.getElementById('metaTheme');
     if (metaTheme) metaTheme.content = color;
-    
     document.querySelectorAll('nav, #btnSettings, .settings-options, #toast, .btn-share').forEach(e => e.style.borderColor = color);
     document.querySelectorAll('nav a, header p, .mod-card h2, #btnSettings, #toast, .btn-share').forEach(e => e.style.color = color);
     document.querySelectorAll('.btn-download, .btn-category.active').forEach(e => {
         e.style.backgroundColor = color;
         if(e.classList.contains('btn-category')) e.style.borderColor = color;
     });
-    
     closeMenus();
 }
 
@@ -237,7 +273,6 @@ function copyLink(u) {
     setTimeout(() => t.className = "", 2000); 
 }
 
-// INICIALIZAÇÃO DO SITE
 window.addEventListener('load', () => { 
     checarSessao();
     carregarMods();
