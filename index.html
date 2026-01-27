@@ -31,36 +31,44 @@
 
 <div id="login-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 99999; flex-direction: column; align-items: center; justify-content: center;">
     <div style="background: #0a0a0a; padding: 30px; border: 2px solid var(--main-color); border-radius: 15px; text-align: center; width: 85%; max-width: 350px; box-shadow: 0 0 20px var(--main-color); position: relative;">
-        
         <button onclick="fecharLogin()" style="position: absolute; top: 10px; right: 15px; background: none; border: none; color: #666; font-size: 24px; cursor: pointer;">&times;</button>
-
         <h2 style="font-family: 'Orbitron'; color: var(--main-color); margin-bottom: 20px; font-size: 1.2rem;">ACESSO MODDER</h2>
-        
         <input type="email" id="auth-email" placeholder="Seu e-mail" style="width: 100%; padding: 12px; margin-bottom: 10px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; box-sizing: border-box;">
-        
         <input type="password" id="auth-password" placeholder="Sua senha" style="width: 100%; padding: 12px; margin-bottom: 20px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; box-sizing: border-box;">
-        
         <button onclick="entrar()" style="width: 100%; padding: 12px; background: var(--main-color); border: none; font-weight: bold; cursor: pointer; border-radius: 8px; margin-bottom: 10px; font-family: 'Orbitron'; font-size: 0.9rem;">ENTRAR</button>
-        
         <button onclick="cadastrar()" style="width: 100%; padding: 10px; background: none; border: 1px solid #444; color: #888; cursor: pointer; border-radius: 8px; font-size: 11px;">CRIAR NOVA CONTA</button>
-        
         <p id="auth-error" style="color: #ff4444; font-size: 12px; margin-top: 15px; font-weight: bold;"></p>
     </div>
 </div>
 
-<div id="profile-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 99999; flex-direction: column; align-items: center; justify-content: center;">
-    <div style="background: #0a0a0a; padding: 30px; border: 2px solid var(--main-color); border-radius: 15px; text-align: center; width: 85%; max-width: 350px; box-shadow: 0 0 20px var(--main-color); position: relative;">
+<div id="profile-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 99999; flex-direction: column; align-items: center; justify-content: center;">
+    <div style="background: #0a0a0a; padding: 25px; border: 2px solid var(--main-color); border-radius: 15px; text-align: center; width: 90%; max-width: 380px; box-shadow: 0 0 20px var(--main-color); position: relative; max-height: 90vh; overflow-y: auto;">
         
         <button onclick="fecharPerfil()" style="position: absolute; top: 10px; right: 15px; background: none; border: none; color: #666; font-size: 24px; cursor: pointer;">&times;</button>
         
-        <h2 style="font-family: 'Orbitron'; color: var(--main-color); margin-bottom: 20px; font-size: 1.2rem;">MEU PERFIL</h2>
+        <h2 style="font-family: 'Orbitron'; color: var(--main-color); margin-bottom: 15px; font-size: 1.1rem;">MEU PERFIL</h2>
         
-        <div style="background: #111; padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: left; border: 1px solid #222;">
-            <p style="color: #888; font-size: 11px; margin-bottom: 5px; font-family: 'Orbitron';">E-MAIL DA CONTA:</p>
-            <p id="user-email-display" style="color: #fff; font-weight: bold; word-break: break-all; font-size: 14px;"></p>
+        <div style="margin-bottom: 15px;">
+            <img id="user-avatar" src="assets/img/logo-icon.png" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--main-color); object-fit: cover; background: #000;">
         </div>
 
-        <button onclick="sair()" style="width: 100%; padding: 12px; background: #ff4444; border: none; color: white; font-weight: bold; cursor: pointer; border-radius: 8px; font-family: 'Orbitron'; font-size: 0.9rem; box-shadow: 0 0 10px rgba(255, 68, 68, 0.3);">SAIR DA CONTA</button>
+        <div style="text-align: left; background: #111; padding: 15px; border-radius: 10px; border: 1px solid #222; margin-bottom: 15px;">
+            <label style="color: var(--main-color); font-size: 10px; font-family: 'Orbitron';">NICKNAME</label>
+            <input type="text" id="profile-name" placeholder="Seu nome" style="width: 100%; background: none; border: none; border-bottom: 1px solid #333; color: #fff; padding: 8px 0; margin-bottom: 10px; outline: none;">
+
+            <label style="color: var(--main-color); font-size: 10px; font-family: 'Orbitron';">URL DA FOTO</label>
+            <input type="text" id="profile-pic-url" placeholder="https://link.com/foto.jpg" style="width: 100%; background: none; border: none; border-bottom: 1px solid #333; color: #fff; padding: 8px 0; margin-bottom: 10px; outline: none;">
+
+            <label style="color: var(--main-color); font-size: 10px; font-family: 'Orbitron';">NOVA SENHA (OPCIONAL)</label>
+            <input type="password" id="new-password" placeholder="Deixe em branco para manter" style="width: 100%; background: none; border: none; border-bottom: 1px solid #333; color: #fff; padding: 8px 0; margin-bottom: 10px; outline: none;">
+
+            <label style="color: var(--main-color); font-size: 10px; font-family: 'Orbitron';">E-MAIL</label>
+            <p id="user-email-display" style="color: #666; font-size: 12px; margin-top: 5px; word-break: break-all;"></p>
+        </div>
+
+        <button onclick="salvarPerfil()" style="width: 100%; padding: 12px; background: var(--main-color); border: none; color: #000; font-weight: bold; cursor: pointer; border-radius: 8px; font-family: 'Orbitron'; margin-bottom: 10px;">SALVAR ALTERAÇÕES</button>
+        
+        <button onclick="sair()" style="width: 100%; padding: 10px; background: none; border: 1px solid #ff4444; color: #ff4444; font-weight: bold; cursor: pointer; border-radius: 8px; font-family: 'Orbitron'; font-size: 0.8rem;">SAIR DA CONTA</button>
     </div>
 </div>
 
