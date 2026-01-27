@@ -11,7 +11,54 @@ const SUPABASE_KEY = 'sb_publishable_7QAzm1GleD0QjNKfO-dtbw_JyOLcHr0';
 // Inicializa o cliente do Supabase
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// FUNÇÃO QUE GERA OS CARDS NA TELA
+/* --- FUNÇÕES DE AUTENTICAÇÃO (NOVO) --- */
+
+async function cadastrar() {
+    const email = document.getElementById('auth-email').value;
+    const password = document.getElementById('auth-password').value;
+    const errorMsg = document.getElementById('auth-error');
+
+    if (!email || !password) {
+        errorMsg.innerText = "Preencha todos os campos!";
+        return;
+    }
+
+    const { data, error } = await _supabase.auth.signUp({ email, password });
+
+    if (error) {
+        errorMsg.innerText = "Erro: " + error.message;
+    } else {
+        alert("Conta criada! Agora clique em ENTRAR.");
+        errorMsg.innerText = "";
+    }
+}
+
+async function entrar() {
+    const email = document.getElementById('auth-email').value;
+    const password = document.getElementById('auth-password').value;
+    const errorMsg = document.getElementById('auth-error');
+
+    const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
+
+    if (error) {
+        errorMsg.innerText = "Login inválido ou e-mail não confirmado.";
+    } else {
+        document.getElementById('login-overlay').style.display = 'none';
+    }
+}
+
+async function checarSessao() {
+    const { data: { session } } = await _supabase.auth.getSession();
+    const loginOverlay = document.getElementById('login-overlay');
+    if (session) {
+        if (loginOverlay) loginOverlay.style.display = 'none';
+    } else {
+        if (loginOverlay) loginOverlay.style.display = 'flex';
+    }
+}
+
+/* --- FUNÇÕES DO SITE --- */
+
 function carregarMods() {
     const container = document.getElementById('modList');
     if (!container || typeof listaDeMods === 'undefined') return;
@@ -34,7 +81,6 @@ function carregarMods() {
     });
 }
 
-// ALTERAR ENTRE MODO GRADE OU LISTA
 function changeView(mode) {
     const container = document.getElementById('modList');
     if (!container) return;
@@ -45,7 +91,6 @@ function changeView(mode) {
     closeMenus();
 }
 
-// APLICAR TEMA DE CORES DINAMICAMENTE
 function applyTheme(color, save = true) {
     selectedColor = color;
     if(save) localStorage.setItem('site_theme', color);
@@ -79,7 +124,6 @@ function applyTheme(color, save = true) {
     closeMenus();
 }
 
-// CONTROLAR SUBMENUS (VISUALIZAÇÃO E TEMAS)
 function toggleSubmenu(e, id) {
     e.stopPropagation();
     const sub = document.getElementById(id);
@@ -88,7 +132,6 @@ function toggleSubmenu(e, id) {
     if(!isOpen) sub.classList.add("active");
 }
 
-// FAVORITAR MODS (SALVA NO NAVEGADOR)
 function toggleFav(id) {
     let f = JSON.parse(localStorage.getItem('mix_favs')) || [];
     if(f.includes(id)) f = f.filter(x => x !== id); else f.push(id);
@@ -105,7 +148,6 @@ function updateFavs() {
     });
 }
 
-// FILTRAR POR CATEGORIAS
 function setCategory(cat, el) {
     document.querySelectorAll('.btn-category').forEach(b => {
         b.classList.remove('active');
@@ -119,7 +161,6 @@ function setCategory(cat, el) {
     filterMods();
 }
 
-// BARRA DE PESQUISA
 function filterMods() {
     let q = document.getElementById('searchInput').value.toLowerCase();
     let f = JSON.parse(localStorage.getItem('mix_favs')) || [];
@@ -136,7 +177,6 @@ function filterMods() {
     if (counter) counter.innerText = "Exibindo " + count + " mods";
 }
 
-// ABRIR/FECHAR MENU DE CONFIGURAÇÕES
 function toggleSettings(e) { 
     e.stopPropagation(); 
     document.getElementById("settingsOptions").classList.toggle("active"); 
@@ -148,20 +188,17 @@ function closeMenus() {
     document.querySelectorAll(".submenu").forEach(s => s.classList.remove("active"));
 }
 
-// FECHAR AO CLICAR FORA
 window.onclick = function(e) { 
     const mainSettings = document.getElementById("mainSettings");
     if (mainSettings && !mainSettings.contains(e.target)) closeMenus();
 };
 
-// BOTÃO MOD ALEATÓRIO
 function randomMod() {
     let c = document.querySelectorAll('.mod-card:not([style*="display: none"])');
     if(c.length > 0) c[Math.floor(Math.random()*c.length)].scrollIntoView({behavior:'smooth', block:'center'});
     closeMenus();
 }
 
-// COPIAR LINK DO MOD
 function copyLink(u) { 
     const fullUrl = window.location.origin + (u.startsWith('/') ? '' : '/') + u;
     navigator.clipboard.writeText(fullUrl); 
@@ -172,13 +209,13 @@ function copyLink(u) {
 
 // INICIALIZAÇÃO DO SITE (UNIFICADA)
 window.addEventListener('load', () => { 
+    checarSessao(); // Checa login assim que carregar
     carregarMods();
     applyTheme(selectedColor, false);
     changeView(viewMode);
     updateFavs(); 
     filterMods(); 
 
-    // Esconde o loading após carregar tudo
     const loader = document.getElementById('loading-screen');
     if(loader) {
         loader.style.opacity = '0';
