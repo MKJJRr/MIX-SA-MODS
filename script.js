@@ -11,7 +11,7 @@ const SUPABASE_KEY = 'sb_publishable_7QAzm1GleD0QjNKfO-dtbw_JyOLcHr0';
 // Inicializa o cliente do Supabase
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-/* --- FUNÇÕES DE AUTENTICAÇÃO (OPCIONAL) --- */
+/* --- FUNÇÕES DE AUTENTICAÇÃO E PERFIL --- */
 
 function abrirLogin() {
     document.getElementById('login-overlay').style.display = 'flex';
@@ -20,6 +20,17 @@ function abrirLogin() {
 function fecharLogin() {
     document.getElementById('login-overlay').style.display = 'none';
     document.getElementById('auth-error').innerText = "";
+}
+
+// Funções para o Modal de Perfil
+function abrirPerfil(email) {
+    const display = document.getElementById('user-email-display');
+    if (display) display.innerText = email;
+    document.getElementById('profile-overlay').style.display = 'flex';
+}
+
+function fecharPerfil() {
+    document.getElementById('profile-overlay').style.display = 'none';
 }
 
 async function cadastrar() {
@@ -53,7 +64,7 @@ async function entrar() {
         errorMsg.innerText = "Login inválido ou dados incorretos.";
     } else {
         fecharLogin();
-        location.reload(); // Recarrega para atualizar o botão da nav
+        location.reload(); 
     }
 }
 
@@ -62,13 +73,11 @@ async function checarSessao() {
     const navBtn = document.getElementById('navLoginBtn');
     
     if (session) {
-        // Se estiver logado, muda o botão da Nav
         if (navBtn) {
             navBtn.innerText = "Perfil";
             navBtn.style.color = "var(--main-color)";
-            navBtn.onclick = () => {
-                if(confirm("Deseja sair da conta?")) sair();
-            };
+            // Ao clicar em Perfil, abre o Modal de Informações em vez do confirm
+            navBtn.onclick = () => abrirPerfil(session.user.email);
         }
     }
 }
@@ -228,9 +237,9 @@ function copyLink(u) {
     setTimeout(() => t.className = "", 2000); 
 }
 
-// INICIALIZAÇÃO DO SITE (UNIFICADA)
+// INICIALIZAÇÃO DO SITE
 window.addEventListener('load', () => { 
-    checarSessao(); // Apenas verifica se já está logado
+    checarSessao();
     carregarMods();
     applyTheme(selectedColor, false);
     changeView(viewMode);
