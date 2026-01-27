@@ -20,22 +20,16 @@ function fecharLogin() {
     document.getElementById('auth-error').innerText = "";
 }
 
-// Abre o perfil carregando os metadados do usuário
 async function abrirPerfil(email) {
     const { data: { user } } = await _supabase.auth.getUser();
-    
     document.getElementById('user-email-display').innerText = email;
     
-    // Carrega Nickname e Foto salvos no MetaData do Supabase
     const meta = user.user_metadata;
     if (meta) {
         document.getElementById('profile-name').value = meta.display_name || "";
         document.getElementById('profile-pic-url').value = meta.avatar_url || "";
-        if (meta.avatar_url) {
-            document.getElementById('user-avatar').src = meta.avatar_url;
-        }
+        if (meta.avatar_url) document.getElementById('user-avatar').src = meta.avatar_url;
     }
-    
     document.getElementById('profile-overlay').style.display = 'flex';
 }
 
@@ -43,84 +37,58 @@ function fecharPerfil() {
     document.getElementById('profile-overlay').style.display = 'none';
 }
 
-// Salva Nickname, Foto e Nova Senha
 async function salvarPerfil() {
     const newName = document.getElementById('profile-name').value;
     const newPic = document.getElementById('profile-pic-url').value;
     const newPass = document.getElementById('new-password').value;
+    const { data: { user } } = await _supabase.auth.getUser();
 
-    const updates = {
-        data: { display_name: newName, avatar_url: newPic }
-    };
-
-    // Atualiza metadados (Nome e Foto)
-    const { error: metaError } = await _supabase.auth.updateUser(updates);
+    // 1. Atualiza metadados da Autenticação
+    const updates = { data: { display_name: newName, avatar_url: newPic } };
+    await _supabase.auth.updateUser(updates);
     
-    // Se digitou algo em senha, atualiza a senha também
-    if (newPass.length > 0) {
-        if (newPass.length < 6) {
-            alert("A nova senha deve ter no mínimo 6 caracteres!");
-            return;
-        }
+    // 2. Sincroniza com a tabela pública "profiles" (para aparecer no Social)
+    await _supabase.from('profiles').upsert({
+        id: user.id,
+        full_name: newName,
+        avatar_url: newPic,
+        updated_at: new Date()
+    });
+
+    if (newPass.length >= 6) {
         await _supabase.auth.updateUser({ password: newPass });
     }
 
-    if (metaError) {
-        alert("Erro ao atualizar: " + metaError.message);
-    } else {
-        alert("Perfil atualizado com sucesso!");
-        if (newPic) document.getElementById('user-avatar').src = newPic;
-        fecharPerfil();
-    }
+    alert("Perfil atualizado e visível na comunidade!");
+    location.reload();
 }
 
 async function cadastrar() {
     const email = document.getElementById('auth-email').value;
     const password = document.getElementById('auth-password').value;
     const errorMsg = document.getElementById('auth-error');
+    if (!email || !password) { errorMsg.innerText = "Preencha tudo!"; return; }
 
-    if (!email || !password) {
-        errorMsg.innerText = "Preencha todos os campos!";
-        return;
-    }
-
-    const { data, error } = await _supabase.auth.signUp({ email, password });
-
-    if (error) {
-        errorMsg.innerText = "Erro: " + error.message;
-    } else {
-        alert("Conta criada com sucesso!");
-        errorMsg.innerText = "";
-    }
+    const { error } = await _supabase.auth.signUp({ email, password });
+    if (error) errorMsg.innerText = error.message;
+    else alert("Conta criada!");
 }
 
 async function entrar() {
     const email = document.getElementById('auth-email').value;
     const password = document.getElementById('auth-password').value;
-    const errorMsg = document.getElementById('auth-error');
-
-    const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
-
-    if (error) {
-        errorMsg.innerText = "Dados incorretos ou e-mail não confirmado.";
-    } else {
-        fecharLogin();
-        location.reload(); 
-    }
+    const { error } = await _supabase.auth.signInWithPassword({ email, password });
+    if (error) document.getElementById('auth-error').innerText = "Erro no login.";
+    else location.reload();
 }
 
 async function checarSessao() {
     const { data: { session } } = await _supabase.auth.getSession();
     const navBtn = document.getElementById('navLoginBtn');
-    
-    if (session) {
-        if (navBtn) {
-            // Se tiver um nome salvo, mostra o nome, senão mostra "Perfil"
-            const name = session.user.user_metadata.display_name;
-            navBtn.innerText = name ? name.toUpperCase() : "PERFIL";
-            navBtn.style.color = "var(--main-color)";
-            navBtn.onclick = () => abrirPerfil(session.user.email);
-        }
+    if (session && navBtn) {
+        const name = session.user.user_metadata.display_name;
+        navBtn.innerText = name ? name.toUpperCase() : "PERFIL";
+        navBtn.onclick = () => abrirPerfil(session.user.email);
     }
 }
 
@@ -129,15 +97,42 @@ async function sair() {
     location.reload();
 }
 
-/* --- FUNÇÕES DO SITE (CÓDIGO ORIGINAL MANTIDO) --- */
+/* --- FUNÇÃO DA COMUNIDADE (SOCIAL) --- */
+
+async function carregarComunidade() {
+    const lista = document.getElementById('usuarios-lista');
+    if (!lista) return;
+
+    const { data: profiles, error } = await _supabase
+        .from('profiles')
+        .select('full_name, avatar_url')
+        .not('full_name', 'is', null);
+
+    if (error) return;
+
+    lista.innerHTML = "";
+    profiles.forEach(user => {
+        const foto = user.avatar_url || 'assets/img/logo-icon.png';
+        lista.innerHTML += `
+            <div style="background: #111; border: 1px solid var(--main-color); padding: 15px; border-radius: 12px; display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+                <img src="${foto}" style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--main-color); object-fit: cover;">
+                <div>
+                    <h3 style="color: #fff; margin: 0; font-family: 'Orbitron'; font-size: 0.9rem;">${user.full_name}</h3>
+                    <span style="color: var(--main-color); font-size: 10px; font-weight: bold;">MODDER VERIFICADO</span>
+                </div>
+            </div>
+        `;
+    });
+}
+
+/* --- FUNÇÕES DO SITE (MANTIDAS) --- */
 
 function carregarMods() {
     const container = document.getElementById('modList');
     if (!container || typeof listaDeMods === 'undefined') return;
     container.innerHTML = ""; 
-
     listaDeMods.forEach(mod => {
-        const card = `
+        container.innerHTML += `
             <div class="mod-card" data-category="${mod.categoria}" id="${mod.id}">
                 <button class="btn-fav" onclick="toggleFav('${mod.id}')">❤</button>
                 <button class="btn-share" onclick="copyLink('${mod.link}')">🔗</button>
@@ -147,9 +142,7 @@ function carregarMods() {
                     <p>${mod.descricao}</p>
                     <a href="${mod.link}" class="btn btn-download">VER DETALHES</a>
                 </div>
-            </div>
-        `;
-        container.innerHTML += card;
+            </div>`;
     });
 }
 
@@ -167,20 +160,6 @@ function applyTheme(color, save = true) {
     selectedColor = color;
     if(save) localStorage.setItem('site_theme', color);
     document.documentElement.style.setProperty('--main-color', color);
-    const r = parseInt(color.slice(1,3), 16), g = parseInt(color.slice(3,5), 16), b = parseInt(color.slice(5,7), 16);
-    const dynamicTheme = document.getElementById('dynamic-theme');
-    if (dynamicTheme) {
-        dynamicTheme.innerHTML = `
-            :root { --main-color: ${color}; }
-            @keyframes neonPulse {
-                0% { box-shadow: 0 0 5px rgba(${r}, ${g}, ${b}, 0.2); border-color: #333; }
-                50% { box-shadow: 0 0 15px rgba(${r}, ${g}, ${b}, 0.5); border-color: ${color}; }
-                100% { box-shadow: 0 0 5px rgba(${r}, ${g}, ${b}, 0.2); border-color: #333; }
-            }
-        `;
-    }
-    const metaTheme = document.getElementById('metaTheme');
-    if (metaTheme) metaTheme.content = color;
     document.querySelectorAll('nav, #btnSettings, .settings-options, #toast, .btn-share').forEach(e => e.style.borderColor = color);
     document.querySelectorAll('nav a, header p, .mod-card h2, #btnSettings, #toast, .btn-share').forEach(e => e.style.color = color);
     document.querySelectorAll('.btn-download, .btn-category.active').forEach(e => {
@@ -193,9 +172,8 @@ function applyTheme(color, save = true) {
 function toggleSubmenu(e, id) {
     e.stopPropagation();
     const sub = document.getElementById(id);
-    const isOpen = sub.classList.contains("active");
     document.querySelectorAll(".submenu").forEach(s => s.classList.remove("active"));
-    if(!isOpen) sub.classList.add("active");
+    sub.classList.add("active");
 }
 
 function toggleFav(id) {
@@ -203,7 +181,6 @@ function toggleFav(id) {
     if(f.includes(id)) f = f.filter(x => x !== id); else f.push(id);
     localStorage.setItem('mix_favs', JSON.stringify(f));
     updateFavs();
-    if(currentCategory === 'favs') filterMods();
 }
 
 function updateFavs() {
@@ -215,14 +192,8 @@ function updateFavs() {
 }
 
 function setCategory(cat, el) {
-    document.querySelectorAll('.btn-category').forEach(b => {
-        b.classList.remove('active');
-        b.style.backgroundColor = ""; b.style.borderColor = ""; b.style.color = "";
-    });
+    document.querySelectorAll('.btn-category').forEach(b => b.classList.remove('active'));
     el.classList.add('active');
-    el.style.backgroundColor = selectedColor;
-    el.style.borderColor = selectedColor;
-    el.style.color = "black";
     currentCategory = cat;
     filterMods();
 }
@@ -232,10 +203,8 @@ function filterMods() {
     let f = JSON.parse(localStorage.getItem('mix_favs')) || [];
     let count = 0;
     document.querySelectorAll('.mod-card').forEach(c => {
-        let t = c.querySelector('h2').innerText.toLowerCase();
-        let cat = c.getAttribute('data-category');
-        let isFav = f.includes(c.id);
-        let match = t.includes(q) && (currentCategory === 'todos' || cat === currentCategory || (currentCategory === 'favs' && isFav));
+        let match = c.querySelector('h2').innerText.toLowerCase().includes(q) && 
+                   (currentCategory === 'todos' || c.getAttribute('data-category') === currentCategory || (currentCategory === 'favs' && f.includes(c.id)));
         c.style.display = match ? "" : "none";
         if(match) count++;
     });
@@ -254,23 +223,17 @@ function closeMenus() {
     document.querySelectorAll(".submenu").forEach(s => s.classList.remove("active"));
 }
 
-window.onclick = function(e) { 
-    const mainSettings = document.getElementById("mainSettings");
-    if (mainSettings && !mainSettings.contains(e.target)) closeMenus();
-};
+window.onclick = function(e) { if (!document.getElementById("mainSettings").contains(e.target)) closeMenus(); };
 
 function randomMod() {
     let c = document.querySelectorAll('.mod-card:not([style*="display: none"])');
     if(c.length > 0) c[Math.floor(Math.random()*c.length)].scrollIntoView({behavior:'smooth', block:'center'});
-    closeMenus();
 }
 
 function copyLink(u) { 
-    const fullUrl = window.location.origin + (u.startsWith('/') ? '' : '/') + u;
-    navigator.clipboard.writeText(fullUrl); 
+    navigator.clipboard.writeText(window.location.origin + "/" + u); 
     let t = document.getElementById("toast"); 
-    t.className = "show"; 
-    setTimeout(() => t.className = "", 2000); 
+    t.className = "show"; setTimeout(() => t.className = "", 2000); 
 }
 
 window.addEventListener('load', () => { 
@@ -279,13 +242,11 @@ window.addEventListener('load', () => {
     applyTheme(selectedColor, false);
     changeView(viewMode);
     updateFavs(); 
-    filterMods(); 
+    filterMods();
+    carregarComunidade();
 
     const loader = document.getElementById('loading-screen');
     if(loader) {
-        loader.style.opacity = '0';
-        setTimeout(() => {
-            loader.style.display = 'none';
-        }, 500); 
+        setTimeout(() => { loader.style.display = 'none'; }, 500); 
     }
 });
