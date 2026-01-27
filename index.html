@@ -30,7 +30,10 @@
 <body>
 
 <div id="login-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 99999; flex-direction: column; align-items: center; justify-content: center;">
-    <div style="background: #0a0a0a; padding: 30px; border: 2px solid var(--main-color); border-radius: 15px; text-align: center; width: 85%; max-width: 350px; box-shadow: 0 0 20px var(--main-color);">
+    <div style="background: #0a0a0a; padding: 30px; border: 2px solid var(--main-color); border-radius: 15px; text-align: center; width: 85%; max-width: 350px; box-shadow: 0 0 20px var(--main-color); position: relative;">
+        
+        <button onclick="fecharLogin()" style="position: absolute; top: 10px; right: 15px; background: none; border: none; color: #666; font-size: 24px; cursor: pointer;">&times;</button>
+
         <h2 style="font-family: 'Orbitron'; color: var(--main-color); margin-bottom: 20px; font-size: 1.2rem;">ACESSO MODDER</h2>
         
         <input type="email" id="auth-email" placeholder="Seu e-mail" style="width: 100%; padding: 12px; margin-bottom: 10px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; box-sizing: border-box;">
@@ -53,6 +56,7 @@
 <nav id="siteNav">
     <div class="nav-links">
         <a href="index.html">Início</a> 
+        <a href="javascript:void(0)" id="navLoginBtn" onclick="abrirLogin()">Login</a>
         <a href="paginas/sobre.html">Sobre</a> 
         <a href="https://youtube.com/@maykjjr" target="_blank">YouTube</a> 
         <a href="paginas/comunidade.html">Social</a>
