@@ -170,3 +170,18 @@ window.onload = () => {
     updateFavs(); 
     filterMods(); 
 };
+
+window.onload = () => { 
+    carregarMods();
+    applyTheme(selectedColor, false);
+    changeView(viewMode);
+    updateFavs(); 
+    filterMods(); 
+
+    // LINHA NOVA: Esconde o loading após carregar tudo
+    const loader = document.getElementById('loading-screen');
+    if(loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.style.display = 'none', 500);
+    }
+};
