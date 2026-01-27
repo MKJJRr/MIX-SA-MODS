@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comunidade - MIX-SA-MODS</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&display=swap" rel="stylesheet">
+    
     <style>
+        :root { --main-color: #00ff00; }
+        
         body {
             background-color: #0f0f0f;
             color: white;
@@ -14,11 +18,10 @@
             text-align: center;
         }
 
-        /* Reutilizando seu Menu */
         nav {
             background-color: #1a1a1a;
             padding: 10px 20px;
-            border-bottom: 2px solid #00ff00;
+            border-bottom: 2px solid var(--main-color);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -33,7 +36,6 @@
             font-size: 13px;
         }
 
-        /* Container de 400px para combinar com a Home */
         .container-social {
             max-width: 400px;
             margin: 30px auto;
@@ -44,36 +46,77 @@
             background-color: #1a1a1a;
             border: 1px solid #333;
             border-radius: 12px;
-            padding: 20px;
+            padding: 15px;
             margin-bottom: 15px;
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
             transition: 0.3s;
             text-decoration: none;
             color: white;
         }
 
         .social-card:hover {
-            border-color: #00ff00;
+            border-color: var(--main-color);
             transform: scale(1.02);
         }
 
-        /* Cores dos Ícones */
-        .icon { font-size: 30px; }
+        .icon { font-size: 25px; }
         .fa-instagram { color: #E1306C; }
         .fa-facebook { color: #4267B2; }
         .fa-whatsapp { color: #25D366; }
-        .fa-youtube { color: #FF0000; }
 
         .info-social { text-align: left; }
-        .info-social h3 { margin: 0; font-size: 18px; color: #00ff00; }
-        .info-social p { margin: 5px 0 0; font-size: 13px; color: #bbb; }
+        .info-social h3 { margin: 0; font-size: 16px; color: var(--main-color); font-family: 'Orbitron'; }
+        .info-social p { margin: 5px 0 0; font-size: 12px; color: #bbb; }
 
         .btn-entrar {
             margin-left: auto;
-            color: #00ff00;
-            font-size: 20px;
+            color: var(--main-color);
+            font-size: 18px;
+        }
+
+        /* ESTILO PARA A LISTA DE USUÁRIOS DO SITE */
+        #usuarios-lista {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .user-card {
+            background: #111;
+            border: 1px solid #222;
+            padding: 12px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-align: left;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid var(--main-color);
+            object-fit: cover;
+        }
+
+        .badge {
+            font-size: 9px;
+            background: var(--main-color);
+            color: #000;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            text-transform: uppercase;
         }
     </style>
 </head>
@@ -83,29 +126,19 @@
         <div class="nav-links">
             <a href="../index.html">Início</a>
             <a href="sobre.html">Sobre</a>
-            <a href="comunidade.html">social</a>
+            <a href="comunidade.html">Social</a>
         </div>
-        <img src="../assets/img/logo-icon.png" style="height:40px;">
+        <img src="../assets/img/logo-icon.png" style="height:35px;">
     </nav>
 
     <div class="container-social">
-        <h2 style="color: #00ff00; text-transform: uppercase;">Nossa Comunidade</h2>
-        <p style="color: #888; margin-bottom: 30px;">Entre nos nossos grupos e acompanhe as novidades!</p>
-
+        <h2 style="color: var(--main-color); font-family: 'Orbitron'; font-size: 1.2rem;">GRUPOS OFICIAIS</h2>
+        
         <a href="https://ig.me/j/AbbotijOjgnH14lP/" target="_blank" class="social-card">
             <i class="fa-brands fa-instagram icon"></i>
             <div class="info-social">
                 <h3>Instagram</h3>
                 <p>Siga para ver prints e avisos.</p>
-            </div>
-            <i class="fa-solid fa-chevron-right btn-entrar"></i>
-        </a>
-
-        <a href="LINK_DO_SEU_FACEBOOK" target="_blank" class="social-card">
-            <i class="fa-brands fa-facebook icon"></i>
-            <div class="info-social">
-                <h3>Facebook</h3>
-                <p>Participe do nosso grupo oficial.</p>
             </div>
             <i class="fa-solid fa-chevron-right btn-entrar"></i>
         </a>
@@ -119,7 +152,31 @@
             <i class="fa-solid fa-chevron-right btn-entrar"></i>
         </a>
 
+        <hr style="border: 0; border-top: 1px solid #222; margin: 30px 0;">
+
+        <h2 style="color: var(--main-color); font-family: 'Orbitron'; font-size: 1.2rem;">MODDERS NO SITE</h2>
+        <p style="color: #666; font-size: 12px; margin-bottom: 15px;">Membros que já criaram perfil</p>
+        
+        <div id="usuarios-lista">
+            <p style="color: #444; font-size: 13px;">Carregando modders...</p>
+        </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../script.js"></script>
+    <script>
+        // Garante que o tema acompanhe o que foi escolhido na home
+        const temaSalvo = localStorage.getItem('site_theme');
+        if(temaSalvo) {
+            document.documentElement.style.setProperty('--main-color', temaSalvo);
+        }
+
+        // Chama a função que criamos no script.js para listar os modders
+        window.addEventListener('load', () => {
+            if (typeof carregarComunidade === "function") {
+                carregarComunidade();
+            }
+        });
+    </script>
 </body>
 </html>
