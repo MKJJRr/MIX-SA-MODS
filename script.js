@@ -4,6 +4,13 @@ let currentCategory = 'todos';
 let selectedColor = localStorage.getItem('site_theme') || '#00ff00';
 let viewMode = localStorage.getItem('view_mode') || 'grid';
 
+// Configuração oficial do projeto MIX-SA-MODS
+const SUPABASE_URL = 'https://egfxnzebciuyidaahezc.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_7QAzm1GleD0QjNKfO-dtbw_JyOLcHr0';
+
+// Inicializa o cliente do Supabase
+const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 // FUNÇÃO QUE GERA OS CARDS NA TELA
 function carregarMods() {
     const container = document.getElementById('modList');
