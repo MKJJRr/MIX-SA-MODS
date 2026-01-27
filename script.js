@@ -11,7 +11,16 @@ const SUPABASE_KEY = 'sb_publishable_7QAzm1GleD0QjNKfO-dtbw_JyOLcHr0';
 // Inicializa o cliente do Supabase
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-/* --- FUNÇÕES DE AUTENTICAÇÃO (NOVO) --- */
+/* --- FUNÇÕES DE AUTENTICAÇÃO (OPCIONAL) --- */
+
+function abrirLogin() {
+    document.getElementById('login-overlay').style.display = 'flex';
+}
+
+function fecharLogin() {
+    document.getElementById('login-overlay').style.display = 'none';
+    document.getElementById('auth-error').innerText = "";
+}
 
 async function cadastrar() {
     const email = document.getElementById('auth-email').value;
@@ -41,20 +50,32 @@ async function entrar() {
     const { data, error } = await _supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
-        errorMsg.innerText = "Login inválido ou e-mail não confirmado.";
+        errorMsg.innerText = "Login inválido ou dados incorretos.";
     } else {
-        document.getElementById('login-overlay').style.display = 'none';
+        fecharLogin();
+        location.reload(); // Recarrega para atualizar o botão da nav
     }
 }
 
 async function checarSessao() {
     const { data: { session } } = await _supabase.auth.getSession();
-    const loginOverlay = document.getElementById('login-overlay');
+    const navBtn = document.getElementById('navLoginBtn');
+    
     if (session) {
-        if (loginOverlay) loginOverlay.style.display = 'none';
-    } else {
-        if (loginOverlay) loginOverlay.style.display = 'flex';
+        // Se estiver logado, muda o botão da Nav
+        if (navBtn) {
+            navBtn.innerText = "Perfil";
+            navBtn.style.color = "var(--main-color)";
+            navBtn.onclick = () => {
+                if(confirm("Deseja sair da conta?")) sair();
+            };
+        }
     }
+}
+
+async function sair() {
+    await _supabase.auth.signOut();
+    location.reload();
 }
 
 /* --- FUNÇÕES DO SITE --- */
@@ -209,7 +230,7 @@ function copyLink(u) {
 
 // INICIALIZAÇÃO DO SITE (UNIFICADA)
 window.addEventListener('load', () => { 
-    checarSessao(); // Checa login assim que carregar
+    checarSessao(); // Apenas verifica se já está logado
     carregarMods();
     applyTheme(selectedColor, false);
     changeView(viewMode);
