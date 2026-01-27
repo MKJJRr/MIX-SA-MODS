@@ -30,6 +30,7 @@ function carregarMods() {
 // ALTERAR ENTRE MODO GRADE OU LISTA
 function changeView(mode) {
     const container = document.getElementById('modList');
+    if (!container) return;
     viewMode = mode;
     localStorage.setItem('view_mode', mode);
     if (mode === 'list') container.classList.add('list-mode');
@@ -162,26 +163,20 @@ function copyLink(u) {
     setTimeout(() => t.className = "", 2000); 
 }
 
-// INICIALIZAÇÃO DO SITE
-window.onload = () => { 
-    carregarMods();
-    applyTheme(selectedColor, false);
-    changeView(viewMode);
-    updateFavs(); 
-    filterMods(); 
-};
-
-window.onload = () => { 
+// INICIALIZAÇÃO DO SITE (UNIFICADA)
+window.addEventListener('load', () => { 
     carregarMods();
     applyTheme(selectedColor, false);
     changeView(viewMode);
     updateFavs(); 
     filterMods(); 
 
-    // LINHA NOVA: Esconde o loading após carregar tudo
+    // Esconde o loading após carregar tudo
     const loader = document.getElementById('loading-screen');
     if(loader) {
         loader.style.opacity = '0';
-        setTimeout(() => loader.style.display = 'none', 500);
+        setTimeout(() => {
+            loader.style.display = 'none';
+        }, 500); 
     }
-};
+});
