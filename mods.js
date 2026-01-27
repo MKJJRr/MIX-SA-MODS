@@ -2,7 +2,7 @@
 const listaDeMods = [
     {
         id: "gasolina",
-        categoria: "script",
+        categoria: "cleo",
         titulo: "Mod Gasolina Realista",
         descricao: "Adiciona um sistema de combustível realista nos postos espalhados por San Andreas.",
         imagem: "mods/img/mod-gasolina.png",
@@ -26,7 +26,7 @@ const listaDeMods = [
     },
     {
         id: "gasolina2",
-        categoria: "script",
+        categoria: "cleo",
         titulo: "Mod Gasolina V2",
         descricao: "Versão atualizada do sistema de combustível com novos ícones no mapa.",
         imagem: "mods/img/mod-gasolina.png",
