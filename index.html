@@ -20,29 +20,24 @@
 
     <style id="dynamic-theme">
         :root { --main-color: #00ff00; }
-        @keyframes neonPulse {
-            0% { box-shadow: 0 0 5px rgba(0, 255, 0, 0.2); border-color: #333; }
-            50% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.5); border-color: var(--main-color); }
-            100% { box-shadow: 0 0 5px rgba(0, 255, 0, 0.2); border-color: #333; }
-        }
         
-        /* Scrollbars do Painel Admin */
-        #admin-mods-list::-webkit-scrollbar, #admin-active-list::-webkit-scrollbar, #admin-users-list::-webkit-scrollbar { width: 4px; }
-        #admin-mods-list::-webkit-scrollbar-thumb, #admin-active-list::-webkit-scrollbar-thumb { background: var(--main-color); border-radius: 10px; }
-        
-        .btn-category, .btn-fav, .btn-share { touch-action: manipulation; }
+        /* Garantir que o scroll do Painel Admin funcione bem */
+        .admin-scroll { max-height: 150px; overflow-y: auto; text-align: left; font-size: 11px; background: #000; padding: 10px; border-radius: 8px; border: 1px solid #333; }
+        .admin-item { border-bottom: 1px solid #222; padding: 5px 0; display: flex; justify-content: space-between; align-items: center; }
+        .admin-item button { padding: 3px 8px; border: none; border-radius: 4px; color: white; cursor: pointer; font-size: 9px; font-weight: bold; }
+        .admin-input { width: 100%; background: #000; color: #fff; border: 1px solid #333; padding: 10px; margin-bottom: 12px; border-radius: 6px; }
 
-        /* Estilo para botões de gerenciamento no painel */
-        .btn-adm-action { font-size: 9px; padding: 4px 8px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-family: 'Orbitron'; margin-right: 3px; transition: 0.2s; }
-        .btn-adm-edit { background: #ffd700; color: #000; }
-        .btn-adm-del { background: #ff4444; color: #fff; }
-        .btn-adm-edit:hover, .btn-adm-del:hover { opacity: 0.8; }
-        
-        /* Garante que overlays fiquem sempre no topo */
         #login-overlay, #profile-overlay, #upload-overlay { z-index: 100000 !important; }
     </style>
 </head>
 <body onclick="closeMenus()"> 
+
+<div id="loading-screen">
+    <div class="spinner"></div>
+    <p style="color: var(--main-color); font-family: 'Orbitron', sans-serif; letter-spacing: 2px;">SINCRONIZANDO DATABASE...</p>
+</div>
+
+<div id="toast"></div>
 
 <div id="login-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); flex-direction: column; align-items: center; justify-content: center;">
     <div style="background: #0a0a0a; padding: 30px; border: 2px solid var(--main-color); border-radius: 15px; text-align: center; width: 85%; max-width: 350px; box-shadow: 0 0 20px var(--main-color); position: relative;">
@@ -65,45 +60,15 @@
         </div>
         <div style="text-align: left; background: #111; padding: 15px; border-radius: 10px; border: 1px solid #222; margin-bottom: 15px;">
             <label style="color: var(--main-color); font-size: 10px; font-family: 'Orbitron';">NICKNAME</label>
-            <input type="text" id="profile-name" placeholder="Seu nome" style="width: 100%; background: none; border: none; border-bottom: 1px solid #333; color: #fff; padding: 8px 0; margin-bottom: 10px; outline: none;">
+            <input type="text" id="profile-name" class="admin-input" style="background: none; border: none; border-bottom: 1px solid #333; border-radius: 0;">
             <label style="color: var(--main-color); font-size: 10px; font-family: 'Orbitron';">URL DA FOTO</label>
-            <input type="text" id="profile-pic-url" placeholder="https://link.com/foto.jpg" style="width: 100%; background: none; border: none; border-bottom: 1px solid #333; color: #fff; padding: 8px 0; margin-bottom: 10px; outline: none;">
+            <input type="text" id="profile-pic-url" class="admin-input" style="background: none; border: none; border-bottom: 1px solid #333; border-radius: 0;">
             <label style="color: var(--main-color); font-size: 10px; font-family: 'Orbitron';">E-MAIL</label>
             <p id="user-email-display" style="color: #666; font-size: 12px; margin-top: 5px; word-break: break-all;"></p>
         </div>
         <button onclick="salvarPerfil()" style="width: 100%; padding: 12px; background: var(--main-color); border: none; color: #000; font-weight: bold; cursor: pointer; border-radius: 8px; font-family: 'Orbitron'; margin-bottom: 10px;">SALVAR ALTERAÇÕES</button>
         <button onclick="sair()" style="width: 100%; padding: 10px; background: none; border: 1px solid #ff4444; color: #ff4444; font-weight: bold; cursor: pointer; border-radius: 8px; font-family: 'Orbitron'; font-size: 0.8rem;">SAIR DA CONTA</button>
     </div>
-</div>
-
-<div id="upload-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); flex-direction: column; align-items: center; justify-content: center;">
-    <div style="background: #0a0a0a; padding: 25px; border: 2px solid var(--main-color); border-radius: 15px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 0 20px var(--main-color); position: relative; max-height: 90vh; overflow-y: auto;">
-        <button onclick="fecharEnvio()" style="position: absolute; top: 10px; right: 15px; background: none; border: none; color: #666; font-size: 24px; cursor: pointer;">&times;</button>
-        <h2 style="font-family: 'Orbitron'; color: var(--main-color); margin-bottom: 15px; font-size: 1.1rem;">ENVIAR NOVO MOD</h2>
-        <div style="text-align: left; background: #111; padding: 15px; border-radius: 10px; border: 1px solid #222; margin-bottom: 15px;">
-            <label style="color: var(--main-color); font-size: 10px; font-family: 'Orbitron';">TÍTULO DO MOD</label>
-            <input type="text" id="mod-titulo" placeholder="Ex: Skin Pack v2" style="width: 100%; background: none; border: none; border-bottom: 1px solid #333; color: #fff; padding: 8px 0; margin-bottom: 15px; outline: none;">
-            <label style="color: var(--main-color); font-size: 10px; font-family: 'Orbitron';">CATEGORIA</label>
-            <select id="mod-categoria" style="width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 8px; margin-bottom: 15px; border-radius: 5px;">
-                <option value="cleo">CLEO</option>
-                <option value="veiculo">VEÍCULOS</option>
-                <option value="textura">TEXTURAS</option>
-                <option value="correcao">CORREÇÃO</option>
-            </select>
-            <label style="color: var(--main-color); font-size: 10px; font-family: 'Orbitron';">URL DA IMAGEM</label>
-            <input type="text" id="mod-imagem" placeholder="https://link.com/foto.jpg" style="width: 100%; background: none; border: none; border-bottom: 1px solid #333; color: #fff; padding: 8px 0; margin-bottom: 15px; outline: none;">
-            <label style="color: var(--main-color); font-size: 10px; font-family: 'Orbitron';">LINK DE DOWNLOAD</label>
-            <input type="text" id="mod-link" placeholder="Mediafire, Mega, etc." style="width: 100%; background: none; border: none; border-bottom: 1px solid #333; color: #fff; padding: 8px 0; margin-bottom: 15px; outline: none;">
-            <label style="color: var(--main-color); font-size: 10px; font-family: 'Orbitron';">DESCRIÇÃO BREVE</label>
-            <textarea id="mod-descricao" placeholder="Conte o que o mod faz..." style="width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 8px; border-radius: 5px; height: 60px; resize: none;"></textarea>
-        </div>
-        <button onclick="enviarModAoBanco()" id="btn-submit-mod" style="width: 100%; padding: 12px; background: var(--main-color); border: none; color: #000; font-weight: bold; cursor: pointer; border-radius: 8px; font-family: 'Orbitron';">SUBMETER MOD</button>
-    </div>
-</div>
-
-<div id="loading-screen">
-    <div class="spinner"></div>
-    <p style="color: var(--main-color); font-family: 'Orbitron', sans-serif; letter-spacing: 2px;">SINCRONIZANDO DATABASE...</p>
 </div>
 
 <nav id="siteNav">
@@ -155,8 +120,6 @@
 </div>
 
 <div class="container" id="modList"></div>
-
-<div id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="mods.js"></script>
