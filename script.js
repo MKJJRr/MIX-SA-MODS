@@ -1,8 +1,9 @@
-/* LÓGICA DO SITE MIX-SA-MODS - VERSÃO FINAL ESTABILIZADA + ENVIO */
+/* LÓGICA DO SITE MIX-SA-MODS - VERSÃO DATABASE AUTOMÁTICA */
 
 let currentCategory = 'todos';
 let selectedColor = localStorage.getItem('site_theme') || '#00ff00';
 let viewMode = localStorage.getItem('view_mode') || 'grid';
+let listaDeModsLocal = []; // Armazenará os mods vindos do banco
 
 const SUPABASE_URL = 'https://egfxnzebciuyidaahezc.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_7QAzm1GleD0QjNKfO-dtbw_JyOLcHr0';
@@ -55,7 +56,6 @@ async function abrirPerfil(email) {
     document.getElementById('profile-overlay').style.display = 'flex';
 }
 
-// FUNÇÃO ATUALIZADA PARA MOSTRAR MODS PENDENTES E USUÁRIOS
 async function abrirPainelAdmin() {
     let painel = document.getElementById('admin-panel');
     if (!painel) {
@@ -65,7 +65,6 @@ async function abrirPainelAdmin() {
         painel.innerHTML = `
             <h3 style="color: red; font-family: 'Orbitron'; font-size: 11px; margin-bottom: 10px;">MODS PARA APROVAR</h3>
             <div id="admin-mods-list" style="max-height: 200px; overflow-y: auto; text-align: left; font-size: 11px; background: #000; padding: 10px; border-radius: 8px; border: 1px solid #333; margin-bottom: 15px;"></div>
-            
             <h3 style="color: red; font-family: 'Orbitron'; font-size: 11px; margin-bottom: 10px;">USUÁRIOS NO BANCO</h3>
             <div id="admin-users-list" style="max-height: 150px; overflow-y: auto; text-align: left; font-size: 11px; background: #000; padding: 10px; border-radius: 8px; border: 1px solid #333;"></div>
         `;
@@ -84,52 +83,52 @@ async function abrirPainelAdmin() {
     listaMods.innerHTML = "Carregando mods...";
     listaUsers.innerHTML = "Carregando...";
 
-    // BUSCAR MODS PENDENTES
-    const { data: mods, error: errMod } = await _supabase.from('mods_pendentes').select('*');
-    if (errMod || !mods || mods.length === 0) {
+    const { data: mods } = await _supabase.from('mods_pendentes').select('*');
+    if (!mods || mods.length === 0) {
         listaMods.innerHTML = "<span style='color:#666'>Nenhum mod pendente.</span>";
     } else {
         listaMods.innerHTML = mods.map(m => `
             <div style="border-bottom: 1px solid #222; padding: 8px 0;">
                 <b style="color:var(--main-color)">${m.titulo}</b><br>
-                <small>Por: ${m.autor_email}</small><br>
                 <div style="display:flex; gap: 5px; margin-top: 5px;">
-                    <button onclick="copiarDadosMod('${m.id}')" style="background:orange; border:none; color:#000; font-size:9px; padding:3px; cursor:pointer; font-weight:bold; border-radius:4px;">COPIAR</button>
+                    <button onclick="aprovarMod('${m.id}')" style="background:green; border:none; color:#fff; font-size:9px; padding:3px; cursor:pointer; font-weight:bold; border-radius:4px;">APROVAR</button>
                     <button onclick="deletarModPendente('${m.id}')" style="background:red; border:none; color:#fff; font-size:9px; padding:3px; cursor:pointer; border-radius:4px;">APAGAR</button>
                 </div>
             </div>
         `).join('');
     }
 
-    // BUSCAR USUÁRIOS
-    const { data: users, error: errUser } = await _supabase.from('profiles').select('full_name, id');
-    if (errUser) { listaUsers.innerHTML = "Erro."; }
-    else {
+    const { data: users } = await _supabase.from('profiles').select('full_name, id');
+    if (users) {
         listaUsers.innerHTML = users.map(u => `<div style="border-bottom: 1px solid #222; padding: 5px 0; display: flex; justify-content: space-between;"><span style="color:#eee">${u.full_name || 'Sem nome'}</span><span style="color:#444; font-size:8px">${u.id.substring(0,5)}</span></div>`).join('');
     }
 }
 
-// FUNÇÕES DE AÇÃO DO ADMIN
-async function deletarModPendente(id) {
-    if(confirm("Deseja apagar este mod da fila?")) {
-        const { error } = await _supabase.from('mods_pendentes').delete().eq('id', id);
-        if(!error) { alert("Removido!"); location.reload(); }
+/* --- FUNÇÕES DE AÇÃO DO ADMIN --- */
+
+async function aprovarMod(id) {
+    const { data: mod } = await _supabase.from('mods_pendentes').select('*').eq('id', id).single();
+    if (mod) {
+        const { error: errInsert } = await _supabase.from('mods_aprovados').insert([{
+            titulo: mod.titulo,
+            categoria: mod.categoria,
+            imagem: mod.imagem,
+            link: mod.link,
+            descricao: mod.descricao
+        }]);
+
+        if (!errInsert) {
+            await _supabase.from('mods_pendentes').delete().eq('id', id);
+            alert("MOD APROVADO COM SUCESSO!");
+            location.reload();
+        }
     }
 }
 
-async function copiarDadosMod(id) {
-    const { data: mod } = await _supabase.from('mods_pendentes').select('*').eq('id', id).single();
-    if(mod) {
-        const formatado = `{
-    id: "${Date.now()}",
-    titulo: "${mod.titulo}",
-    categoria: "${mod.categoria}",
-    imagem: "${mod.imagem}",
-    link: "${mod.link}",
-    descricao: "${mod.descricao}"
-},`;
-        navigator.clipboard.writeText(formatado);
-        alert("Código copiado! Cole no seu mods.js");
+async function deletarModPendente(id) {
+    if(confirm("Deseja apagar este mod da fila?")) {
+        await _supabase.from('mods_pendentes').delete().eq('id', id);
+        location.reload();
     }
 }
 
@@ -175,22 +174,16 @@ async function checarSessao() {
     }
 }
 
-/* --- FUNÇÕES DE ENVIO DE MODS --- */
+/* --- FUNÇÕES DE ENVIO --- */
 
 function abrirEnvio() {
     _supabase.auth.getSession().then(({ data: { session } }) => {
-        if (!session) {
-            alert("Você precisa estar logado para enviar mods!");
-            abrirLogin();
-        } else {
-            document.getElementById('upload-overlay').style.display = 'flex';
-        }
+        if (!session) { alert("Faça login para enviar!"); abrirLogin(); }
+        else { document.getElementById('upload-overlay').style.display = 'flex'; }
     });
 }
 
-function fecharEnvio() {
-    document.getElementById('upload-overlay').style.display = 'none';
-}
+function fecharEnvio() { document.getElementById('upload-overlay').style.display = 'none'; }
 
 async function enviarModAoBanco() {
     const titulo = document.getElementById('mod-titulo').value;
@@ -200,10 +193,7 @@ async function enviarModAoBanco() {
     const descricao = document.getElementById('mod-descricao').value;
     const btn = document.getElementById('btn-submit-mod');
 
-    if (!titulo || !imagem || !link || !descricao) {
-        alert("Por favor, preencha todos os campos!");
-        return;
-    }
+    if (!titulo || !imagem || !link || !descricao) { alert("Preencha tudo!"); return; }
 
     btn.innerText = "ENVIANDO...";
     btn.disabled = true;
@@ -211,37 +201,35 @@ async function enviarModAoBanco() {
     const { data: { user } } = await _supabase.auth.getUser();
 
     const { error } = await _supabase.from('mods_pendentes').insert([{
-        titulo,
-        categoria,
-        imagem,
-        link,
-        descricao,
+        titulo, categoria, imagem, link, descricao,
         autor_email: user.email,
         autor_id: user.id
     }]);
 
-    if (error) {
-        alert("Erro ao enviar: " + error.message);
-        btn.innerText = "SUBMETER MOD";
-        btn.disabled = false;
-    } else {
-        alert("Mod enviado com sucesso! Ele aparecerá no site após a revisão.");
-        fecharEnvio();
-        btn.innerText = "SUBMETER MOD";
-        btn.disabled = false;
-        document.getElementById('mod-titulo').value = "";
-        document.getElementById('mod-imagem').value = "";
-        document.getElementById('mod-link').value = "";
-        document.getElementById('mod-descricao').value = "";
-    }
+    if (error) { alert("Erro: " + error.message); btn.innerText = "SUBMETER MOD"; btn.disabled = false; }
+    else { alert("Enviado para revisão!"); location.reload(); }
 }
 
-/* --- FUNÇÕES DO SITE --- */
+/* --- FUNÇÕES DO SITE (CARREGAMENTO DO BANCO) --- */
 
-function carregarMods() {
+async function carregarMods() {
     const container = document.getElementById('modList');
-    if (!container || typeof listaDeMods === 'undefined') return;
-    container.innerHTML = listaDeMods.map(mod => `
+    if (!container) return;
+
+    // Busca da tabela oficial de aprovados
+    const { data: aprovados, error } = await _supabase
+        .from('mods_aprovados')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+    if (error || !aprovados) {
+        container.innerHTML = "<p style='color:gray'>Nenhum mod aprovado no banco de dados.</p>";
+        return;
+    }
+
+    listaDeModsLocal = aprovados; // Sincroniza a busca local
+
+    container.innerHTML = aprovados.map(mod => `
         <div class="mod-card" data-category="${mod.categoria}" id="${mod.id}">
             <button class="btn-fav" onclick="toggleFav('${mod.id}')">❤</button>
             <button class="btn-share" onclick="copyLink('${mod.link}')">🔗</button>
@@ -249,9 +237,12 @@ function carregarMods() {
             <div class="mod-info">
                 <h2>${mod.titulo}</h2>
                 <p>${mod.descricao}</p>
-                <a href="${mod.link}" class="btn btn-download">VER DETALHES</a>
+                <a href="${mod.link}" target="_blank" class="btn btn-download">VER DETALHES</a>
             </div>
         </div>`).join('');
+    
+    updateFavs();
+    filterMods();
 }
 
 function applyTheme(color, save = true) {
@@ -262,16 +253,11 @@ function applyTheme(color, save = true) {
         e.style.backgroundColor = color;
         e.style.borderColor = color;
     });
-    document.querySelectorAll('.btn-category:not(.active)').forEach(e => {
-        e.style.backgroundColor = ""; e.style.borderColor = "";
-    });
     closeMenus();
 }
 
 function setCategory(cat, el) {
-    document.querySelectorAll('.btn-category').forEach(b => {
-        b.classList.remove('active'); b.style.backgroundColor = "";
-    });
+    document.querySelectorAll('.btn-category').forEach(b => b.classList.remove('active'));
     el.classList.add('active');
     el.style.backgroundColor = selectedColor;
     currentCategory = cat;
@@ -283,18 +269,18 @@ function filterMods() {
     let f = JSON.parse(localStorage.getItem('mix_favs')) || [];
     let v = 0;
     document.querySelectorAll('.mod-card').forEach(c => {
-        let m = c.querySelector('h2').innerText.toLowerCase().includes(q) && 
-                (currentCategory === 'todos' || c.getAttribute('data-category') === currentCategory || (currentCategory === 'favs' && f.includes(c.id)));
+        let title = c.querySelector('h2').innerText.toLowerCase();
+        let cat = c.getAttribute('data-category');
+        let m = title.includes(q) && (currentCategory === 'todos' || cat === currentCategory || (currentCategory === 'favs' && f.includes(c.id)));
         c.style.display = m ? "" : "none";
         if(m) v++;
     });
     const counter = document.getElementById('modCounter');
-    if(counter) counter.innerText = `Exibindo ${v} mods de ${listaDeMods.length}`;
+    if(counter) counter.innerText = `Exibindo ${v} mods do banco de dados`;
 }
 
 function changeView(mode) {
     const container = document.getElementById('modList');
-    if (!container) return;
     viewMode = mode;
     localStorage.setItem('view_mode', mode);
     if (mode === 'list') container.classList.add('list-mode');
@@ -303,27 +289,10 @@ function changeView(mode) {
 }
 
 function toggleSettings(e) { e.stopPropagation(); document.getElementById("settingsOptions").classList.toggle("active"); }
-
-function toggleSubmenu(e, id) {
-    e.stopPropagation();
-    document.querySelectorAll(".submenu").forEach(s => { if(s.id !== id) s.classList.remove("active"); });
-    document.getElementById(id).classList.toggle("active");
-}
-
-function closeMenus() {
-    const s = document.getElementById("settingsOptions");
-    if(s) s.classList.remove("active");
-    document.querySelectorAll(".submenu").forEach(sub => sub.classList.remove("active"));
-}
-
-window.onclick = function(e) { if (document.getElementById("mainSettings") && !document.getElementById("mainSettings").contains(e.target)) closeMenus(); };
-
-function randomMod() {
-    let c = document.querySelectorAll('.mod-card:not([style*="display: none"])');
-    if(c.length > 0) {
-        c[Math.floor(Math.random()*c.length)].scrollIntoView({behavior:'smooth', block:'center'});
-        closeMenus();
-    }
+function toggleSubmenu(e, id) { e.stopPropagation(); document.getElementById(id).classList.toggle("active"); }
+function closeMenus() { 
+    document.getElementById("settingsOptions")?.classList.remove("active"); 
+    document.querySelectorAll(".submenu").forEach(s => s.classList.remove("active"));
 }
 
 function toggleFav(id) {
@@ -342,7 +311,7 @@ function updateFavs() {
 }
 
 function copyLink(u) {
-    navigator.clipboard.writeText(window.location.origin + "/" + u);
+    navigator.clipboard.writeText(u);
     let t = document.getElementById("toast"); t.className = "show"; setTimeout(() => t.className = "", 2000);
 }
 
@@ -350,19 +319,16 @@ async function carregarComunidade() {
     const lista = document.getElementById('usuarios-lista');
     if (!lista) return;
     const { data: p } = await _supabase.from('profiles').select('full_name, avatar_url').not('full_name', 'is', null);
-    if (!p) return;
-    const container = document.querySelector('.container-social');
-    const old = document.getElementById('membros-count'); if(old) old.remove();
-    const badge = document.createElement('div');
-    badge.id = 'membros-count';
-    badge.style.cssText = "color: var(--main-color); margin-bottom: 20px; font-weight: bold; font-family: 'Orbitron';";
-    badge.innerText = `JÁ SOMOS ${p.length} MODDERS!`;
-    if(container) container.insertBefore(badge, lista);
-    lista.innerHTML = p.map(u => `<div class="user-card" style="background:#111; border:1px solid var(--main-color); padding:15px; border-radius:12px; display:flex; align-items:center; gap:15px; margin-bottom:10px;"><img src="${u.avatar_url || 'assets/img/logo-icon.png'}" style="width:45px; height:45px; border-radius:50%; border:2px solid var(--main-color); object-fit:cover;"><div style="text-align:left;"><h3 style="color:#fff; margin:0; font-family:'Orbitron'; font-size:0.8rem;">${u.full_name}</h3><span style="color:var(--main-color); font-size:9px; font-weight:bold;">MODDER VERIFICADO</span></div></div>`).join('');
+    if (p) {
+        lista.innerHTML = p.map(u => `<div class="user-card" style="background:#111; border:1px solid var(--main-color); padding:10px; border-radius:12px; display:flex; align-items:center; gap:10px; margin-bottom:8px;"><img src="${u.avatar_url || 'assets/img/logo-icon.png'}" style="width:35px; height:35px; border-radius:50%; object-fit:cover;"><div><h3 style="color:#fff; margin:0; font-size:11px;">${u.full_name}</h3></div></div>`).join('');
+    }
 }
 
 window.addEventListener('load', () => { 
-    checarSessao(); carregarMods(); updateFavs(); filterMods(); 
-    applyTheme(selectedColor, false); changeView(viewMode); carregarComunidade();
-    setTimeout(() => { if(document.getElementById('loading-screen')) document.getElementById('loading-screen').style.display='none'; }, 500); 
+    checarSessao(); 
+    carregarMods(); 
+    applyTheme(selectedColor, false); 
+    changeView(viewMode); 
+    carregarComunidade();
+    setTimeout(() => { if(document.getElementById('loading-screen')) document.getElementById('loading-screen').style.display='none'; }, 800); 
 });
