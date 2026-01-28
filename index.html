@@ -26,15 +26,15 @@
             100% { box-shadow: 0 0 5px rgba(0, 255, 0, 0.2); border-color: #333; }
         }
         
-        /* Ajuste para rolagem suave no Admin */
         #admin-users-list::-webkit-scrollbar { width: 4px; }
         #admin-users-list::-webkit-scrollbar-thumb { background: red; border-radius: 10px; }
         
-        /* Previne clique duplo acidental e melhora toque no celular */
         .btn-category, .btn-fav, .btn-share { touch-action: manipulation; }
     </style>
 </head>
-<body onclick="closeMenus()"> <div id="login-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 99999; flex-direction: column; align-items: center; justify-content: center;">
+<body onclick="closeMenus()"> 
+
+<div id="login-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 99999; flex-direction: column; align-items: center; justify-content: center;">
     <div style="background: #0a0a0a; padding: 30px; border: 2px solid var(--main-color); border-radius: 15px; text-align: center; width: 85%; max-width: 350px; box-shadow: 0 0 20px var(--main-color); position: relative;">
         <button onclick="fecharLogin()" style="position: absolute; top: 10px; right: 15px; background: none; border: none; color: #666; font-size: 24px; cursor: pointer;">&times;</button>
         <h2 style="font-family: 'Orbitron'; color: var(--main-color); margin-bottom: 20px; font-size: 1.2rem;">ACESSO MODDER</h2>
@@ -134,8 +134,8 @@
 
 <div id="toast">Copiado!</div>
 
-<script src="mods.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="mods.js"></script>
 <script src="script.js"></script>
 
 </body>
