@@ -61,16 +61,24 @@ async function abrirPainelAdmin() {
     if (!painel) {
         painel = document.createElement('div');
         painel.id = 'admin-panel';
-        painel.style.cssText = "display:none; margin-top: 20px; border-top: 2px dashed red; padding-top: 15px; width: 100%;";
+        painel.style.cssText = "display:none; margin-top: 20px; border-top: 2px dashed red; padding-top: 15px; width: 100%; position: relative;";
         document.querySelector('.profile-card').appendChild(painel);
     }
     
-    if (painel.style.display === 'block') { painel.style.display = 'none'; return; }
+    if (painel.style.display === 'block') { 
+        painel.style.display = 'none'; 
+        document.body.style.overflow = 'auto'; 
+        return; 
+    }
+    
     painel.style.display = 'block';
+    document.body.style.overflow = 'hidden';
 
-    // Conteúdo Padrão do Painel
     painel.innerHTML = `
-        <h3 style="color: red; font-family: 'Orbitron'; font-size: 11px; margin-bottom: 10px;">AGUARDANDO APROVAÇÃO</h3>
+        <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h3 style="color: red; font-family: 'Orbitron'; font-size: 11px; margin: 0;">MODS PENDENTES</h3>
+            <button onclick="abrirPainelAdmin()" style="background:none; border:none; color:white; font-size: 20px; cursor:pointer; padding: 0 5px;">&times;</button>
+        </div>
         <div id="admin-mods-list" style="max-height: 150px; overflow-y: auto; text-align: left; font-size: 11px; background: #000; padding: 10px; border-radius: 8px; border: 1px solid #333; margin-bottom: 15px;">Carregando...</div>
         
         <h3 style="color: #00ff00; font-family: 'Orbitron'; font-size: 11px; margin-bottom: 10px;">GERENCIAR MODS ATIVOS</h3>
@@ -80,7 +88,6 @@ async function abrirPainelAdmin() {
         <div id="admin-users-list" style="max-height: 100px; overflow-y: auto; text-align: left; font-size: 11px; background: #000; padding: 10px; border-radius: 8px; border: 1px solid #333;">Carregando...</div>
     `;
 
-    // Carregar Mods Pendentes
     const { data: pendentes } = await _supabase.from('mods_pendentes').select('*');
     document.getElementById('admin-mods-list').innerHTML = pendentes?.length ? pendentes.map(m => `
         <div style="border-bottom: 1px solid #222; padding: 5px 0;">
@@ -91,7 +98,6 @@ async function abrirPainelAdmin() {
             </div>
         </div>`).join('') : "Nenhum mod pendente.";
 
-    // Carregar Mods Ativos (Banco)
     const { data: ativos } = await _supabase.from('mods_aprovados').select('*');
     document.getElementById('admin-active-list').innerHTML = ativos?.length ? ativos.map(m => `
         <div style="border-bottom: 1px solid #222; padding: 5px 0;">
@@ -102,45 +108,47 @@ async function abrirPainelAdmin() {
             </div>
         </div>`).join('') : "Nenhum mod ativo no banco.";
 
-    // Usuários
     const { data: users } = await _supabase.from('profiles').select('full_name');
     document.getElementById('admin-users-list').innerHTML = users?.map(u => `<div style="color:#888; border-bottom:1px solid #111; padding:2px;">${u.full_name || 'Anônimo'}</div>`).join('') || "Erro.";
 }
-
-/* --- AÇÕES DO ADMIN (COM FORMULÁRIO DE EDIÇÃO) --- */
 
 async function editarMod(id) {
     const { data: mod, error } = await _supabase.from('mods_aprovados').select('*').eq('id', id).single();
     if (error || !mod) return alert("Erro ao buscar mod!");
 
     const painel = document.getElementById('admin-panel');
+    document.querySelector('.profile-card').scrollTop = 0;
+
     painel.innerHTML = `
-        <div style="background: #111; padding: 15px; border: 1px solid var(--main-color); border-radius: 10px; text-align: left;">
-            <h3 style="color: var(--main-color); font-size: 10px; margin-bottom: 15px; font-family: 'Orbitron';">EDITAR MOD</h3>
+        <div onclick="event.stopPropagation()" style="background: #111; padding: 15px; border: 2px solid var(--main-color); border-radius: 12px; text-align: left; margin-bottom: 20px; box-shadow: 0 0 15px rgba(0,0,0,0.5);">
+            <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="color: var(--main-color); font-size: 10px; margin: 0; font-family: 'Orbitron';">EDITAR MOD</h3>
+                <button onclick="abrirPainelAdmin(); abrirPainelAdmin();" style="background:none; border:none; color:#666; font-size: 22px; cursor:pointer;">&times;</button>
+            </div>
             
-            <label style="color: #666; font-size: 9px; display:block;">TÍTULO</label>
-            <input type="text" id="edit-titulo" value="${mod.titulo}" style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:8px; margin-bottom:10px; border-radius:5px;">
+            <label style="color: #888; font-size: 9px; display:block; margin-bottom: 3px;">TÍTULO</label>
+            <input type="text" id="edit-titulo" value="${mod.titulo}" style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:10px; margin-bottom:12px; border-radius:6px; font-size:12px;">
             
-            <label style="color: #666; font-size: 9px; display:block;">CATEGORIA</label>
-            <select id="edit-categoria" style="width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 8px; margin-bottom: 10px; border-radius: 5px;">
+            <label style="color: #888; font-size: 9px; display:block; margin-bottom: 3px;">CATEGORIA</label>
+            <select id="edit-categoria" style="width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 10px; margin-bottom: 12px; border-radius: 6px; font-size:12px;">
                 <option value="cleo" ${mod.categoria === 'cleo' ? 'selected' : ''}>CLEO</option>
                 <option value="veiculo" ${mod.categoria === 'veiculo' ? 'selected' : ''}>VEÍCULOS</option>
                 <option value="textura" ${mod.categoria === 'textura' ? 'selected' : ''}>TEXTURAS</option>
                 <option value="correcao" ${mod.categoria === 'correcao' ? 'selected' : ''}>CORREÇÃO</option>
             </select>
 
-            <label style="color: #666; font-size: 9px; display:block;">URL IMAGEM</label>
-            <input type="text" id="edit-imagem" value="${mod.imagem}" style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:8px; margin-bottom:10px; border-radius:5px;">
+            <label style="color: #888; font-size: 9px; display:block; margin-bottom: 3px;">URL DA IMAGEM</label>
+            <input type="text" id="edit-imagem" value="${mod.imagem}" style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:10px; margin-bottom:12px; border-radius:6px; font-size:12px;">
             
-            <label style="color: #666; font-size: 9px; display:block;">LINK DOWNLOAD</label>
-            <input type="text" id="edit-link" value="${mod.link}" style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:8px; margin-bottom:10px; border-radius:5px;">
+            <label style="color: #888; font-size: 9px; display:block; margin-bottom: 3px;">LINK DE DOWNLOAD</label>
+            <input type="text" id="edit-link" value="${mod.link}" style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:10px; margin-bottom:12px; border-radius:6px; font-size:12px;">
             
-            <label style="color: #666; font-size: 9px; display:block;">DESCRIÇÃO</label>
-            <textarea id="edit-descricao" style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:8px; height:60px; border-radius:5px; resize:none;">${mod.descricao}</textarea>
+            <label style="color: #888; font-size: 9px; display:block; margin-bottom: 3px;">DESCRIÇÃO</label>
+            <textarea id="edit-descricao" style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:10px; height:90px; border-radius:6px; resize:none; font-size:12px; line-height:1.4;">${mod.descricao}</textarea>
             
-            <div style="display:flex; gap:10px; margin-top:15px;">
-                <button onclick="salvarEdicao('${id}')" style="flex:1; background:var(--main-color); color:#000; border:none; padding:10px; cursor:pointer; font-weight:bold; border-radius:5px; font-size:10px; font-family:'Orbitron';">SALVAR</button>
-                <button onclick="abrirPainelAdmin()" style="flex:1; background:#333; color:white; border:none; padding:10px; cursor:pointer; border-radius:5px; font-size:10px; font-family:'Orbitron';">VOLTAR</button>
+            <div style="display:flex; gap:10px; margin-top:20px;">
+                <button onclick="salvarEdicao('${id}')" style="flex:2; background:var(--main-color); color:#000; border:none; padding:12px; cursor:pointer; font-weight:bold; border-radius:8px; font-size:11px; font-family:'Orbitron';">SALVAR ALTERAÇÕES</button>
+                <button onclick="abrirPainelAdmin(); abrirPainelAdmin();" style="flex:1; background:#222; color:white; border:none; padding:12px; cursor:pointer; border-radius:8px; font-size:11px; font-family:'Orbitron';">CANCELAR</button>
             </div>
         </div>
     `;
@@ -154,15 +162,9 @@ async function salvarEdicao(id) {
         link: document.getElementById('edit-link').value,
         descricao: document.getElementById('edit-descricao').value
     };
-
     const { error } = await _supabase.from('mods_aprovados').update(updates).eq('id', id);
-
-    if (error) {
-        alert("Erro ao salvar: " + error.message);
-    } else {
-        alert("Mod atualizado com sucesso!");
-        location.reload();
-    }
+    if (error) alert("Erro ao salvar: " + error.message);
+    else { alert("Mod atualizado!"); document.body.style.overflow = 'auto'; location.reload(); }
 }
 
 async function aprovarMod(id) {
@@ -176,21 +178,15 @@ async function aprovarMod(id) {
 }
 
 async function deletarModPendente(id) { if(confirm("Apagar da fila?")) { await _supabase.from('mods_pendentes').delete().eq('id', id); location.reload(); } }
-
-async function excluirModAtivo(id) { if(confirm("Remover mod do site permanentemente?")) { await _supabase.from('mods_aprovados').delete().eq('id', id); location.reload(); } }
-
-/* --- CARREGAMENTO E FILTROS --- */
+async function excluirModAtivo(id) { if(confirm("Remover mod permanentemente?")) { await _supabase.from('mods_aprovados').delete().eq('id', id); location.reload(); } }
 
 async function carregarMods() {
     const container = document.getElementById('modList');
     if (!container) return;
-
     const { data: aprovados } = await _supabase.from('mods_aprovados').select('*').order('created_at', { ascending: false });
     let listaBanco = aprovados || [];
     let listaArquivo = (typeof listaDeMods !== 'undefined') ? listaDeMods : [];
-
     listaDeModsLocal = [...listaBanco, ...listaArquivo];
-
     container.innerHTML = listaDeModsLocal.map(mod => `
         <div class="mod-card" data-category="${mod.categoria}" id="${mod.id || mod.titulo}">
             <button class="btn-fav" onclick="toggleFav('${mod.id || mod.titulo}')">❤</button>
@@ -202,12 +198,9 @@ async function carregarMods() {
                 <a href="${mod.link}" target="_blank" class="btn btn-download">VER DETALHES</a>
             </div>
         </div>`).join('');
-    
     updateFavs();
     filterMods();
 }
-
-/* --- LOGIN E PERFIL --- */
 
 async function entrar() {
     const email = document.getElementById('auth-email').value;
@@ -233,7 +226,7 @@ async function checarSessao() {
     }
 }
 
-async function sair() { await _supabase.auth.signOut(); location.reload(); }
+async function sair() { document.body.style.overflow = 'auto'; await _supabase.auth.signOut(); location.reload(); }
 
 async function salvarPerfil() {
     const newName = document.getElementById('profile-name').value;
@@ -246,10 +239,9 @@ async function salvarPerfil() {
 }
 
 function fecharPerfil() { 
+    document.body.style.overflow = 'auto';
     document.getElementById('profile-overlay').style.display = 'none'; 
 }
-
-/* --- ENVIO DE MODS --- */
 
 function abrirEnvio() {
     _supabase.auth.getSession().then(({ data: { session } }) => {
@@ -267,20 +259,15 @@ async function enviarModAoBanco() {
     const link = document.getElementById('mod-link').value;
     const descricao = document.getElementById('mod-descricao').value;
     const btn = document.getElementById('btn-submit-mod');
-
     if (!titulo || !imagem || !link || !descricao) { alert("Preencha tudo!"); return; }
     btn.innerText = "ENVIANDO..."; btn.disabled = true;
-
     const { data: { user } } = await _supabase.auth.getUser();
     const { error } = await _supabase.from('mods_pendentes').insert([{
         titulo, categoria, imagem, link, descricao, autor_email: user.email, autor_id: user.id
     }]);
-
     if (error) { alert("Erro: " + error.message); btn.innerText = "SUBMETER MOD"; btn.disabled = false; }
     else { alert("Enviado para revisão!"); location.reload(); }
 }
-
-/* --- UI E TEMAS --- */
 
 function applyTheme(color, save = true) {
     selectedColor = color;
