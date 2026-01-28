@@ -26,10 +26,14 @@
             100% { box-shadow: 0 0 5px rgba(0, 255, 0, 0.2); border-color: #333; }
         }
         
-        #admin-users-list::-webkit-scrollbar { width: 4px; }
-        #admin-users-list::-webkit-scrollbar-thumb { background: red; border-radius: 10px; }
+        #admin-mods-list::-webkit-scrollbar, #admin-users-list::-webkit-scrollbar { width: 4px; }
+        #admin-mods-list::-webkit-scrollbar-thumb, #admin-users-list::-webkit-scrollbar-thumb { background: red; border-radius: 10px; }
         
         .btn-category, .btn-fav, .btn-share { touch-action: manipulation; }
+
+        /* Estilo para botões de aprovação no painel */
+        .btn-approve { background: #28a745 !important; color: white !important; font-weight: bold; }
+        .btn-reject { background: #dc3545 !important; color: white !important; }
     </style>
 </head>
 <body onclick="closeMenus()"> 
@@ -93,7 +97,7 @@
 
 <div id="loading-screen">
     <div class="spinner"></div>
-    <p style="color: var(--main-color); font-family: 'Orbitron', sans-serif; letter-spacing: 2px;">CARREGANDO MODS...</p>
+    <p style="color: var(--main-color); font-family: 'Orbitron', sans-serif; letter-spacing: 2px;">SINCRONIZANDO DATABASE...</p>
 </div>
 
 <nav id="siteNav">
