@@ -31,17 +31,17 @@ async function abrirPerfil(email) {
         if (meta.avatar_url) document.getElementById('user-avatar').src = meta.avatar_url;
     }
 
-    // Ajuste para o botão Admin não duplicar ao abrir o perfil várias vezes
-    const existingAdmin = document.getElementById('btn-admin-area');
-    if (existingAdmin) existingAdmin.remove();
+    // Limpa botões de admin antigos para não duplicar
+    const oldAdminBtn = document.getElementById('btn-admin-area');
+    if (oldAdminBtn) oldAdminBtn.remove();
 
-    // REGRA 3: BOTÃO DE ADMIN (Só aparece para o seu e-mail)
-    // TROQUE O E-MAIL ABAIXO PELO SEU E-MAIL DO SUPABASE
-    if (user.email === 'mak3jj@gmail.com') {
+    // BOTÃO DE ADMIN (Só aparece para o seu e-mail)
+    // COLOQUE SEU E-MAIL REAL ABAIXO:
+    if (user.email === 'SEU_EMAIL_AQUI@gmail.com') {
         const adminBtn = document.createElement('button');
         adminBtn.id = 'btn-admin-area';
         adminBtn.innerText = "PAINEL ADMINISTRATIVO";
-        adminBtn.style.cssText = "background: red; color: white; border: none; padding: 10px; cursor: pointer; margin-top: 15px; border-radius: 8px; width: 100%; font-weight: bold; font-family: 'Orbitron';";
+        adminBtn.style.cssText = "background: #ff0000; color: white; border: none; padding: 12px; cursor: pointer; margin-top: 15px; border-radius: 8px; width: 100%; font-weight: bold; font-family: 'Orbitron'; box-shadow: 0 0 10px rgba(255,0,0,0.5);";
         adminBtn.onclick = () => abrirPainelAdmin();
         document.querySelector('.profile-card').appendChild(adminBtn);
     }
@@ -49,14 +49,55 @@ async function abrirPerfil(email) {
     document.getElementById('profile-overlay').style.display = 'flex';
 }
 
-function fecharPerfil() {
-    document.getElementById('profile-overlay').style.display = 'none';
+// FUNÇÃO DO PAINEL ADMIN (MOSTRAR/ESCONDER E LISTAR)
+async function abrirPainelAdmin() {
+    let painel = document.getElementById('admin-panel');
+    
+    // Se o painel não existir no HTML, nós criamos ele agora via JS
+    if (!painel) {
+        painel = document.createElement('div');
+        painel.id = 'admin-panel';
+        painel.style.cssText = "display:none; margin-top: 20px; border-top: 2px dashed red; padding-top: 15px; width: 100%;";
+        painel.innerHTML = `
+            <h3 style="color: red; font-family: 'Orbitron'; font-size: 12px; margin-bottom: 10px;">USUÁRIOS CADASTRADOS</h3>
+            <div id="admin-users-list" style="max-height: 150px; overflow-y: auto; text-align: left; font-size: 11px; background: #000; padding: 10px; border-radius: 8px; border: 1px solid #333;">
+            </div>
+        `;
+        document.querySelector('.profile-card').appendChild(painel);
+    }
+
+    const listaAdmin = document.getElementById('admin-users-list');
+    
+    if (painel.style.display === 'block') {
+        painel.style.display = 'none';
+        return;
+    }
+    
+    painel.style.display = 'block';
+    listaAdmin.innerHTML = "Carregando...";
+
+    const { data: users, error } = await _supabase.from('profiles').select('full_name, id');
+
+    if (error) {
+        listaAdmin.innerHTML = "Erro ao carregar banco.";
+        return;
+    }
+
+    listaAdmin.innerHTML = "";
+    users.forEach(u => {
+        listaAdmin.innerHTML += `
+            <div style="border-bottom: 1px solid #222; padding: 8px 0; display: flex; justify-content: space-between; align-items: center;">
+                <span style="color: #eee;">${u.full_name || 'Sem nome'}</span>
+                <span style="color: #444; font-size: 8px;">ID: ${u.id.substring(0,8)}...</span>
+            </div>
+        `;
+    });
 }
 
-// Função placeholder para o Painel Admin
-function abrirPainelAdmin() {
-    alert("Acesso autorizado, Chefe! Em breve você verá a lista de e-mails aqui.");
-    // Aqui no futuro carregaremos uma tabela com todos os usuários cadastrados
+function fecharPerfil() {
+    document.getElementById('profile-overlay').style.display = 'none';
+    const painel = document.getElementById('admin-panel');
+    if (painel) painel.style.display = 'none';
 }
 
 async function salvarPerfil() {
@@ -79,7 +120,7 @@ async function salvarPerfil() {
         await _supabase.auth.updateUser({ password: newPass });
     }
 
-    alert("Perfil atualizado!");
+    alert("Perfil salvo!");
     location.reload();
 }
 
@@ -87,8 +128,6 @@ async function cadastrar() {
     const email = document.getElementById('auth-email').value;
     const password = document.getElementById('auth-password').value;
     const errorMsg = document.getElementById('auth-error');
-    if (!email || !password) { errorMsg.innerText = "Preencha tudo!"; return; }
-
     const { error } = await _supabase.auth.signUp({ email, password });
     if (error) errorMsg.innerText = error.message;
     else alert("Conta criada!");
@@ -130,35 +169,34 @@ async function carregarComunidade() {
 
     if (error) return;
 
-    // REGRA 1: CONTADOR DE MEMBROS
+    // CONTADOR DE MEMBROS
     const total = profiles.length;
     const container = document.querySelector('.container-social');
-    // Remove contador antigo se houver para não duplicar no reload
     const antigo = document.getElementById('membros-count');
     if (antigo) antigo.remove();
     
     const countBadge = document.createElement('div');
     countBadge.id = 'membros-count';
-    countBadge.style.cssText = "color: var(--main-color); margin-bottom: 20px; font-weight: bold; font-size: 14px;";
-    countBadge.innerText = `JÁ SOMOS ${total} MODDERS NA MIX-SA!`;
-    container.insertBefore(countBadge, lista);
+    countBadge.style.cssText = "color: var(--main-color); margin-bottom: 20px; font-weight: bold; font-size: 14px; font-family: 'Orbitron';";
+    countBadge.innerText = `JÁ SOMOS ${total} MODDERS!`;
+    if(container) container.insertBefore(countBadge, lista);
 
     lista.innerHTML = "";
     profiles.forEach(user => {
         const foto = user.avatar_url || 'assets/img/logo-icon.png';
         lista.innerHTML += `
             <div class="user-card" style="background: #111; border: 1px solid var(--main-color); padding: 15px; border-radius: 12px; display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
-                <img src="${foto}" style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--main-color); object-fit: cover;">
+                <img src="${foto}" style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--main-color); object-fit: cover;">
                 <div style="text-align: left;">
-                    <h3 style="color: #fff; margin: 0; font-family: 'Orbitron'; font-size: 0.9rem;">${user.full_name}</h3>
-                    <span style="color: var(--main-color); font-size: 10px; font-weight: bold;">MODDER VERIFICADO</span>
+                    <h3 style="color: #fff; margin: 0; font-family: 'Orbitron'; font-size: 0.8rem;">${user.full_name}</h3>
+                    <span style="color: var(--main-color); font-size: 9px; font-weight: bold;">MODDER VERIFICADO</span>
                 </div>
             </div>
         `;
     });
 }
 
-/* --- FUNÇÕES DO SITE (MANTIDAS) --- */
+/* --- FUNÇÕES DO SITE (CÓDIGO ORIGINAL) --- */
 
 function carregarMods() {
     const container = document.getElementById('modList');
@@ -186,7 +224,6 @@ function changeView(mode) {
     localStorage.setItem('view_mode', mode);
     if (mode === 'list') container.classList.add('list-mode');
     else container.classList.remove('list-mode');
-    closeMenus();
 }
 
 function applyTheme(color, save = true) {
@@ -199,14 +236,6 @@ function applyTheme(color, save = true) {
         e.style.backgroundColor = color;
         if(e.classList.contains('btn-category')) e.style.borderColor = color;
     });
-    closeMenus();
-}
-
-function toggleSubmenu(e, id) {
-    e.stopPropagation();
-    const sub = document.getElementById(id);
-    document.querySelectorAll(".submenu").forEach(s => s.classList.remove("active"));
-    sub.classList.add("active");
 }
 
 function toggleFav(id) {
@@ -234,33 +263,16 @@ function setCategory(cat, el) {
 function filterMods() {
     let q = document.getElementById('searchInput').value.toLowerCase();
     let f = JSON.parse(localStorage.getItem('mix_favs')) || [];
-    let count = 0;
     document.querySelectorAll('.mod-card').forEach(c => {
         let match = c.querySelector('h2').innerText.toLowerCase().includes(q) && 
                    (currentCategory === 'todos' || c.getAttribute('data-category') === currentCategory || (currentCategory === 'favs' && f.includes(c.id)));
         c.style.display = match ? "" : "none";
-        if(match) count++;
     });
-    const counter = document.getElementById('modCounter');
-    if (counter) counter.innerText = "Exibindo " + count + " mods";
 }
 
 function toggleSettings(e) { 
     e.stopPropagation(); 
     document.getElementById("settingsOptions").classList.toggle("active"); 
-}
-
-function closeMenus() {
-    const settings = document.getElementById("settingsOptions");
-    if(settings) settings.classList.remove("active");
-    document.querySelectorAll(".submenu").forEach(s => s.classList.remove("active"));
-}
-
-window.onclick = function(e) { if (!document.getElementById("mainSettings").contains(e.target)) closeMenus(); };
-
-function randomMod() {
-    let c = document.querySelectorAll('.mod-card:not([style*="display: none"])');
-    if(c.length > 0) c[Math.floor(Math.random()*c.length)].scrollIntoView({behavior:'smooth', block:'center'});
 }
 
 function copyLink(u) { 
