@@ -22,6 +22,9 @@ function fecharLogin() {
 }
 
 async function abrirPerfil(email) {
+    // Bloqueia scroll do site ao abrir perfil
+    document.body.style.overflow = 'hidden';
+
     const oldAdminBtn = document.getElementById('btn-admin-area');
     if (oldAdminBtn) oldAdminBtn.remove();
     const oldPanel = document.getElementById('admin-panel');
@@ -56,6 +59,13 @@ async function abrirPerfil(email) {
     document.getElementById('profile-overlay').style.display = 'flex';
 }
 
+function fecharPerfil() { 
+    document.body.style.overflow = 'auto'; // Reativa o scroll
+    document.getElementById('profile-overlay').style.display = 'none'; 
+}
+
+/* --- PAINEL ADMINISTRATIVO --- */
+
 async function abrirPainelAdmin() {
     let painel = document.getElementById('admin-panel');
     if (!painel) {
@@ -67,17 +77,15 @@ async function abrirPainelAdmin() {
     
     if (painel.style.display === 'block') { 
         painel.style.display = 'none'; 
-        document.body.style.overflow = 'auto'; 
         return; 
     }
     
     painel.style.display = 'block';
-    document.body.style.overflow = 'hidden';
 
     painel.innerHTML = `
         <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
             <h3 style="color: red; font-family: 'Orbitron'; font-size: 11px; margin: 0;">MODS PENDENTES</h3>
-            <button onclick="abrirPainelAdmin()" style="background:none; border:none; color:white; font-size: 20px; cursor:pointer; padding: 0 5px;">&times;</button>
+            <button onclick="document.getElementById('admin-panel').style.display='none'" style="background:none; border:none; color:white; font-size: 20px; cursor:pointer;">&times;</button>
         </div>
         <div id="admin-mods-list" style="max-height: 150px; overflow-y: auto; text-align: left; font-size: 11px; background: #000; padding: 10px; border-radius: 8px; border: 1px solid #333; margin-bottom: 15px;">Carregando...</div>
         
@@ -112,6 +120,8 @@ async function abrirPainelAdmin() {
     document.getElementById('admin-users-list').innerHTML = users?.map(u => `<div style="color:#888; border-bottom:1px solid #111; padding:2px;">${u.full_name || 'Anônimo'}</div>`).join('') || "Erro.";
 }
 
+/* --- EDIÇÃO DE MODS --- */
+
 async function editarMod(id) {
     const { data: mod, error } = await _supabase.from('mods_aprovados').select('*').eq('id', id).single();
     if (error || !mod) return alert("Erro ao buscar mod!");
@@ -120,34 +130,34 @@ async function editarMod(id) {
     document.querySelector('.profile-card').scrollTop = 0;
 
     painel.innerHTML = `
-        <div onclick="event.stopPropagation()" style="background: #111; padding: 15px; border: 2px solid var(--main-color); border-radius: 12px; text-align: left; margin-bottom: 20px; box-shadow: 0 0 15px rgba(0,0,0,0.5);">
+        <div onclick="event.stopPropagation()" style="background: #111; padding: 15px; border: 2px solid var(--main-color); border-radius: 12px; text-align: left; margin-bottom: 20px;">
             <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <h3 style="color: var(--main-color); font-size: 10px; margin: 0; font-family: 'Orbitron';">EDITAR MOD</h3>
                 <button onclick="abrirPainelAdmin(); abrirPainelAdmin();" style="background:none; border:none; color:#666; font-size: 22px; cursor:pointer;">&times;</button>
             </div>
             
-            <label style="color: #888; font-size: 9px; display:block; margin-bottom: 3px;">TÍTULO</label>
-            <input type="text" id="edit-titulo" value="${mod.titulo}" style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:10px; margin-bottom:12px; border-radius:6px; font-size:12px;">
+            <label style="color: #888; font-size: 9px; display:block;">TÍTULO</label>
+            <input type="text" id="edit-titulo" value="${mod.titulo}" style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:10px; margin-bottom:12px; border-radius:6px;">
             
-            <label style="color: #888; font-size: 9px; display:block; margin-bottom: 3px;">CATEGORIA</label>
-            <select id="edit-categoria" style="width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 10px; margin-bottom: 12px; border-radius: 6px; font-size:12px;">
+            <label style="color: #888; font-size: 9px; display:block;">CATEGORIA</label>
+            <select id="edit-categoria" style="width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 10px; margin-bottom: 12px; border-radius: 6px;">
                 <option value="cleo" ${mod.categoria === 'cleo' ? 'selected' : ''}>CLEO</option>
                 <option value="veiculo" ${mod.categoria === 'veiculo' ? 'selected' : ''}>VEÍCULOS</option>
                 <option value="textura" ${mod.categoria === 'textura' ? 'selected' : ''}>TEXTURAS</option>
                 <option value="correcao" ${mod.categoria === 'correcao' ? 'selected' : ''}>CORREÇÃO</option>
             </select>
 
-            <label style="color: #888; font-size: 9px; display:block; margin-bottom: 3px;">URL DA IMAGEM</label>
-            <input type="text" id="edit-imagem" value="${mod.imagem}" style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:10px; margin-bottom:12px; border-radius:6px; font-size:12px;">
+            <label style="color: #888; font-size: 9px; display:block;">URL IMAGEM</label>
+            <input type="text" id="edit-imagem" value="${mod.imagem}" style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:10px; margin-bottom:12px; border-radius:6px;">
             
-            <label style="color: #888; font-size: 9px; display:block; margin-bottom: 3px;">LINK DE DOWNLOAD</label>
-            <input type="text" id="edit-link" value="${mod.link}" style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:10px; margin-bottom:12px; border-radius:6px; font-size:12px;">
+            <label style="color: #888; font-size: 9px; display:block;">LINK DOWNLOAD</label>
+            <input type="text" id="edit-link" value="${mod.link}" style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:10px; margin-bottom:12px; border-radius:6px;">
             
-            <label style="color: #888; font-size: 9px; display:block; margin-bottom: 3px;">DESCRIÇÃO</label>
-            <textarea id="edit-descricao" style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:10px; height:90px; border-radius:6px; resize:none; font-size:12px; line-height:1.4;">${mod.descricao}</textarea>
+            <label style="color: #888; font-size: 9px; display:block;">DESCRIÇÃO</label>
+            <textarea id="edit-descricao" style="width:100%; background:#000; color:#fff; border:1px solid #333; padding:10px; height:90px; border-radius:6px; resize:none;">${mod.descricao}</textarea>
             
             <div style="display:flex; gap:10px; margin-top:20px;">
-                <button onclick="salvarEdicao('${id}')" style="flex:2; background:var(--main-color); color:#000; border:none; padding:12px; cursor:pointer; font-weight:bold; border-radius:8px; font-size:11px; font-family:'Orbitron';">SALVAR ALTERAÇÕES</button>
+                <button onclick="salvarEdicao('${id}')" style="flex:2; background:var(--main-color); color:#000; border:none; padding:12px; cursor:pointer; font-weight:bold; border-radius:8px; font-size:11px; font-family:'Orbitron';">SALVAR</button>
                 <button onclick="abrirPainelAdmin(); abrirPainelAdmin();" style="flex:1; background:#222; color:white; border:none; padding:12px; cursor:pointer; border-radius:8px; font-size:11px; font-family:'Orbitron';">CANCELAR</button>
             </div>
         </div>
@@ -166,6 +176,27 @@ async function salvarEdicao(id) {
     if (error) alert("Erro ao salvar: " + error.message);
     else { alert("Mod atualizado!"); document.body.style.overflow = 'auto'; location.reload(); }
 }
+
+/* --- OUTRAS FUNÇÕES --- */
+
+async function salvarPerfil() {
+    const newName = document.getElementById('profile-name').value;
+    const newPic = document.getElementById('profile-pic-url').value;
+    const { data: { user } } = await _supabase.auth.getUser();
+    await _supabase.auth.updateUser({ data: { display_name: newName, avatar_url: newPic } });
+    await _supabase.from('profiles').upsert({ id: user.id, full_name: newName, avatar_url: newPic, updated_at: new Date() });
+    document.body.style.overflow = 'auto'; // Reativa scroll
+    alert("Perfil atualizado!");
+    location.reload();
+}
+
+async function sair() { 
+    document.body.style.overflow = 'auto'; // Garante que o scroll volte se o cara deslogar
+    await _supabase.auth.signOut(); 
+    location.reload(); 
+}
+
+/* --- RESTANTE DO CÓDIGO (APROVAÇÃO, CARREGAMENTO, FILTROS) --- */
 
 async function aprovarMod(id) {
     const { data: mod } = await _supabase.from('mods_pendentes').select('*').eq('id', id).single();
@@ -224,23 +255,6 @@ async function checarSessao() {
         navBtn.innerText = name ? name.toUpperCase() : "PERFIL";
         navBtn.onclick = () => abrirPerfil(session.user.email);
     }
-}
-
-async function sair() { document.body.style.overflow = 'auto'; await _supabase.auth.signOut(); location.reload(); }
-
-async function salvarPerfil() {
-    const newName = document.getElementById('profile-name').value;
-    const newPic = document.getElementById('profile-pic-url').value;
-    const { data: { user } } = await _supabase.auth.getUser();
-    await _supabase.auth.updateUser({ data: { display_name: newName, avatar_url: newPic } });
-    await _supabase.from('profiles').upsert({ id: user.id, full_name: newName, avatar_url: newPic, updated_at: new Date() });
-    alert("Perfil atualizado!");
-    location.reload();
-}
-
-function fecharPerfil() { 
-    document.body.style.overflow = 'auto';
-    document.getElementById('profile-overlay').style.display = 'none'; 
 }
 
 function abrirEnvio() {
