@@ -8,6 +8,47 @@ body {
     text-align: center; 
 }
 
+/* TEMA GROVE STREET (GTA SA) */
+body.tema-grove {
+    background-color: #051a05; /* Verde muito escuro */
+    background-image: radial-gradient(circle, #0a2e0a 1px, transparent 1px);
+    background-size: 20px 20px;
+    --main-color: #2ecc71; /* Verde Grove Street */
+}
+
+body.tema-grove header h1 {
+    font-family: 'Pricedown', sans-serif; /* Fonte clássica do GTA */
+    color: #f1c40f; /* Cor amarela do dinheiro/HUD */
+    text-shadow: 3px 3px 0px #000;
+    animation: none; /* Remove o neon para ficar fiel ao jogo */
+}
+
+body.tema-grove .mod-card {
+    background-color: #0a240a;
+    border: 2px solid #144d14;
+    border-radius: 0px; /* Estilo mais bruto/quadrado */
+}
+
+body.tema-grove .btn-download {
+    background-color: #f1c40f;
+    color: #000;
+    font-family: 'Pricedown', sans-serif;
+    font-size: 16px;
+}
+
+body.tema-grove header h1 {
+    /* ... seu código atual ... */
+    text-shadow: 4px 4px 0px #000, -2px -2px 0px #000, 2px -2px 0px #000, -2px 2px 0px #000;
+    color: #f1c40f; 
+}
+
+body.tema-grove .btn-category {
+    border-radius: 0px;
+    border: 2px solid #144d14;
+    font-family: 'Pricedown', sans-serif;
+    letter-spacing: 1px;
+}
+
 /* TÍTULO COM VIDA (NEON ANIMADO) */
 header h1 { 
     font-family: 'Orbitron', sans-serif;
@@ -190,4 +231,26 @@ header {
 @keyframes fadeout {
     from { bottom: 30px; opacity: 1; }
     to { bottom: 0; opacity: 0; }
+}
+
+/* Efeito de destaque para o mod sorteado */
+.highlight-random {
+    border: 3px solid var(--main-color) !important;
+    box-shadow: 0 0 30px var(--main-color) !important;
+    transform: scale(1.05);
+    transition: all 0.5s ease;
+}
+
+/* Etiqueta de downloads no card */
+.mod-stats {
+    font-size: 10px;
+    color: #888;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.mod-stats span {
+    color: var(--main-color);
+    font-weight: bold;
 }

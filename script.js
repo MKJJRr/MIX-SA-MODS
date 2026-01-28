@@ -226,7 +226,8 @@ async function carregarMods() {
             <div class="mod-info">
                 <h2>${mod.titulo}</h2>
                 <p>${mod.descricao}</p>
-                <a href="${mod.link}" target="_blank" class="btn btn-download">VER DETALHES</a>
+                <div class="mod-stats">📥 <span>${mod.downloads || 0}</span> downloads</div>
+                <a href="${mod.link}" target="_blank" onclick="registrarDownload('${mod.id}')" class="btn btn-download">VER DETALHES</a>
             </div>
         </div>`).join('');
     updateFavs();
@@ -370,4 +371,126 @@ window.addEventListener('load', () => {
     changeView(viewMode); 
     carregarComunidade();
     setTimeout(() => { if(document.getElementById('loading-screen')) document.getElementById('loading-screen').style.display='none'; }, 800); 
+});
+
+// FUNÇÃO PARA SORTEAR UM MOD ALEATÓRIO
+function sortearMod() {
+    // 1. Pega todos os cards de mods que estão visíveis na tela no momento
+    const cards = document.querySelectorAll('.mod-card');
+    
+    if (cards.length === 0) {
+        showToast("Nenhum mod encontrado para sortear!");
+        return;
+    }
+
+    // 2. Sorteia um índice aleatório
+    const indiceAleatorio = Math.floor(Math.random() * cards.length);
+    const modSorteado = cards[indiceAleatorio];
+
+    // 3. Rola a tela até o mod sorteado de forma suave
+    modSorteado.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // 4. Adiciona o efeito visual de destaque
+    modSorteado.classList.add('highlight-random');
+
+    // 5. Remove o destaque após 3 segundos para não ficar poluído
+    setTimeout(() => {
+        modSorteado.classList.remove('highlight-random');
+    }, 3000);
+
+    showToast("🎲 Mod sorteado com sucesso!");
+}
+
+// Vincula a função ao clique do botão de dado no seu HTML
+// Certifique-se que o seu botão de dado tem o id="btnRandom" ou onclick="sortearMod()"
+document.getElementById('btnRandom')?.addEventListener('click', sortearMod);
+
+async function registrarDownload(modId) {
+    // 1. Só registra se o mod vier do banco (se tiver ID numérico/UUID)
+    if (!modId || isNaN(modId) && modId.length < 10) return; 
+
+    // 2. Chama uma função do Supabase para somar +1 (RPC) ou faz via update manual
+    // Para facilitar, vamos buscar o valor atual e somar
+    const { data } = await _supabase.from('mods_aprovados').select('downloads').eq('id', modId).single();
+    const novoTotal = (data?.downloads || 0) + 1;
+
+    await _supabase.from('mods_aprovados').update({ downloads: novoTotal }).eq('id', modId);
+    
+    // Não precisa dar reload, o usuário já vai estar indo para o link do mod!
+}
+
+function ativarTemaGrove() {
+    // Remove qualquer outro tema de cor sólida primeiro
+    document.body.classList.toggle('tema-grove');
+    
+    if (document.body.classList.contains('tema-grove')) {
+        applyTheme('#2ecc71', true); // Aplica o verde Grove Street
+        showToast("Welcome to San Andreas! 🔫");
+    } else {
+        location.reload(); // Recarrega para voltar ao tema padrão
+    }
+    closeMenus();
+}
+
+// --- SISTEMA DE ÁUDIO (WEB AUDIO API - SEM DELAY) ---
+let gtaBuffer = null;
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+async function carregarAudioMemoria() {
+    try {
+        const response = await fetch('assets/audio/select.mp3');
+        const arrayBuffer = await response.arrayBuffer();
+        gtaBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+    } catch (e) {
+        console.error("Erro ao carregar som na memória:", e);
+    }
+}
+
+function tocarSomGTA() {
+    if (!gtaBuffer) return;
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+    const source = audioCtx.createBufferSource();
+    source.buffer = gtaBuffer;
+    source.connect(audioCtx.destination);
+    source.start(0);
+}
+
+function configurarSons() {
+    // Seleciona todos os elementos clicáveis
+    const elementos = document.querySelectorAll('button, .btn, .btn-category, nav a, .btn-fav, .btn-share');
+    elementos.forEach(el => {
+        el.addEventListener('click', tocarSomGTA);
+    });
+}
+
+// --- LOGICA DO TEMA GROVE STREET ---
+function ativarTemaGrove() {
+    const body = document.body;
+    body.classList.toggle('tema-grove');
+    
+    const estaAtivo = body.classList.contains('tema-grove');
+    localStorage.setItem('tema_grove_active', estaAtivo); // Salva a escolha
+
+    if (estaAtivo) {
+        showToast("Welcome to San Andreas! 🔫");
+    } else {
+        showToast("Tema padrão ativado");
+    }
+    closeMenus();
+}
+
+// --- INICIALIZAÇÃO ÚNICA (LOAD) ---
+window.addEventListener('load', () => {
+    // 1. Verifica o tema salvo
+    if (localStorage.getItem('tema_grove_active') === 'true') {
+        document.body.classList.add('tema-grove');
+    }
+
+    // 2. Carrega áudio e aplica aos botões
+    carregarAudioMemoria();
+    configurarSons();
+    
+    // 3. Aqui você mantém suas outras funções de carregamento (Supabase, etc)
+    // carregarMods(); 
 });

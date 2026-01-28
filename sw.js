@@ -14,6 +14,9 @@ const ASSETS_TO_CACHE = [
     './paginas/sobre.html',
     './paginas/comunidade.html',
     // Imagens do Sistema
+    // No seu sw.js, adicione esta linha ao array ASSETS_TO_CACHE para não ficar um buraco branco offline:
+    './mods/img/mod-gasolina.png',
+    './assets/img/banner-link-card.png'
     './assets/img/banner.jpg',
     './assets/img/logo-icon.png',
     // O molde automático dentro da pasta 'mods'
