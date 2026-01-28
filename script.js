@@ -37,7 +37,7 @@ async function abrirPerfil(email) {
 
     // REGRA 3: BOTÃO DE ADMIN (Só aparece para o seu e-mail)
     // TROQUE O E-MAIL ABAIXO PELO SEU E-MAIL DO SUPABASE
-    if (user.email === 'SEU_EMAIL_AQUI@gmail.com') {
+    if (user.email === 'mak3jj@gmail.com') {
         const adminBtn = document.createElement('button');
         adminBtn.id = 'btn-admin-area';
         adminBtn.innerText = "PAINEL ADMINISTRATIVO";
