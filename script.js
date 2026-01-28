@@ -55,16 +55,25 @@ async function abrirPerfil(email) {
     document.getElementById('profile-overlay').style.display = 'flex';
 }
 
+// FUNÇÃO ATUALIZADA PARA MOSTRAR MODS PENDENTES E USUÁRIOS
 async function abrirPainelAdmin() {
     let painel = document.getElementById('admin-panel');
     if (!painel) {
         painel = document.createElement('div');
         painel.id = 'admin-panel';
         painel.style.cssText = "display:none; margin-top: 20px; border-top: 2px dashed red; padding-top: 15px; width: 100%;";
-        painel.innerHTML = `<h3 style="color: red; font-family: 'Orbitron'; font-size: 11px; margin-bottom: 10px;">USUÁRIOS NO BANCO</h3><div id="admin-users-list" style="max-height: 150px; overflow-y: auto; text-align: left; font-size: 11px; background: #000; padding: 10px; border-radius: 8px; border: 1px solid #333;"></div>`;
+        painel.innerHTML = `
+            <h3 style="color: red; font-family: 'Orbitron'; font-size: 11px; margin-bottom: 10px;">MODS PARA APROVAR</h3>
+            <div id="admin-mods-list" style="max-height: 200px; overflow-y: auto; text-align: left; font-size: 11px; background: #000; padding: 10px; border-radius: 8px; border: 1px solid #333; margin-bottom: 15px;"></div>
+            
+            <h3 style="color: red; font-family: 'Orbitron'; font-size: 11px; margin-bottom: 10px;">USUÁRIOS NO BANCO</h3>
+            <div id="admin-users-list" style="max-height: 150px; overflow-y: auto; text-align: left; font-size: 11px; background: #000; padding: 10px; border-radius: 8px; border: 1px solid #333;"></div>
+        `;
         document.querySelector('.profile-card').appendChild(painel);
     }
-    const listaAdmin = document.getElementById('admin-users-list');
+    
+    const listaMods = document.getElementById('admin-mods-list');
+    const listaUsers = document.getElementById('admin-users-list');
     
     if (painel.style.display === 'block') { 
         painel.style.display = 'none'; 
@@ -72,10 +81,56 @@ async function abrirPainelAdmin() {
     }
     
     painel.style.display = 'block';
-    listaAdmin.innerHTML = "Carregando...";
-    const { data: users, error } = await _supabase.from('profiles').select('full_name, id');
-    if (error) { listaAdmin.innerHTML = "Erro."; return; }
-    listaAdmin.innerHTML = users.map(u => `<div style="border-bottom: 1px solid #222; padding: 5px 0; display: flex; justify-content: space-between;"><span style="color:#eee">${u.full_name || 'Sem nome'}</span><span style="color:#444; font-size:8px">${u.id.substring(0,5)}</span></div>`).join('');
+    listaMods.innerHTML = "Carregando mods...";
+    listaUsers.innerHTML = "Carregando...";
+
+    // BUSCAR MODS PENDENTES
+    const { data: mods, error: errMod } = await _supabase.from('mods_pendentes').select('*');
+    if (errMod || !mods || mods.length === 0) {
+        listaMods.innerHTML = "<span style='color:#666'>Nenhum mod pendente.</span>";
+    } else {
+        listaMods.innerHTML = mods.map(m => `
+            <div style="border-bottom: 1px solid #222; padding: 8px 0;">
+                <b style="color:var(--main-color)">${m.titulo}</b><br>
+                <small>Por: ${m.autor_email}</small><br>
+                <div style="display:flex; gap: 5px; margin-top: 5px;">
+                    <button onclick="copiarDadosMod('${m.id}')" style="background:orange; border:none; color:#000; font-size:9px; padding:3px; cursor:pointer; font-weight:bold; border-radius:4px;">COPIAR</button>
+                    <button onclick="deletarModPendente('${m.id}')" style="background:red; border:none; color:#fff; font-size:9px; padding:3px; cursor:pointer; border-radius:4px;">APAGAR</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // BUSCAR USUÁRIOS
+    const { data: users, error: errUser } = await _supabase.from('profiles').select('full_name, id');
+    if (errUser) { listaUsers.innerHTML = "Erro."; }
+    else {
+        listaUsers.innerHTML = users.map(u => `<div style="border-bottom: 1px solid #222; padding: 5px 0; display: flex; justify-content: space-between;"><span style="color:#eee">${u.full_name || 'Sem nome'}</span><span style="color:#444; font-size:8px">${u.id.substring(0,5)}</span></div>`).join('');
+    }
+}
+
+// FUNÇÕES DE AÇÃO DO ADMIN
+async function deletarModPendente(id) {
+    if(confirm("Deseja apagar este mod da fila?")) {
+        const { error } = await _supabase.from('mods_pendentes').delete().eq('id', id);
+        if(!error) { alert("Removido!"); location.reload(); }
+    }
+}
+
+async function copiarDadosMod(id) {
+    const { data: mod } = await _supabase.from('mods_pendentes').select('*').eq('id', id).single();
+    if(mod) {
+        const formatado = `{
+    id: "${Date.now()}",
+    titulo: "${mod.titulo}",
+    categoria: "${mod.categoria}",
+    imagem: "${mod.imagem}",
+    link: "${mod.link}",
+    descricao: "${mod.descricao}"
+},`;
+        navigator.clipboard.writeText(formatado);
+        alert("Código copiado! Cole no seu mods.js");
+    }
 }
 
 function fecharPerfil() { 
