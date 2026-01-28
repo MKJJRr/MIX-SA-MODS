@@ -254,3 +254,16 @@ header {
     color: var(--main-color);
     font-weight: bold;
 }
+
+/* Quando o estilo quadrado estiver ativo, removemos os border-radius */
+body.estilo-quadrado .mod-card,
+body.estilo-quadrado .mod-img,
+body.estilo-quadrado .btn,
+body.estilo-quadrado .btn-category,
+body.estilo-quadrado input,
+body.estilo-quadrado select,
+body.estilo-quadrado textarea,
+body.estilo-quadrado .profile-card,
+body.estilo-quadrado .upload-card {
+    border-radius: 0px !important;
+}
