@@ -1,4 +1,4 @@
-/* LÓGICA DO SITE MIX-SA-MODS - VERSÃO FINAL ESTABILIZADA */
+/* LÓGICA DO SITE MIX-SA-MODS - VERSÃO FINAL ESTABILIZADA + ENVIO */
 
 let currentCategory = 'todos';
 let selectedColor = localStorage.getItem('site_theme') || '#00ff00';
@@ -21,14 +21,13 @@ function fecharLogin() {
 }
 
 async function abrirPerfil(email) {
-    // 1. Limpeza total de aberturas anteriores para evitar bugs visuais
     const oldAdminBtn = document.getElementById('btn-admin-area');
     if (oldAdminBtn) oldAdminBtn.remove();
     const oldPanel = document.getElementById('admin-panel');
     if (oldPanel) oldPanel.remove();
 
     const { data: { user } } = await _supabase.auth.getUser();
-    if (!user) return; // Segurança extra
+    if (!user) return;
 
     document.getElementById('user-email-display').innerText = email;
     
@@ -39,16 +38,14 @@ async function abrirPerfil(email) {
         if (meta.avatar_url) document.getElementById('user-avatar').src = meta.avatar_url;
     }
 
-    // COLOQUE SEU E-MAIL REAL ABAIXO
     if (user.email === 'maikotavares123456789@gmail.com') {
-        // Verifica se o botão já existe para não duplicar
         if (!document.getElementById('btn-admin-area')) {
             const adminBtn = document.createElement('button');
             adminBtn.id = 'btn-admin-area';
             adminBtn.innerText = "PAINEL ADMINISTRATIVO";
             adminBtn.style.cssText = "background: #ff0000; color: white; border: none; padding: 12px; cursor: pointer; margin-top: 15px; border-radius: 8px; width: 100%; font-weight: bold; font-family: 'Orbitron'; box-shadow: 0 0 10px rgba(255,0,0,0.5);";
             adminBtn.onclick = (e) => {
-                e.stopPropagation(); // Evita conflitos de clique no celular
+                e.stopPropagation();
                 abrirPainelAdmin();
             };
             document.querySelector('.profile-card').appendChild(adminBtn);
@@ -83,7 +80,6 @@ async function abrirPainelAdmin() {
 
 function fecharPerfil() { 
     document.getElementById('profile-overlay').style.display = 'none'; 
-    // Limpa o painel ao fechar para que na próxima abertura ele recarregue do zero
     const painel = document.getElementById('admin-panel');
     if (painel) painel.remove();
 }
@@ -121,6 +117,67 @@ async function checarSessao() {
         const name = session.user.user_metadata.display_name;
         navBtn.innerText = name ? name.toUpperCase() : "PERFIL";
         navBtn.onclick = () => abrirPerfil(session.user.email);
+    }
+}
+
+/* --- FUNÇÕES DE ENVIO DE MODS --- */
+
+function abrirEnvio() {
+    _supabase.auth.getSession().then(({ data: { session } }) => {
+        if (!session) {
+            alert("Você precisa estar logado para enviar mods!");
+            abrirLogin();
+        } else {
+            document.getElementById('upload-overlay').style.display = 'flex';
+        }
+    });
+}
+
+function fecharEnvio() {
+    document.getElementById('upload-overlay').style.display = 'none';
+}
+
+async function enviarModAoBanco() {
+    const titulo = document.getElementById('mod-titulo').value;
+    const categoria = document.getElementById('mod-categoria').value;
+    const imagem = document.getElementById('mod-imagem').value;
+    const link = document.getElementById('mod-link').value;
+    const descricao = document.getElementById('mod-descricao').value;
+    const btn = document.getElementById('btn-submit-mod');
+
+    if (!titulo || !imagem || !link || !descricao) {
+        alert("Por favor, preencha todos os campos!");
+        return;
+    }
+
+    btn.innerText = "ENVIANDO...";
+    btn.disabled = true;
+
+    const { data: { user } } = await _supabase.auth.getUser();
+
+    const { error } = await _supabase.from('mods_pendentes').insert([{
+        titulo,
+        categoria,
+        imagem,
+        link,
+        descricao,
+        autor_email: user.email,
+        autor_id: user.id
+    }]);
+
+    if (error) {
+        alert("Erro ao enviar: " + error.message);
+        btn.innerText = "SUBMETER MOD";
+        btn.disabled = false;
+    } else {
+        alert("Mod enviado com sucesso! Ele aparecerá no site após a revisão.");
+        fecharEnvio();
+        btn.innerText = "SUBMETER MOD";
+        btn.disabled = false;
+        document.getElementById('mod-titulo').value = "";
+        document.getElementById('mod-imagem').value = "";
+        document.getElementById('mod-link').value = "";
+        document.getElementById('mod-descricao').value = "";
     }
 }
 
