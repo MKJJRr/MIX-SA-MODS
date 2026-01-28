@@ -25,6 +25,15 @@
             50% { box-shadow: 0 0 15px rgba(0, 255, 0, 0.5); border-color: var(--main-color); }
             100% { box-shadow: 0 0 5px rgba(0, 255, 0, 0.2); border-color: #333; }
         }
+
+        /* Estilo para a lista do Painel Admin que o JS vai criar */
+        #admin-users-list::-webkit-scrollbar {
+            width: 5px;
+        }
+        #admin-users-list::-webkit-scrollbar-thumb {
+            background: red;
+            border-radius: 10px;
+        }
     </style>
 </head>
 <body>
@@ -42,7 +51,7 @@
 </div>
 
 <div id="profile-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 99999; flex-direction: column; align-items: center; justify-content: center;">
-    <div style="background: #0a0a0a; padding: 25px; border: 2px solid var(--main-color); border-radius: 15px; text-align: center; width: 90%; max-width: 380px; box-shadow: 0 0 20px var(--main-color); position: relative; max-height: 90vh; overflow-y: auto;">
+    <div class="profile-card" style="background: #0a0a0a; padding: 25px; border: 2px solid var(--main-color); border-radius: 15px; text-align: center; width: 90%; max-width: 380px; box-shadow: 0 0 20px var(--main-color); position: relative; max-height: 90vh; overflow-y: auto;">
         
         <button onclick="fecharPerfil()" style="position: absolute; top: 10px; right: 15px; background: none; border: none; color: #666; font-size: 24px; cursor: pointer;">&times;</button>
         
@@ -69,7 +78,8 @@
         <button onclick="salvarPerfil()" style="width: 100%; padding: 12px; background: var(--main-color); border: none; color: #000; font-weight: bold; cursor: pointer; border-radius: 8px; font-family: 'Orbitron'; margin-bottom: 10px;">SALVAR ALTERAÇÕES</button>
         
         <button onclick="sair()" style="width: 100%; padding: 10px; background: none; border: 1px solid #ff4444; color: #ff4444; font-weight: bold; cursor: pointer; border-radius: 8px; font-family: 'Orbitron'; font-size: 0.8rem;">SAIR DA CONTA</button>
-    </div>
+
+        </div>
 </div>
 
 <div id="loading-screen">
