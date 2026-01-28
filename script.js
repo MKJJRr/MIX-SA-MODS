@@ -1,4 +1,4 @@
-/* LÓGICA DO SITE MIX-SA-MODS - VERSÃO FINAL COM TODAS AS FUNÇÕES */
+/* LÓGICA DO SITE MIX-SA-MODS - VERSÃO FINAL ESTABILIZADA */
 
 let currentCategory = 'todos';
 let selectedColor = localStorage.getItem('site_theme') || '#00ff00';
@@ -21,7 +21,15 @@ function fecharLogin() {
 }
 
 async function abrirPerfil(email) {
+    // 1. Limpeza total de aberturas anteriores para evitar bugs visuais
+    const oldAdminBtn = document.getElementById('btn-admin-area');
+    if (oldAdminBtn) oldAdminBtn.remove();
+    const oldPanel = document.getElementById('admin-panel');
+    if (oldPanel) oldPanel.remove();
+
     const { data: { user } } = await _supabase.auth.getUser();
+    if (!user) return; // Segurança extra
+
     document.getElementById('user-email-display').innerText = email;
     
     const meta = user.user_metadata;
@@ -31,19 +39,20 @@ async function abrirPerfil(email) {
         if (meta.avatar_url) document.getElementById('user-avatar').src = meta.avatar_url;
     }
 
-    const oldAdminBtn = document.getElementById('btn-admin-area');
-    if (oldAdminBtn) oldAdminBtn.remove();
-    const oldPanel = document.getElementById('admin-panel');
-    if (oldPanel) oldPanel.remove();
-
     // COLOQUE SEU E-MAIL REAL ABAIXO
     if (user.email === 'maikotavares123456789@gmail.com') {
-        const adminBtn = document.createElement('button');
-        adminBtn.id = 'btn-admin-area';
-        adminBtn.innerText = "PAINEL ADMINISTRATIVO";
-        adminBtn.style.cssText = "background: #ff0000; color: white; border: none; padding: 12px; cursor: pointer; margin-top: 15px; border-radius: 8px; width: 100%; font-weight: bold; font-family: 'Orbitron'; box-shadow: 0 0 10px rgba(255,0,0,0.5);";
-        adminBtn.onclick = () => abrirPainelAdmin();
-        document.querySelector('.profile-card').appendChild(adminBtn);
+        // Verifica se o botão já existe para não duplicar
+        if (!document.getElementById('btn-admin-area')) {
+            const adminBtn = document.createElement('button');
+            adminBtn.id = 'btn-admin-area';
+            adminBtn.innerText = "PAINEL ADMINISTRATIVO";
+            adminBtn.style.cssText = "background: #ff0000; color: white; border: none; padding: 12px; cursor: pointer; margin-top: 15px; border-radius: 8px; width: 100%; font-weight: bold; font-family: 'Orbitron'; box-shadow: 0 0 10px rgba(255,0,0,0.5);";
+            adminBtn.onclick = (e) => {
+                e.stopPropagation(); // Evita conflitos de clique no celular
+                abrirPainelAdmin();
+            };
+            document.querySelector('.profile-card').appendChild(adminBtn);
+        }
     }
 
     document.getElementById('profile-overlay').style.display = 'flex';
@@ -59,7 +68,12 @@ async function abrirPainelAdmin() {
         document.querySelector('.profile-card').appendChild(painel);
     }
     const listaAdmin = document.getElementById('admin-users-list');
-    if (painel.style.display === 'block') { painel.style.display = 'none'; return; }
+    
+    if (painel.style.display === 'block') { 
+        painel.style.display = 'none'; 
+        return; 
+    }
+    
     painel.style.display = 'block';
     listaAdmin.innerHTML = "Carregando...";
     const { data: users, error } = await _supabase.from('profiles').select('full_name, id');
@@ -67,7 +81,13 @@ async function abrirPainelAdmin() {
     listaAdmin.innerHTML = users.map(u => `<div style="border-bottom: 1px solid #222; padding: 5px 0; display: flex; justify-content: space-between;"><span style="color:#eee">${u.full_name || 'Sem nome'}</span><span style="color:#444; font-size:8px">${u.id.substring(0,5)}</span></div>`).join('');
 }
 
-function fecharPerfil() { document.getElementById('profile-overlay').style.display = 'none'; }
+function fecharPerfil() { 
+    document.getElementById('profile-overlay').style.display = 'none'; 
+    // Limpa o painel ao fechar para que na próxima abertura ele recarregue do zero
+    const painel = document.getElementById('admin-panel');
+    if (painel) painel.remove();
+}
+
 async function sair() { await _supabase.auth.signOut(); location.reload(); }
 
 async function salvarPerfil() {
