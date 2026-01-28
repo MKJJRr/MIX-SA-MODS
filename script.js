@@ -37,7 +37,7 @@ async function abrirPerfil(email) {
     if (oldPanel) oldPanel.remove();
 
     // COLOQUE SEU E-MAIL REAL ABAIXO
-    if (user.email === 'SEU_EMAIL_AQUI@gmail.com') {
+    if (user.email === 'maikotavares123456789@gmail.com') {
         const adminBtn = document.createElement('button');
         adminBtn.id = 'btn-admin-area';
         adminBtn.innerText = "PAINEL ADMINISTRATIVO";
