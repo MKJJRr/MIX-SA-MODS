@@ -30,11 +30,33 @@ async function abrirPerfil(email) {
         document.getElementById('profile-pic-url').value = meta.avatar_url || "";
         if (meta.avatar_url) document.getElementById('user-avatar').src = meta.avatar_url;
     }
+
+    // Ajuste para o botão Admin não duplicar ao abrir o perfil várias vezes
+    const existingAdmin = document.getElementById('btn-admin-area');
+    if (existingAdmin) existingAdmin.remove();
+
+    // REGRA 3: BOTÃO DE ADMIN (Só aparece para o seu e-mail)
+    // TROQUE O E-MAIL ABAIXO PELO SEU E-MAIL DO SUPABASE
+    if (user.email === 'SEU_EMAIL_AQUI@gmail.com') {
+        const adminBtn = document.createElement('button');
+        adminBtn.id = 'btn-admin-area';
+        adminBtn.innerText = "PAINEL ADMINISTRATIVO";
+        adminBtn.style.cssText = "background: red; color: white; border: none; padding: 10px; cursor: pointer; margin-top: 15px; border-radius: 8px; width: 100%; font-weight: bold; font-family: 'Orbitron';";
+        adminBtn.onclick = () => abrirPainelAdmin();
+        document.querySelector('.profile-card').appendChild(adminBtn);
+    }
+
     document.getElementById('profile-overlay').style.display = 'flex';
 }
 
 function fecharPerfil() {
     document.getElementById('profile-overlay').style.display = 'none';
+}
+
+// Função placeholder para o Painel Admin
+function abrirPainelAdmin() {
+    alert("Acesso autorizado, Chefe! Em breve você verá a lista de e-mails aqui.");
+    // Aqui no futuro carregaremos uma tabela com todos os usuários cadastrados
 }
 
 async function salvarPerfil() {
@@ -43,11 +65,9 @@ async function salvarPerfil() {
     const newPass = document.getElementById('new-password').value;
     const { data: { user } } = await _supabase.auth.getUser();
 
-    // 1. Atualiza metadados da Autenticação
     const updates = { data: { display_name: newName, avatar_url: newPic } };
     await _supabase.auth.updateUser(updates);
     
-    // 2. Sincroniza com a tabela pública "profiles" (para aparecer no Social)
     await _supabase.from('profiles').upsert({
         id: user.id,
         full_name: newName,
@@ -59,7 +79,7 @@ async function salvarPerfil() {
         await _supabase.auth.updateUser({ password: newPass });
     }
 
-    alert("Perfil atualizado e visível na comunidade!");
+    alert("Perfil atualizado!");
     location.reload();
 }
 
@@ -110,13 +130,26 @@ async function carregarComunidade() {
 
     if (error) return;
 
+    // REGRA 1: CONTADOR DE MEMBROS
+    const total = profiles.length;
+    const container = document.querySelector('.container-social');
+    // Remove contador antigo se houver para não duplicar no reload
+    const antigo = document.getElementById('membros-count');
+    if (antigo) antigo.remove();
+    
+    const countBadge = document.createElement('div');
+    countBadge.id = 'membros-count';
+    countBadge.style.cssText = "color: var(--main-color); margin-bottom: 20px; font-weight: bold; font-size: 14px;";
+    countBadge.innerText = `JÁ SOMOS ${total} MODDERS NA MIX-SA!`;
+    container.insertBefore(countBadge, lista);
+
     lista.innerHTML = "";
     profiles.forEach(user => {
         const foto = user.avatar_url || 'assets/img/logo-icon.png';
         lista.innerHTML += `
-            <div style="background: #111; border: 1px solid var(--main-color); padding: 15px; border-radius: 12px; display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
+            <div class="user-card" style="background: #111; border: 1px solid var(--main-color); padding: 15px; border-radius: 12px; display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
                 <img src="${foto}" style="width: 50px; height: 50px; border-radius: 50%; border: 2px solid var(--main-color); object-fit: cover;">
-                <div>
+                <div style="text-align: left;">
                     <h3 style="color: #fff; margin: 0; font-family: 'Orbitron'; font-size: 0.9rem;">${user.full_name}</h3>
                     <span style="color: var(--main-color); font-size: 10px; font-weight: bold;">MODDER VERIFICADO</span>
                 </div>
