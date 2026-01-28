@@ -26,19 +26,25 @@
             100% { box-shadow: 0 0 5px rgba(0, 255, 0, 0.2); border-color: #333; }
         }
         
-        #admin-mods-list::-webkit-scrollbar, #admin-users-list::-webkit-scrollbar { width: 4px; }
-        #admin-mods-list::-webkit-scrollbar-thumb, #admin-users-list::-webkit-scrollbar-thumb { background: red; border-radius: 10px; }
+        /* Scrollbars do Painel Admin */
+        #admin-mods-list::-webkit-scrollbar, #admin-active-list::-webkit-scrollbar, #admin-users-list::-webkit-scrollbar { width: 4px; }
+        #admin-mods-list::-webkit-scrollbar-thumb, #admin-active-list::-webkit-scrollbar-thumb { background: var(--main-color); border-radius: 10px; }
         
         .btn-category, .btn-fav, .btn-share { touch-action: manipulation; }
 
-        /* Estilo para botões de aprovação no painel */
-        .btn-approve { background: #28a745 !important; color: white !important; font-weight: bold; }
-        .btn-reject { background: #dc3545 !important; color: white !important; }
+        /* Estilo para botões de gerenciamento no painel */
+        .btn-adm-action { font-size: 9px; padding: 4px 8px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-family: 'Orbitron'; margin-right: 3px; transition: 0.2s; }
+        .btn-adm-edit { background: #ffd700; color: #000; }
+        .btn-adm-del { background: #ff4444; color: #fff; }
+        .btn-adm-edit:hover, .btn-adm-del:hover { opacity: 0.8; }
+        
+        /* Garante que overlays fiquem sempre no topo */
+        #login-overlay, #profile-overlay, #upload-overlay { z-index: 100000 !important; }
     </style>
 </head>
 <body onclick="closeMenus()"> 
 
-<div id="login-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 99999; flex-direction: column; align-items: center; justify-content: center;">
+<div id="login-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); flex-direction: column; align-items: center; justify-content: center;">
     <div style="background: #0a0a0a; padding: 30px; border: 2px solid var(--main-color); border-radius: 15px; text-align: center; width: 85%; max-width: 350px; box-shadow: 0 0 20px var(--main-color); position: relative;">
         <button onclick="fecharLogin()" style="position: absolute; top: 10px; right: 15px; background: none; border: none; color: #666; font-size: 24px; cursor: pointer;">&times;</button>
         <h2 style="font-family: 'Orbitron'; color: var(--main-color); margin-bottom: 20px; font-size: 1.2rem;">ACESSO MODDER</h2>
@@ -50,7 +56,7 @@
     </div>
 </div>
 
-<div id="profile-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 99999; flex-direction: column; align-items: center; justify-content: center;">
+<div id="profile-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); flex-direction: column; align-items: center; justify-content: center;">
     <div class="profile-card" style="background: #0a0a0a; padding: 25px; border: 2px solid var(--main-color); border-radius: 15px; text-align: center; width: 90%; max-width: 380px; box-shadow: 0 0 20px var(--main-color); position: relative; max-height: 90vh; overflow-y: auto;">
         <button onclick="fecharPerfil()" style="position: absolute; top: 10px; right: 15px; background: none; border: none; color: #666; font-size: 24px; cursor: pointer;">&times;</button>
         <h2 style="font-family: 'Orbitron'; color: var(--main-color); margin-bottom: 15px; font-size: 1.1rem;">MEU PERFIL</h2>
@@ -70,7 +76,7 @@
     </div>
 </div>
 
-<div id="upload-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 99999; flex-direction: column; align-items: center; justify-content: center;">
+<div id="upload-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); flex-direction: column; align-items: center; justify-content: center;">
     <div style="background: #0a0a0a; padding: 25px; border: 2px solid var(--main-color); border-radius: 15px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 0 20px var(--main-color); position: relative; max-height: 90vh; overflow-y: auto;">
         <button onclick="fecharEnvio()" style="position: absolute; top: 10px; right: 15px; background: none; border: none; color: #666; font-size: 24px; cursor: pointer;">&times;</button>
         <h2 style="font-family: 'Orbitron'; color: var(--main-color); margin-bottom: 15px; font-size: 1.1rem;">ENVIAR NOVO MOD</h2>
