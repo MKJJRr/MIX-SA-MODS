@@ -1,9 +1,9 @@
-/* LÓGICA DO SITE MIX-SA-MODS - VERSÃO DATABASE AUTOMÁTICA */
+/* LÓGICA DO SITE MIX-SA-MODS - VERSÃO HÍBRIDA (BANCO + LOCAL) */
 
 let currentCategory = 'todos';
 let selectedColor = localStorage.getItem('site_theme') || '#00ff00';
 let viewMode = localStorage.getItem('view_mode') || 'grid';
-let listaDeModsLocal = []; // Armazenará os mods vindos do banco
+let listaDeModsLocal = []; 
 
 const SUPABASE_URL = 'https://egfxnzebciuyidaahezc.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_7QAzm1GleD0QjNKfO-dtbw_JyOLcHr0';
@@ -63,92 +63,108 @@ async function abrirPainelAdmin() {
         painel.id = 'admin-panel';
         painel.style.cssText = "display:none; margin-top: 20px; border-top: 2px dashed red; padding-top: 15px; width: 100%;";
         painel.innerHTML = `
-            <h3 style="color: red; font-family: 'Orbitron'; font-size: 11px; margin-bottom: 10px;">MODS PARA APROVAR</h3>
-            <div id="admin-mods-list" style="max-height: 200px; overflow-y: auto; text-align: left; font-size: 11px; background: #000; padding: 10px; border-radius: 8px; border: 1px solid #333; margin-bottom: 15px;"></div>
-            <h3 style="color: red; font-family: 'Orbitron'; font-size: 11px; margin-bottom: 10px;">USUÁRIOS NO BANCO</h3>
-            <div id="admin-users-list" style="max-height: 150px; overflow-y: auto; text-align: left; font-size: 11px; background: #000; padding: 10px; border-radius: 8px; border: 1px solid #333;"></div>
+            <h3 style="color: red; font-family: 'Orbitron'; font-size: 11px; margin-bottom: 10px;">AGUARDANDO APROVAÇÃO</h3>
+            <div id="admin-mods-list" style="max-height: 150px; overflow-y: auto; text-align: left; font-size: 11px; background: #000; padding: 10px; border-radius: 8px; border: 1px solid #333; margin-bottom: 15px;"></div>
+            
+            <h3 style="color: #00ff00; font-family: 'Orbitron'; font-size: 11px; margin-bottom: 10px;">GERENCIAR MODS ATIVOS</h3>
+            <div id="admin-active-list" style="max-height: 150px; overflow-y: auto; text-align: left; font-size: 11px; background: #000; padding: 10px; border-radius: 8px; border: 1px solid #333; margin-bottom: 15px;"></div>
+
+            <h3 style="color: #fff; font-family: 'Orbitron'; font-size: 11px; margin-bottom: 10px;">USUÁRIOS</h3>
+            <div id="admin-users-list" style="max-height: 100px; overflow-y: auto; text-align: left; font-size: 11px; background: #000; padding: 10px; border-radius: 8px; border: 1px solid #333;"></div>
         `;
         document.querySelector('.profile-card').appendChild(painel);
     }
     
-    const listaMods = document.getElementById('admin-mods-list');
-    const listaUsers = document.getElementById('admin-users-list');
-    
-    if (painel.style.display === 'block') { 
-        painel.style.display = 'none'; 
-        return; 
-    }
-    
+    if (painel.style.display === 'block') { painel.style.display = 'none'; return; }
     painel.style.display = 'block';
-    listaMods.innerHTML = "Carregando mods...";
-    listaUsers.innerHTML = "Carregando...";
 
-    const { data: mods } = await _supabase.from('mods_pendentes').select('*');
-    if (!mods || mods.length === 0) {
-        listaMods.innerHTML = "<span style='color:#666'>Nenhum mod pendente.</span>";
-    } else {
-        listaMods.innerHTML = mods.map(m => `
-            <div style="border-bottom: 1px solid #222; padding: 8px 0;">
-                <b style="color:var(--main-color)">${m.titulo}</b><br>
-                <div style="display:flex; gap: 5px; margin-top: 5px;">
-                    <button onclick="aprovarMod('${m.id}')" style="background:green; border:none; color:#fff; font-size:9px; padding:3px; cursor:pointer; font-weight:bold; border-radius:4px;">APROVAR</button>
-                    <button onclick="deletarModPendente('${m.id}')" style="background:red; border:none; color:#fff; font-size:9px; padding:3px; cursor:pointer; border-radius:4px;">APAGAR</button>
-                </div>
+    // Carregar Mods Pendentes
+    const { data: pendentes } = await _supabase.from('mods_pendentes').select('*');
+    document.getElementById('admin-mods-list').innerHTML = pendentes?.length ? pendentes.map(m => `
+        <div style="border-bottom: 1px solid #222; padding: 5px 0;">
+            <b>${m.titulo}</b>
+            <div style="margin-top:4px;">
+                <button onclick="aprovarMod('${m.id}')" style="background:green; color:white; border:none; padding:2px 5px; cursor:pointer; border-radius:3px;">APROVAR</button>
+                <button onclick="deletarModPendente('${m.id}')" style="background:red; color:white; border:none; padding:2px 5px; cursor:pointer; border-radius:3px;">APAGAR</button>
             </div>
-        `).join('');
-    }
+        </div>`).join('') : "Nenhum mod pendente.";
 
-    const { data: users } = await _supabase.from('profiles').select('full_name, id');
-    if (users) {
-        listaUsers.innerHTML = users.map(u => `<div style="border-bottom: 1px solid #222; padding: 5px 0; display: flex; justify-content: space-between;"><span style="color:#eee">${u.full_name || 'Sem nome'}</span><span style="color:#444; font-size:8px">${u.id.substring(0,5)}</span></div>`).join('');
-    }
+    // Carregar Mods Ativos (Banco)
+    const { data: ativos } = await _supabase.from('mods_aprovados').select('*');
+    document.getElementById('admin-active-list').innerHTML = ativos?.length ? ativos.map(m => `
+        <div style="border-bottom: 1px solid #222; padding: 5px 0;">
+            <span style="color:#00ff00">${m.titulo}</span>
+            <div style="margin-top:4px;">
+                <button onclick="editarMod('${m.id}')" style="background:#444; color:white; border:none; padding:2px 5px; cursor:pointer; border-radius:3px;">EDITAR</button>
+                <button onclick="excluirModAtivo('${m.id}')" style="background:#600; color:white; border:none; padding:2px 5px; cursor:pointer; border-radius:3px;">EXCLUIR</button>
+            </div>
+        </div>`).join('') : "Nenhum mod ativo no banco.";
+
+    // Usuários
+    const { data: users } = await _supabase.from('profiles').select('full_name');
+    document.getElementById('admin-users-list').innerHTML = users?.map(u => `<div style="color:#888; border-bottom:1px solid #111;">${u.full_name || 'Anônimo'}</div>`).join('') || "Erro.";
 }
 
-/* --- FUNÇÕES DE AÇÃO DO ADMIN --- */
+/* --- AÇÕES DO ADMIN --- */
 
 async function aprovarMod(id) {
     const { data: mod } = await _supabase.from('mods_pendentes').select('*').eq('id', id).single();
     if (mod) {
-        const { error: errInsert } = await _supabase.from('mods_aprovados').insert([{
-            titulo: mod.titulo,
-            categoria: mod.categoria,
-            imagem: mod.imagem,
-            link: mod.link,
-            descricao: mod.descricao
+        const { error } = await _supabase.from('mods_aprovados').insert([{
+            titulo: mod.titulo, categoria: mod.categoria, imagem: mod.imagem, link: mod.link, descricao: mod.descricao
         }]);
-
-        if (!errInsert) {
-            await _supabase.from('mods_pendentes').delete().eq('id', id);
-            alert("MOD APROVADO COM SUCESSO!");
-            location.reload();
-        }
+        if (!error) { await _supabase.from('mods_pendentes').delete().eq('id', id); location.reload(); }
     }
 }
 
-async function deletarModPendente(id) {
-    if(confirm("Deseja apagar este mod da fila?")) {
-        await _supabase.from('mods_pendentes').delete().eq('id', id);
+async function deletarModPendente(id) { if(confirm("Apagar da fila?")) { await _supabase.from('mods_pendentes').delete().eq('id', id); location.reload(); } }
+
+async function excluirModAtivo(id) { if(confirm("Remover mod do site?")) { await _supabase.from('mods_aprovados').delete().eq('id', id); location.reload(); } }
+
+async function editarMod(id) {
+    const { data: mod } = await _supabase.from('mods_aprovados').select('*').eq('id', id).single();
+    const novoTitulo = prompt("Novo Título:", mod.titulo);
+    const novoLink = prompt("Novo Link:", mod.link);
+    if (novoTitulo && novoLink) {
+        await _supabase.from('mods_aprovados').update({ titulo: novoTitulo, link: novoLink }).eq('id', id);
+        alert("Mod atualizado!");
         location.reload();
     }
 }
 
-function fecharPerfil() { 
-    document.getElementById('profile-overlay').style.display = 'none'; 
-    const painel = document.getElementById('admin-panel');
-    if (painel) painel.remove();
+/* --- FUNÇÕES DO SITE (SISTEMA HÍBRIDO) --- */
+
+async function carregarMods() {
+    const container = document.getElementById('modList');
+    if (!container) return;
+
+    // 1. Carrega mods do Banco
+    const { data: aprovados } = await _supabase.from('mods_aprovados').select('*').order('created_at', { ascending: false });
+    let listaBanco = aprovados || [];
+
+    // 2. Carrega mods do arquivo mods.js (Fallback)
+    let listaArquivo = (typeof listaDeMods !== 'undefined') ? listaDeMods : [];
+
+    // 3. Junta as duas listas
+    listaDeModsLocal = [...listaBanco, ...listaArquivo];
+
+    container.innerHTML = listaDeModsLocal.map(mod => `
+        <div class="mod-card" data-category="${mod.categoria}" id="${mod.id || mod.titulo}">
+            <button class="btn-fav" onclick="toggleFav('${mod.id || mod.titulo}')">❤</button>
+            <button class="btn-share" onclick="copyLink('${mod.link}')">🔗</button>
+            <img src="${mod.imagem}" class="mod-img" loading="lazy">
+            <div class="mod-info">
+                <h2>${mod.titulo}</h2>
+                <p>${mod.descricao}</p>
+                <a href="${mod.link}" target="_blank" class="btn btn-download">VER DETALHES</a>
+            </div>
+        </div>`).join('');
+    
+    updateFavs();
+    filterMods();
 }
 
-async function sair() { await _supabase.auth.signOut(); location.reload(); }
-
-async function salvarPerfil() {
-    const newName = document.getElementById('profile-name').value;
-    const newPic = document.getElementById('profile-pic-url').value;
-    const { data: { user } } = await _supabase.auth.getUser();
-    await _supabase.auth.updateUser({ data: { display_name: newName, avatar_url: newPic } });
-    await _supabase.from('profiles').upsert({ id: user.id, full_name: newName, avatar_url: newPic, updated_at: new Date() });
-    alert("Perfil atualizado!");
-    location.reload();
-}
+/* --- RESTANTE DAS FUNÇÕES (PERMANECEM IGUAIS) --- */
 
 async function entrar() {
     const email = document.getElementById('auth-email').value;
@@ -174,8 +190,6 @@ async function checarSessao() {
     }
 }
 
-/* --- FUNÇÕES DE ENVIO --- */
-
 function abrirEnvio() {
     _supabase.auth.getSession().then(({ data: { session } }) => {
         if (!session) { alert("Faça login para enviar!"); abrirLogin(); }
@@ -194,55 +208,15 @@ async function enviarModAoBanco() {
     const btn = document.getElementById('btn-submit-mod');
 
     if (!titulo || !imagem || !link || !descricao) { alert("Preencha tudo!"); return; }
-
-    btn.innerText = "ENVIANDO...";
-    btn.disabled = true;
+    btn.innerText = "ENVIANDO..."; btn.disabled = true;
 
     const { data: { user } } = await _supabase.auth.getUser();
-
     const { error } = await _supabase.from('mods_pendentes').insert([{
-        titulo, categoria, imagem, link, descricao,
-        autor_email: user.email,
-        autor_id: user.id
+        titulo, categoria, imagem, link, descricao, autor_email: user.email, autor_id: user.id
     }]);
 
     if (error) { alert("Erro: " + error.message); btn.innerText = "SUBMETER MOD"; btn.disabled = false; }
     else { alert("Enviado para revisão!"); location.reload(); }
-}
-
-/* --- FUNÇÕES DO SITE (CARREGAMENTO DO BANCO) --- */
-
-async function carregarMods() {
-    const container = document.getElementById('modList');
-    if (!container) return;
-
-    // Busca da tabela oficial de aprovados
-    const { data: aprovados, error } = await _supabase
-        .from('mods_aprovados')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-    if (error || !aprovados) {
-        container.innerHTML = "<p style='color:gray'>Nenhum mod aprovado no banco de dados.</p>";
-        return;
-    }
-
-    listaDeModsLocal = aprovados; // Sincroniza a busca local
-
-    container.innerHTML = aprovados.map(mod => `
-        <div class="mod-card" data-category="${mod.categoria}" id="${mod.id}">
-            <button class="btn-fav" onclick="toggleFav('${mod.id}')">❤</button>
-            <button class="btn-share" onclick="copyLink('${mod.link}')">🔗</button>
-            <img src="${mod.imagem}" class="mod-img" loading="lazy">
-            <div class="mod-info">
-                <h2>${mod.titulo}</h2>
-                <p>${mod.descricao}</p>
-                <a href="${mod.link}" target="_blank" class="btn btn-download">VER DETALHES</a>
-            </div>
-        </div>`).join('');
-    
-    updateFavs();
-    filterMods();
 }
 
 function applyTheme(color, save = true) {
@@ -276,11 +250,12 @@ function filterMods() {
         if(m) v++;
     });
     const counter = document.getElementById('modCounter');
-    if(counter) counter.innerText = `Exibindo ${v} mods do banco de dados`;
+    if(counter) counter.innerText = `Exibindo ${v} mods`;
 }
 
 function changeView(mode) {
     const container = document.getElementById('modList');
+    if (!container) return;
     viewMode = mode;
     localStorage.setItem('view_mode', mode);
     if (mode === 'list') container.classList.add('list-mode');
@@ -288,8 +263,8 @@ function changeView(mode) {
     closeMenus();
 }
 
-function toggleSettings(e) { e.stopPropagation(); document.getElementById("settingsOptions").classList.toggle("active"); }
-function toggleSubmenu(e, id) { e.stopPropagation(); document.getElementById(id).classList.toggle("active"); }
+function toggleSettings(e) { e.stopPropagation(); document.getElementById("settingsOptions")?.classList.toggle("active"); }
+function toggleSubmenu(e, id) { e.stopPropagation(); document.getElementById(id)?.classList.toggle("active"); }
 function closeMenus() { 
     document.getElementById("settingsOptions")?.classList.remove("active"); 
     document.querySelectorAll(".submenu").forEach(s => s.classList.remove("active"));
@@ -312,7 +287,7 @@ function updateFavs() {
 
 function copyLink(u) {
     navigator.clipboard.writeText(u);
-    let t = document.getElementById("toast"); t.className = "show"; setTimeout(() => t.className = "", 2000);
+    let t = document.getElementById("toast"); if(t) { t.className = "show"; setTimeout(() => t.className = "", 2000); }
 }
 
 async function carregarComunidade() {
@@ -320,9 +295,11 @@ async function carregarComunidade() {
     if (!lista) return;
     const { data: p } = await _supabase.from('profiles').select('full_name, avatar_url').not('full_name', 'is', null);
     if (p) {
-        lista.innerHTML = p.map(u => `<div class="user-card" style="background:#111; border:1px solid var(--main-color); padding:10px; border-radius:12px; display:flex; align-items:center; gap:10px; margin-bottom:8px;"><img src="${u.avatar_url || 'assets/img/logo-icon.png'}" style="width:35px; height:35px; border-radius:50%; object-fit:cover;"><div><h3 style="color:#fff; margin:0; font-size:11px;">${u.full_name}</h3></div></div>`).join('');
+        lista.innerHTML = p.map(u => `<div class="user-card"><img src="${u.avatar_url || 'assets/img/logo-icon.png'}" style="width:35px; height:35px; border-radius:50%; object-fit:cover;"><div><h3 style="color:#fff; margin:0; font-size:11px;">${u.full_name}</h3></div></div>`).join('');
     }
 }
+
+async function sair() { await _supabase.auth.signOut(); location.reload(); }
 
 window.addEventListener('load', () => { 
     checarSessao(); 
