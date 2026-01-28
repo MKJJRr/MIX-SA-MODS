@@ -48,32 +48,46 @@
 
 <div id="profile-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 99999; flex-direction: column; align-items: center; justify-content: center;">
     <div class="profile-card" style="background: #0a0a0a; padding: 25px; border: 2px solid var(--main-color); border-radius: 15px; text-align: center; width: 90%; max-width: 380px; box-shadow: 0 0 20px var(--main-color); position: relative; max-height: 90vh; overflow-y: auto;">
-        
         <button onclick="fecharPerfil()" style="position: absolute; top: 10px; right: 15px; background: none; border: none; color: #666; font-size: 24px; cursor: pointer;">&times;</button>
-        
         <h2 style="font-family: 'Orbitron'; color: var(--main-color); margin-bottom: 15px; font-size: 1.1rem;">MEU PERFIL</h2>
-        
         <div style="margin-bottom: 15px;">
             <img id="user-avatar" src="assets/img/logo-icon.png" style="width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--main-color); object-fit: cover; background: #000;">
         </div>
-
         <div style="text-align: left; background: #111; padding: 15px; border-radius: 10px; border: 1px solid #222; margin-bottom: 15px;">
             <label style="color: var(--main-color); font-size: 10px; font-family: 'Orbitron';">NICKNAME</label>
             <input type="text" id="profile-name" placeholder="Seu nome" style="width: 100%; background: none; border: none; border-bottom: 1px solid #333; color: #fff; padding: 8px 0; margin-bottom: 10px; outline: none;">
-
             <label style="color: var(--main-color); font-size: 10px; font-family: 'Orbitron';">URL DA FOTO</label>
             <input type="text" id="profile-pic-url" placeholder="https://link.com/foto.jpg" style="width: 100%; background: none; border: none; border-bottom: 1px solid #333; color: #fff; padding: 8px 0; margin-bottom: 10px; outline: none;">
-
-            <label style="color: var(--main-color); font-size: 10px; font-family: 'Orbitron';">NOVA SENHA (OPCIONAL)</label>
-            <input type="password" id="new-password" placeholder="Deixe em branco para manter" style="width: 100%; background: none; border: none; border-bottom: 1px solid #333; color: #fff; padding: 8px 0; margin-bottom: 10px; outline: none;">
-
             <label style="color: var(--main-color); font-size: 10px; font-family: 'Orbitron';">E-MAIL</label>
             <p id="user-email-display" style="color: #666; font-size: 12px; margin-top: 5px; word-break: break-all;"></p>
         </div>
-
         <button onclick="salvarPerfil()" style="width: 100%; padding: 12px; background: var(--main-color); border: none; color: #000; font-weight: bold; cursor: pointer; border-radius: 8px; font-family: 'Orbitron'; margin-bottom: 10px;">SALVAR ALTERAÇÕES</button>
-        
         <button onclick="sair()" style="width: 100%; padding: 10px; background: none; border: 1px solid #ff4444; color: #ff4444; font-weight: bold; cursor: pointer; border-radius: 8px; font-family: 'Orbitron'; font-size: 0.8rem;">SAIR DA CONTA</button>
+    </div>
+</div>
+
+<div id="upload-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 99999; flex-direction: column; align-items: center; justify-content: center;">
+    <div style="background: #0a0a0a; padding: 25px; border: 2px solid var(--main-color); border-radius: 15px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 0 20px var(--main-color); position: relative; max-height: 90vh; overflow-y: auto;">
+        <button onclick="fecharEnvio()" style="position: absolute; top: 10px; right: 15px; background: none; border: none; color: #666; font-size: 24px; cursor: pointer;">&times;</button>
+        <h2 style="font-family: 'Orbitron'; color: var(--main-color); margin-bottom: 15px; font-size: 1.1rem;">ENVIAR NOVO MOD</h2>
+        <div style="text-align: left; background: #111; padding: 15px; border-radius: 10px; border: 1px solid #222; margin-bottom: 15px;">
+            <label style="color: var(--main-color); font-size: 10px; font-family: 'Orbitron';">TÍTULO DO MOD</label>
+            <input type="text" id="mod-titulo" placeholder="Ex: Skin Pack v2" style="width: 100%; background: none; border: none; border-bottom: 1px solid #333; color: #fff; padding: 8px 0; margin-bottom: 15px; outline: none;">
+            <label style="color: var(--main-color); font-size: 10px; font-family: 'Orbitron';">CATEGORIA</label>
+            <select id="mod-categoria" style="width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 8px; margin-bottom: 15px; border-radius: 5px;">
+                <option value="cleo">CLEO</option>
+                <option value="veiculo">VEÍCULOS</option>
+                <option value="textura">TEXTURAS</option>
+                <option value="correcao">CORREÇÃO</option>
+            </select>
+            <label style="color: var(--main-color); font-size: 10px; font-family: 'Orbitron';">URL DA IMAGEM</label>
+            <input type="text" id="mod-imagem" placeholder="https://link.com/foto.jpg" style="width: 100%; background: none; border: none; border-bottom: 1px solid #333; color: #fff; padding: 8px 0; margin-bottom: 15px; outline: none;">
+            <label style="color: var(--main-color); font-size: 10px; font-family: 'Orbitron';">LINK DE DOWNLOAD</label>
+            <input type="text" id="mod-link" placeholder="Mediafire, Mega, etc." style="width: 100%; background: none; border: none; border-bottom: 1px solid #333; color: #fff; padding: 8px 0; margin-bottom: 15px; outline: none;">
+            <label style="color: var(--main-color); font-size: 10px; font-family: 'Orbitron';">DESCRIÇÃO BREVE</label>
+            <textarea id="mod-descricao" placeholder="Conte o que o mod faz..." style="width: 100%; background: #000; border: 1px solid #333; color: #fff; padding: 8px; border-radius: 5px; height: 60px; resize: none;"></textarea>
+        </div>
+        <button onclick="enviarModAoBanco()" id="btn-submit-mod" style="width: 100%; padding: 12px; background: var(--main-color); border: none; color: #000; font-weight: bold; cursor: pointer; border-radius: 8px; font-family: 'Orbitron';">SUBMETER MOD</button>
     </div>
 </div>
 
@@ -86,8 +100,8 @@
     <div class="nav-links">
         <a href="index.html">Início</a> 
         <a href="javascript:void(0)" id="navLoginBtn" onclick="abrirLogin()">Login</a>
+        <a href="javascript:void(0)" onclick="abrirEnvio()" style="color: #ffff00; font-weight: bold;">+ ENVIAR</a>
         <a href="paginas/sobre.html">Sobre</a> 
-        <a href="https://youtube.com/@maykjjr" target="_blank">YouTube</a> 
         <a href="paginas/comunidade.html">Social</a>
     </div>
     <img src="assets/img/logo-icon.png" alt="Logo" class="site-logo">
@@ -96,7 +110,7 @@
 <header>
     <h1>MIX-SA-MODS</h1>
     <p id="headerP" style="color: var(--main-color); font-weight: bold; margin-top: 10px;">O ponto de encontro dos modders de GTA SA Mobile</p>
-    <p id="modCounter" style="color: #888; font-size: 14px;">Carregando banco de dados...</p>
+    <p id="modCounter" style="color: #888; font-size: 14px;">Conectando ao banco...</p>
 </header>
 
 <div class="settings-menu" id="mainSettings">
